@@ -1,0 +1,119 @@
+{% if msg %}
+<script>alert('{{msg}}')</script>
+{% endif %}
+
+<html>
+{% load staticfiles %}
+  <link rel="SHORTCUT ICON" href="{% static 'img/background.jpg' %}"/>
+  <script src="{% static 'js/jquery.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bar.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+        {% csrf_token %}
+        <nav class="nav navbar-default">
+             <div class="container-fluid">
+                 <span>
+                   商品分類
+                 </span>
+                 <div>
+                     <ul id="myNavbar" class="nav navbar-nav">
+                         <li><a data-toggle="tab" href="#">電器/3C</a></li>
+                         <li><a data-toggle="tab" href="#">家用品</a></li>
+                         <li><a data-toggle="tab" href="#">運動</a></li>
+                         <li><a data-toggle="tab" href="#">服飾</a></li>
+                         <li><a data-toggle="tab" href="#">娛樂</a></li>
+                         <li><a data-toggle="tab" href="#">精品</a></li>
+                         <li><a data-toggle="tab" href="#">汽車零件</a></li>
+                         <li><a data-toggle="tab" href="#">電器/3C</a></li>
+                         <li><a data-toggle="tab" href="#">家用品</a></li>
+                         <li><a data-toggle="tab" href="#">運動</a></li>
+                         <li><a data-toggle="tab" href="#">服飾</a></li>
+                         <li><a data-toggle="tab" href="#">娛樂</a></li>
+                     </ul>
+                 </div>
+             </div>
+         </nav>
+
+         <div class="pos-f-t">
+             <nav  class="navbar navbar-dark bg-dark">
+               <button id="afterBut" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                 <span class="navbar-toggler-icon"></span>
+               </button>
+             </nav>
+             <div class="collapse" id="navbarToggleExternalContent" style="z-index:3">
+               <div class="bg-dark">
+                 <li><a data-toggle="tab" href="#">電器/3C</a></li>
+                 <li><a data-toggle="tab" href="#">家用品</a></li>
+                 <li><a data-toggle="tab" href="#">運動</a></li>
+                 <li><a data-toggle="tab" href="#">服飾</a></li>
+                 <li><a data-toggle="tab" href="#">娛樂</a></li>
+                 <li><a data-toggle="tab" href="#">精品</a></li>
+                 <li><a data-toggle="tab" href="#">汽車零件</a></li>
+                 <li><a data-toggle="tab" href="#">電器/3C</a></li>
+                 <li><a data-toggle="tab" href="#">家用品</a></li>
+                 <li><a data-toggle="tab" href="#">運動</a></li>
+                 <li><a data-toggle="tab" href="#">服飾</a></li>
+                 <li><a data-toggle="tab" href="#">娛樂</a></li>
+               </div>
+             </div>
+         </div>
+
+         <form>
+        <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-2"><img src="{{ img_url}}" class="img-thumbnail img" alt="2080ti"><p>2080ti</p></div>
+              <div class="col-md-2"><img src="{% static 'img/switch.jpg' %}" class="img-thumbnail img" alt="switch"><p>switch</p></div>
+              <div class="col-md-2"><img src="{% static 'img/macbookpro.jpg' %}" class="img-thumbnail img" alt="mackbookpro"><p>macbookpro</p></div>
+              <div class="col-md-2"><img src="{% static 'img/calculus.jpg' %}" class="img-thumbnail img" alt="caluculus"><p>calculus</p></div>
+              <div class="col-md-2"><img src="{% static 'img/cake.jpg' %}" class="img-thumbnail img" alt="cake"><p>cake</p></div>
+              <div class="col-md-1"></div>
+
+              <div class="col-md-1"></div>
+              <div class="col-md-2"><img src="{% static 'img/2080ti.jpg' %}" class="img-thumbnail img" alt="2080ti"><p>2080ti</p></div>
+              <div class="col-md-2"><img src="{% static 'img/switch.jpg' %}" class="img-thumbnail img" alt="switch"><p>switch</p></div>
+              <div class="col-md-2"><img src="{% static 'img/macbookpro.jpg' %}" class="img-thumbnail img" alt="mackbookpro"><p>macbookpro</p></div>
+              <div class="col-md-2"><img src="{% static 'img/calculus.jpg' %}" class="img-thumbnail img" alt="caluculus"><p>calculus</p></div>
+              <div class="col-md-2"><img src="{% static 'img/cake.jpg' %}" class="img-thumbnail img" alt="cake"><p>cake</p></div>
+              <div class="col-md-1"></div>
+
+              <div class="col-md-1"></div>
+              <div class="col-md-2"><img src="{% static 'img/2080ti.jpg' %}" class="img-thumbnail img" alt="2080ti"><p>2080ti</p></div>
+              <div class="col-md-2"><img src="{% static 'img/switch.jpg' %}" class="img-thumbnail img" alt="switch"><p>switch</p></div>
+              <div class="col-md-2"><img src="{% static 'img/macbookpro.jpg' %}" class="img-thumbnail img" alt="mackbookpro"><p>macbookpro</p></div>
+              <div class="col-md-2"><img src="{% static 'img/calculus.jpg' %}" class="img-thumbnail img" alt="caluculus"><p>calculus</p></div>
+              <div class="col-md-2"><img src="{% static 'img/cake.jpg' %}" class="img-thumbnail img" alt="cake"><p>cake</p></div>
+              <div class="col-md-1"></div>
+
+              <div class="col-md-1"></div>
+              <div class="col-md-2"><img src="{% static 'img/2080ti.jpg' %}" class="img-thumbnail img" alt="2080ti"><p>2080ti</p></div>
+              <div class="col-md-2"><img src="{% static 'img/switch.jpg' %}" class="img-thumbnail img" alt="switch"><p>switch</p></div>
+              <div class="col-md-2"><img src="{% static 'img/macbookpro.jpg' %}" class="img-thumbnail img" alt="mackbookpro"><p>macbookpro</p></div>
+              <div class="col-md-2"><img src="{% static 'img/calculus.jpg' %}" class="img-thumbnail img" alt="caluculus"><p>calculus</p></div>
+              <div class="col-md-2"><img src="{% static 'img/cake.jpg' %}" class="img-thumbnail img" alt="cake"><p>cake</p></div>
+              <div class="col-md-1"></div>
+              <div id="blank" class="col-md-12"></div>
+            </div>
+          </div>
+          </form>
+
+            <!-- <div id="blank" style="width:100%;height:15%; background-color:purple;">
+            </div> -->
+
+          <nav id="page" class="page">
+            <ul class="pagination">
+             <li class="page-item"><a class="page-link" href="#"><<</a></li>
+            </ul>
+          </nav>
+  </body>
+
+  <script src="{% static 'js/bar.js' %}"></script>
+  <script src="{% static 'js/index.js' %}"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</html>

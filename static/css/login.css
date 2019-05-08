@@ -1,0 +1,143 @@
+button
+{
+  font-size:1.5em;
+}
+.menu
+{
+    width: 100px;
+    border: 1px;
+    border-style: solid;
+
+}
+.menu ul
+{
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.menu ul li
+{
+    border-top: 3px solid black;
+}
+@import url(https://fonts.googleapis.com/css?family=Philosopher);
+
+.body{
+position: absolute;
+top: 0px;
+left: 0px;
+right: 0px;
+bottom: 0px;
+width: auto;
+height: auto;
+background-image: url('/static/img/background.jpg');
+background-size: cover;
+-webkit-filter: blur(0px);
+z-index: 0;
+}
+
+
+.header{
+position: absolute;
+top: calc(50% - 280px);
+left: calc(50% - 230px);
+z-index: 2;
+size:5em;
+}
+
+.header div{
+float: left;
+color: #000;
+font-family:'Philosopher',cursive;
+font-size: 70px;
+font-weight: 200;
+}
+
+.header div span{
+color: #5379fa;
+}
+
+.login{
+position: absolute;
+top: calc(50% - 60px);
+left: calc(50% - 150px);
+height: 150px;
+width: 350px;
+padding: 10px;
+z-index: 2;
+}
+
+
+.login input[type=password] , .login input[type=text]{
+width: 250px;
+height: 30px;
+background: rgba(255,255,255,0.5);
+border: 1px solid rgba(255,255,255,0.6);
+border-radius: 2px;
+color: #fff;
+font-family: 'Exo', sans-serif;
+font-size: 16px;
+font-weight: 400;
+padding: 4px;
+margin-top: 10px;
+}
+
+
+
+.login input[type=button] , .login input[type=submit] {
+width: 125px;
+height: 35px;
+background: #fff;
+border: 1px solid #fff;
+cursor: pointer;
+border-radius: 2px;
+color: #000;
+font-family: 'Exo', sans-serif;
+font-size: 16px;
+font-weight: 400;
+padding: 6px;
+margin-top: 10px;
+}
+
+
+.login input[type=button]:hover , .login input[type=submit]:hover{
+opacity: 0.8;
+}
+
+.login input[type=button]:active , .login input[type=submit]:active{
+opacity: 0.6;
+}
+
+.login input[type=text]:focus{
+outline: none;
+border: 1px solid rgba(255,255,255,0.9);
+}
+
+.login input[type=password]:focus{
+outline: none;
+border: 1px solid rgba(255,255,255,0.9);
+}
+
+.login input[type=button]:focus{
+outline: none;
+}
+
+::-webkit-input-placeholder{
+color: rgba(0,0,0,1);
+}
+
+::-moz-input-placeholder{
+color: rgba(0,0,0,1);
+}
+
+@media (max-width: 376px) {
+ .header div {
+    font-size: 50px;
+  }
+ .header{
+
+top: calc(50% - 120px);
+left: calc(50% - 150px);
+
+}
+}

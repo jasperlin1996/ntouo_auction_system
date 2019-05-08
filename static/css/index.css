@@ -1,0 +1,134 @@
+.row
+{
+  height:150px;
+  /* max-width: 100%; */
+  margin: auto;
+}
+
+.row div[class=col-md-2]
+{
+  background-color: rgba(0,0,0,0.1);
+  width: 100%;
+  border: 5px solid white;
+  border-right:0px;
+}
+
+.row div p
+{
+  position: absolute;   /*手機版關掉*/
+  bottom: -10px;
+  right: 0;
+  width: 100%;
+  border-top: 1px solid #000;
+}
+
+form{
+  position: relative;
+  top:10%;
+  text-align: center;
+  height:90%;
+}
+
+
+.img{
+  margin-top: 20px;
+  max-height: 130px;
+  margin-bottom: 30px;
+}
+
+.page{
+  position: fixed;
+  color:black;
+  top:92%;
+  text-align: center;
+}
+
+.nav
+{
+  position: fixed;
+  z-index:2;
+  top:11%;
+}
+
+.nav ul
+{
+  border:2px solid rgba(0,0,0,0.5);
+  border-top: 0px;
+  margin-top: 20px;
+}
+
+.nav span
+{
+ background: linear-gradient(to bottom, #feccb1 0%,#f17432 50%,#ea5507 51%,#fb955e 100%);
+  color:white;
+}
+
+.pos-f-t
+{
+  position: fixed;
+  width: 100%;
+  top:10%;
+  font-size: 8px;
+}
+
+.navbar-toggler-icon
+{
+  position: relative;
+}
+
+.collapse
+{
+    position: relative;
+}
+
+.collapse li
+{
+    margin-left:5px;
+}
+
+
+@media screen and (max-width:800px)
+{
+  #myNavbar
+  {
+    display:none;
+  }
+  .bar
+  {
+    display: none;
+  }
+  form{
+    top:15%;
+  }
+  .row div[class=col-md-2]
+  {
+    z-index: -1;
+  }
+
+  .nav span
+  {
+    display: none;
+  }
+}
+
+@media screen and (max-width:768px)
+{
+` .img
+  {
+    margin-bottom: 10px;
+  }`
+  .row div p
+  {
+    position: relative;
+  }
+}
+
+@media screen and (min-width:800px)
+{
+  .pos-f-t
+  {
+    display: none;
+    font-size:5px;
+  }
+
+}
