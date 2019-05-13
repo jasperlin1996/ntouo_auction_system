@@ -5,7 +5,7 @@ import pyrebase
 import firebase_admin
 from django.shortcuts import render, redirect
 from firebase_admin import credentials, firestore
-
+from . import firestore_ops
 config = {
     "apiKey": "AIzaSyCF_Q4YD_W7FWb40pDU-NHW0ooYsnJWDUM",
     "authDomain": "auction-system-73960.firebaseapp.com",
@@ -32,7 +32,7 @@ def postToSell(request):
     product['product_name'] = request.POST.get('product_name')
     product['trading_type'] = request.POST.get('trading_type')
     product['price'] = request.POST.get('price')
-    product['current_price'] = request.POST.get('currect_price')
+    product['current_price'] = request.POST.get('current_price')
     product['price_per_mark'] = request.POST.get('price_per_mark')
     product['category'] = request.POST.get('category')
     product['description'] = request.POST.get('description')
@@ -46,14 +46,15 @@ def postToSell(request):
     if product_id < 0:
         product_id += sys.maxsize
 
-    idToken = request.session['idToken']
-    user = auth.get_account_info(idToken)
-    user_id = user['users'][0]['localId'] # user collection's document id
+    # idToken = request.session['idToken']
+    # user = auth.get_account_info(idToken)
+    # user_id = user['users'][0]['localId'] # user collection's document id
 
     # store to database
     try:
-        pass
+        firestore_ops.addProduct(user_id, product_id, product)
     except:
+        print('firestore_ops.addProduct error')
         return # error
     
     return redirect(toSell)

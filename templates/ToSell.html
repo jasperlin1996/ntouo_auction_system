@@ -23,6 +23,7 @@
     <body>
         <div id="content">
             <form method="POST" action="/posttosell/">
+                {% csrf_token %}
                 <tr>
                     <td>圖片(gif,jpeg,png):</td>
                     <td><input type="file" accept="image/gif, image/jpeg, image/png"></td>
