@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../css/Share.css">
+    <link rel="stylesheet" type="text/css" href="../css/ToSell.css">
+    <script src="../js/ToSell.js"></script>
+
+    <title>海大拍賣-上架商品</title>
+
+    <header class="header">
+        <div>
+            <span>
+                <a href="../web/Main.html">海大拍賣</a>
+            </span>
+            <input style="margin-left:50px;" id="search" type="text">
+            <input type="button" value="搜尋">
+            <span style="float: right;">
+                <a href="../web/SignIn.html">登入</a>
+                <a href="../web/SignUp.html">註冊</a>
+            </span>
+        </div>
+    </header>
+    <body>
+        <div id="content">
+            <form method="POST" action="/posttosell/">
+                <tr>
+                    <td>圖片(gif,jpeg,png):</td>
+                    <td><input type="file" accept="image/gif, image/jpeg, image/png"></td>
+                </tr><br/>
+                <tr>
+                    <td>名稱:</td>
+                    <td><input id="name" type="text" class="text" name="product_name" required/></td>
+                </tr><br>
+                <tr>
+                    <td>直購/拍賣:</td> 
+                    <td>
+                        <input id="sell" type="radio" name="trading_type" checked="true"/>直購
+                        <input id="sale" type="radio" name="trading_type"/>拍賣
+                    </td>
+                </tr><br>
+                <tr>
+                    <td>直購價:</td>
+                    <td><input id="max" type="text" class="text" name="price" required/>元</td>
+                </tr><br>
+                <tr>
+                    <td>底價:</td>
+                    <td><input id="now" type="text" class="text" name="current_price"/>元</td>
+                </tr><br>
+                <tr>
+                    <td>每標底價:</td>
+                    <td><input id="step" type="text" class="text" name="price_per_mark"/>元</td>
+                </tr><br>
+                <tr>
+                    <td>分類:</td>
+                    <select name="category">
+                        <option value="3C">3C</option>
+                        <option value="food">食品</option>
+                        <option value="grocery">雜貨</option>
+                        <option value="others">其他</option>
+                    </select>
+                </tr><br>
+                <tr>
+                    <td>敘述:</td>
+                    <td><input id="description" type="text" class="block" name="description"/></td>
+                </tr><br>
+                <tr>
+                    <td>希望交易方式:</td>
+                    <td><input id="hope" type="text" class="block" name="trading_method"/></td>
+                </tr><br>
+                <tr>
+                    <td>賣家:</td>
+                    <td><input id="seller" type="text" class="text" value="username read only" required readonly/></td>
+                </tr><br>
+                <tr>
+                    <td>結標日期:</td>
+                    <td><input id="deadline" type="date" class="text" required></td>
+                </tr><br>
+                <tr><td></td><td><input id="submit" type = "submit" onclick="setData()" value = "確認上架"></td></tr>
+            </form>
+        </div>
+    </body>
+</html>
