@@ -1,3 +1,4 @@
+import sys
 import json
 import django
 import pyrebase
@@ -21,3 +22,38 @@ storage = firebase.storage()
 
 def index(request):
     return render(request, 'index.html')
+
+def toSell(request):
+    return render(request, 'ToSell.html')
+
+def postToSell(request):
+    product = {}
+    # read image
+    product['product_name'] = request.POST.get('product_name')
+    product['trading_type'] = request.POST.get('trading_type')
+    product['price'] = request.POST.get('price')
+    product['current_price'] = request.POST.get('currect_price')
+    product['price_per_mark'] = request.POST.get('price_per_mark')
+    product['category'] = request.POST.get('category')
+    product['description'] = request.POST.get('description')
+    product['trading_method'] = request.POST.get('trading_method')
+    product['deadline'] = request.POST.get('deadline')
+
+    s = ''
+    for k in product:
+        s += product[k]
+    product_id = hash(s)
+    if product_id < 0:
+        product_id += sys.maxsize
+
+    idToken = request.session['idToken']
+    user = auth.get_account_info(idToken)
+    user_id = user['users'][0]['localId'] # user collection's document id
+
+    # store to database
+    try:
+        pass
+    except:
+        return # error
+    
+    return redirect(toSell)

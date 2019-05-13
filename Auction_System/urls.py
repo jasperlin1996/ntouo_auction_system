@@ -20,4 +20,6 @@ from . import views
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index),
+    path('tosell/', views.toSell, name = 'to-sell'),
+    path('posttosell/', views.postToSell, name = 'post-to-sell'),
 ]
