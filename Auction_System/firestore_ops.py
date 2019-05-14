@@ -138,6 +138,7 @@ def getAllProductBasicInfo():
     collection_ref = db.collection('products')
 
     for doc in collection_ref.get():
+
         product = getProduct(doc.id)
         basic_info = getProductBasicInfo(product)
         products_basic_info.append(basic_info)
