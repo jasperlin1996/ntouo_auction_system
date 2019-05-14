@@ -1,27 +1,24 @@
-<!DOCTYPE html>
+{% if msg %}
+<script>alert('{{msg}}')</script>
+{% endif %}
+
 <html>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../static/css/Share.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/Product.css">
-    <script src="../static/js/Product.js"></script>
-
-    <title>海大拍賣-上架商品</title>
-
-    <header class="header">
-        <div>
-            <span>
-                <a href="../templates/Main.html">海大拍賣</a>
-            </span>
-            <input style="margin-left:50px;" id="search" type="text">
-            <input type="button" value="搜尋">
-            <span style="float: right;">
-                <a href="../templates/SignIn.html">登入</a>
-                <a href="../templates/SignUp.html">註冊</a>
-            </span>
-        </div>
-    </header>
+{% load staticfiles %}
+  <link rel="SHORTCUT ICON" href="{% static 'img/background.jpg' %}"/>
+  <script src="{% static 'js/jquery.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bar.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/Product.css' %}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
     <body>
         <div id="content">
         </div>
     </body>
+    <script src="{% static 'js/bar.js' %}"></script>
+    <script src="{% static 'js/Product.js' %}"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </html>
