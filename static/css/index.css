@@ -11,6 +11,7 @@
   width: 100%;
   border: 5px solid white;
   border-right:0px;
+  border-radius: 20px;
 }
 
 .row div p
@@ -26,7 +27,6 @@ form{
   position: relative;
   top:10%;
   text-align: center;
-  height:90%;
 }
 
 
@@ -52,15 +52,22 @@ form{
 
 .nav ul
 {
-  border:2px solid rgba(0,0,0,0.5);
-  border-top: 0px;
-  margin-top: 20px;
+  border-top:2px solid rgba(0,0,0,0.5);
+  margin-top: 20px; 
 }
 
-.nav span
+ul span
 {
- background: linear-gradient(to bottom, #feccb1 0%,#f17432 50%,#ea5507 51%,#fb955e 100%);
-  color:white;
+  border-bottom: 2px solid rgba(0,0,0,0.5);
+  font-weight:bold;
+  margin-right: 2px;
+  margin-left: 2px;
+  margin-bottom: 10px;
+}
+
+#myNavbar li
+{
+  margin-bottom: 10px;
 }
 
 .pos-f-t
@@ -69,25 +76,65 @@ form{
   width: 100%;
   top:10%;
   font-size: 8px;
-}
-
-.navbar-toggler-icon
-{
-  position: relative;
-}
-
-.collapse
-{
-    position: relative;
+  color:#343a40;
 }
 
 .collapse li
 {
-    margin-left:5px;
+
+    font-size:20px;
 }
 
+.collapsing
+{
+  font-size: 20px;
+}
 
-@media screen and (max-width:800px)
+#bar2
+{
+  position: absolute;
+  color: white;
+  float: left;
+  z-index: 2;
+}
+#bar2 a{
+  font-size: 12px;
+  margin-right: 2px;
+  margin-left: 5px;
+  float:right;
+}
+
+#loadspace
+{
+  position: fixed;
+  background-color: white;
+  width: 100%;
+  height:90%;
+  z-index:100;
+  top:10%;
+}
+
+#myNavbar a
+{
+  text-decoration: none;
+  color: black;
+}
+
+.categorie{ background-image:url(/static/img/pic.png); margin-left:5px;margin-right:10px;background-color:black;height:17px;width: 20px;}
+.categorie-1{background-position: -2px -1px}
+.categorie-2{background-position: 24px -60px}
+.categorie-3{background-position: 45px 0px}
+.categorie-4{background-position: -2px -120px}
+.categorie-5{background-position: -2px -220px}
+.categorie-6{background-position: 45px -240px}
+.categorie-7{background-position: 24px -40px}
+.categorie-8{background-position: 45px -60px}
+.categorie-9{background-position: 45px -140px}
+.categorie-10{background-position: -2px -160px}
+.categorie-11{background-position: 45px -160px}
+.categorie-12{background-position: 24px -20px}
+
+@media screen and (max-width:1040px)
 {
   #myNavbar
   {
@@ -109,6 +156,15 @@ form{
   {
     display: none;
   }
+  input[type=button] , input[type = text]
+  {
+    float:right;
+    margin-right:10px;
+  }
+  #loadspace
+  {
+    top:15%;
+  }
 }
 
 @media screen and (max-width:768px)
@@ -123,7 +179,7 @@ form{
   }
 }
 
-@media screen and (min-width:800px)
+@media screen and (min-width:1040px)
 {
   .pos-f-t
   {

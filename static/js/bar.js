@@ -10,42 +10,21 @@ function index() {
   return (location.href = '/').toString();
 }
 
+var isLoading = true;
+var spinner = document.getElementById("loader");
 
+function start() {
+  if (isLoading) {
+    spinner.setAttribute('hidden', true);
+    $("#loadspace").css("display", "none");
+    isLoading = false;
+  }
+}
 
 var body = document.getElementsByTagName("body");
 var need =
-  " <header class='header1'><div style='margin-top:15px'><a id='sign'>海大拍賣</a><input style='width:100px;' type='text'><button disabled>搜尋</button>" +
+  " <header class='header1'><img style='position:absolute;width:50px;height:50px;margin-left:10px;margin-top:5px;' src='./static/img/ntoulogo.png'><div style='margin-top:15px'><a id='sign'>海大拍賣</a><input type=button value='搜尋' disabled style='font-size:15px;'><input type='text' style='width:100px;'>" +
   "<span id='bar' class='bar' style='color:white; float: right;'><a onclick= index()" +
   ">主頁面</a><a>會員中心</a><a>意見回饋</a><a>瀏覽紀錄</a><a onclick='signIn()'> 登入</a><a onclick='signUpString()'> 註冊</a></span></div></header>";
 
 $("body").prepend(need);
-
-var bar = document.getElementById("bar");
-var wid = $(window).width();
-var maxwidth = screen.width;
-
-
-$(function() {
-  $(window).resize(function() {
-    wid = $(window).width();
-    if (maxwidth < wid) maxwidth = wid;
-    for (let i = 0; i < bar.children.length; i++) {
-      bar.children[i].style.fontSize = (wid / maxwidth) * 100 + "%";
-      // console.log(bar.children[i].style.fontSize);
-    }
-    if ($(window).width() < 800) {
-      bar.style.width = 70 + "px";
-      bar.style.color = "black";
-      bar.style.marginTop = 45 + "px";
-      for (let i = 0; i < bar.children.length; i++) {
-        bar.children[i].style.fontSize = (wid / maxwidth) * 60 + "%";
-        // console.log(bar.children[i].style.fontSize);
-      }
-    } else {
-      bar.style.width = wid - 600;
-      // console.log( bar.style.width);
-      bar.style.color = "white";
-      bar.style.marginTop = 0 + "px";
-    }
-  }).resize();
-});
