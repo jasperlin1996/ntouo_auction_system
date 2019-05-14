@@ -1,0 +1,17 @@
+#content {
+    position: absolute;
+    margin-top: 8%;
+    margin-left: 40%;
+    font-size: 25px;
+}
+
+input {
+    height: 25px;
+}
+
+@media screen and (max-width: 800px) {
+    #content {
+        margin-left: 15%;
+        font-size: 15px;
+    }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../static/css/Share.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/MemberCenter.css">
+    <script src = "../static/js/MemberCenter.js"></script>
+
+    <title>海大拍賣--會員中心</title>
+
+    <header class="header">
+        <div>
+            <span>
+                <a href="../templates/MemberCenter.html">會員中心</a>
+            </span>
+            <input style="margin-left:50px;" id="search" type="text">
+            <input type="button" value="搜尋">
+            <span style="float: right;">
+                <a href="../templates/SignIn.html">登入</a>
+                <a href="../templates/SignUp.html">註冊</a>
+            </span>
+        </div>
+    </header>
+    <body>
+        <ul align="center">
+        <li onclick="person()">個人資料</li>
+        <li onclick="likes()">追蹤中</li>
+        <li onclick="buying()">競標中</li>
+        <li onclick="dealing()">交易中</li>
+        <li onclick="selling()">販賣中</li>
+        <li onclick="finish()">已完成</li>
+        <br><br>
+        <a href="../templates/ToSell.html">賣東西</a></li>
+        </ul>
+        <div align="center" id="content">
+        </div>
+    </body>
+</html>

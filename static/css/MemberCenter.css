@@ -1,0 +1,115 @@
+#content{
+    position: absolute;
+    margin-top: 6%;
+}
+
+ul {
+    list-style-type: none;
+    position: absolute;
+    margin-top: 4%;
+    margin-left: 2%;
+    font-size: 25px;
+    padding: 0;
+    width: 100px;
+}
+
+a{
+    text-decoration: none;
+}
+
+button {
+    width: 50px;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+}
+
+#obj {
+    margin-left: 20%;
+    width: 500px;
+}
+
+@media screen and (min-width: 900px) {
+    #content{
+        font-size: 25px;
+        margin-left: 30%;
+    }
+    
+    td {
+        width: 50%;
+    }
+    
+    textarea {
+        font-size: 20px;
+        width: 400px; 
+    }
+}
+
+@media screen and (max-width: 900px) and (min-width: 700px) {
+    #content{
+        font-size: 20px;
+        margin-left: 20%;
+    }
+    
+    button {
+        width: 50px;
+    }
+
+    img {
+        width: 150px;
+        height: 150px;
+    }
+
+    td {
+        width: 300px;
+    }
+
+    #obj {
+        width: 80%;
+    }
+    
+    textarea {
+        font-size: 20px;
+        width: 400px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    #content {
+        width: 80%;
+    }
+
+    ul {
+        position: relative; 
+        width: 100%;
+    }
+
+    table {
+        position: relative;
+        margin-left: 10%;
+        width: 100%;
+    }
+
+    td {
+        position: relative;
+        width: 100px;
+        display: inline-block;
+    }
+
+    #obj {
+        position: relative;
+        margin-left: 10%;
+        width: 100%;
+    }
+
+    img {
+        height: 100px;
+        width: 100px;
+    }
+
+    textarea {
+        width: 200px;
+    }
+}
