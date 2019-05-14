@@ -2,6 +2,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from google.cloud.firestore_v1 import ArrayUnion
+import datetime
 
 cred = credentials.Certificate('firestore_key.json')
 
@@ -41,7 +42,7 @@ def linkProductToUser(user_id, product_id, list_name="onsale_items"):
                     "done_items",
                 }
         user_id (str): The id link to the user's firestore document.
-        product_id (str): The id link to the product's firestore ducument.
+        product_id (str): The id link to the product's firestore docuument.
     """
 
     # link the product to user(seller)
@@ -51,13 +52,99 @@ def linkProductToUser(user_id, product_id, list_name="onsale_items"):
     except Exception as e:
         raise e
 
-def getProductBasicInfo():
+# --- Developing --- #
+
+
+def createProductDict():
+    product = {
+        'name': '',
+        'id': '',
+        'status': 0,
+        'trading_type': 0,
+        'description': '',
+        'trading_method': '',
+        'category': '',
+        'seller': '',
+        'price': 0,
+        'current_price': 0,
+        'price_per_mark': 0,
+        'highest_buyer_id': '',
+        'deadline': datetime.datetime.now(),
+        'images': [],
+        'qas': [],
+    }
+    return product
+
+
+def createUserDict():
+    user = {
+        'account': '',
+        'password': '',
+        'idToken': '',
+        'name': '',
+        'ntou_email': '',
+        'phone': '',
+        'contact': '',
+        'address': '',
+        'tp_info': {
+            'provider': '',
+            'uid': '',
+        },
+        'tracking_items': [],
+        'bidding_items': [],
+        'done_items': [],
+        'onsale_items': [],
+        'buyer_rate': None,
+        'seller_rate': None,
+    }
+    return user
+
+
+def getProduct(product_id):
+    """
+    Args:
+        product_id (str): The id of the product.
+    Returns:
+        product (dict): All data of the products.
+    """
+    ref = db.collection("products").document(product_id)
+    product = ref.get().to_dict()
+    return product
+
+def getProductBasicInfo(product):
+    """
+    Args:
+        product (dict): All data of the products.
+    Return:
+        product_basic_info (dict): Return basic info we need, including
+        these elements:
+            {
+                'id',
+                'product_name',
+                'images'
+            }
+    """
+    if ('product_name' in product) and ('images' in product):
+        product_basic_info = {
+            'id': doc.id, 'product_name': product['product_name'], 'images': product['images']}
+    return product_basic_info
+
+def getAllProductBasicInfo():
+    """
+    Return:
+        products_basic_info (dict): Basic info for all products.
+    """
     products_basic_info = []
     collection_ref = db.collection('products')
 
     for doc in collection_ref.get():
-        ref = collection_ref.document(doc.id)
-        product = ref.get().to_dict()
-        if ('product_name' in product) and ('images' in product):
-            products_basic_info.append({'id': doc.id, 'product_name': product['product_name'], 'images': product['images']})
+
+        product = getProduct(doc.id)
+        basic_info = getProductBasicInfo(product)
+        products_basic_info.append(basic_info)
+
     return products_basic_info
+
+def changeProductStatus(user_id, product_id, status):
+    pass
+# --- Developing --- #
