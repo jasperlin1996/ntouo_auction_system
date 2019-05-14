@@ -2,6 +2,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from google.cloud.firestore_v1 import ArrayUnion
+import datetime
 
 cred = credentials.Certificate('/mnt/d/Projects/ntouo_auction_system/firestore_key.json')
 
@@ -41,7 +42,7 @@ def linkProductToUser(user_id, product_id, list_name="onsale_items"):
                     "done_items",
                 }
         user_id (str): The id link to the user's firestore document.
-        product_id (str): The id link to the product's firestore ducument.
+        product_id (str): The id link to the product's firestore docuument.
     """
 
     # link the product to user(seller)
@@ -50,3 +51,69 @@ def linkProductToUser(user_id, product_id, list_name="onsale_items"):
         ref.update({list_name: ArrayUnion([product_id])})
     except Exception as e:
         raise e
+
+# --- Developing --- #
+
+
+def createProductDict():
+    product = {
+        'name': '',
+        'id': '',
+        'status': 0,
+        'trading_type': 0,
+        'description': '',
+        'trading_method': '',
+        'category': '',
+        'seller': '',
+        'price': 0,
+        'current_price': 0,
+        'price_per_mark': 0,
+        'highest_buyer_id': '',
+        'deadline': datetime.datetime.now(),
+        'images': [],
+        'qas': [],
+    }
+    return product
+
+
+def createUserDict():
+    user = {
+        'account': '',
+        'password': '',
+        'idToken': '',
+        'name': '',
+        'ntou_email': '',
+        'phone': '',
+        'contact': '',
+        'address': '',
+        'tp_info': {
+            'provider': '',
+            'uid': '',
+        },
+        'tracking_items': [],
+        'bidding_items': [],
+        'done_items': [],
+        'onsale_items': [],
+        'buyer_rate': None,
+        'seller_rate': None,
+    }
+    return user
+
+
+def getProduct(product_id):
+    """
+    Args:
+        product_id (str): The id of the product.
+    Returns:
+        product (dict): All data of the products.
+    """
+    ref = db.collection("products").document(product_id)
+    product = ref.get().to_dict()
+    return product
+
+
+def changeProductStatus(user_id, product_id, status):
+    pass
+
+
+# --- Developing --- #
