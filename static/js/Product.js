@@ -12,7 +12,7 @@ function load() {
             canChange = 1;
         }
         var id = array[1];
-        //var info = {% 'get-product-info' %};
+        //var info = {{ 'get-product-info | safe }};
 
         var str = '';
         str += '<table><tr><td>圖片:</td><td><img src="';
