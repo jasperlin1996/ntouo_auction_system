@@ -1,6 +1,6 @@
 import sys
-import json
 import django
+import datetime
 import pyrebase
 import firebase_admin
 from django.shortcuts import render, redirect
@@ -40,9 +40,7 @@ def postToSell(request):
     product['trading_method'] = request.POST.get('trading_method')
     product['deadline'] = request.POST.get('deadline')
 
-    s = ''
-    for k in product:
-        s += product[k]
+    s = ('').join(product.values()) + str(datetime.datetime.now())
     product_id = hash(s)
     if product_id < 0:
         product_id += sys.maxsize
