@@ -10,9 +10,9 @@
 		<title>LogIn Pattern</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="../static/assets/css/main.css" />
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<noscript><link rel="stylesheet" href="../static/assets/css/noscript.css" /></noscript>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/5.11.0/firebase.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-app.js"></script>
@@ -27,25 +27,22 @@
 
 				<!-- Header -->
 					<header id="header">
-						<!----<h1>登入</h1>
-						<br>
-						<label>帳號：</label><input type="text" name="my_acc"><br>
-						<label>密碼：</label><input type="text" name="my_pass">
-						---->
 						<div>
 							<h2>登入</h2>
 						</div>
 						<br>
 						<form class="w3-container">
 							<label class="w3-text-white"><b>帳號</b></label>
-							<input class="w3-input w3-border w3-light-grey" type="text">
+							<input class="w3-input w3-border w3-light-grey" type="text" id="accBox">
 							<br>
 							<label class="w3-text-white"><b>密碼</b></label>
-							<input class="w3-input w3-border w3-light-grey" type="text">
+							<input class="w3-input w3-border w3-light-grey" type="password" id="passBox" maxlength="16">
+							<span toggle="#passBox" class="fa fa-fw fa-eye field-icon toggle-password" style="color:black;"></span>
+							<p class='infoWrong' id="passAlert"></p>
 							<br>
 							<button type="button" class="w3-btn w3-blue-grey" onclick="doLogIn()">登入</button>
 							<br>
-							<p>沒有帳號嗎?</p> <button type="button" onclick="location.href='reg.html'" class="w3-btn w3-blue-grey">註冊</button>
+							<p>沒有帳號嗎?</p> <button type="button" onclick="location.href='SignUp.html'" class="w3-btn w3-blue-grey">註冊</button>
 						</form>
 						<p>或使用第三方認證</p>
 						<nav>
@@ -84,7 +81,7 @@
 				firebase.initializeApp(firebaseConfig);
 
 				function signUpString() {
-					return (location.href = '{% url "signup" %}').toString();
+					return (location.href = '{% url "SignUp" %}').toString();
 				}
 
 				function setSession(idToken) {
@@ -155,6 +152,17 @@
 						//location.href = '{% url "welcome" %}';
 					}
 				}
+				$(".toggle-password").click(function () {
+
+					$(this).toggleClass("fa-eye fa-eye-slash");
+					var input = $($(this).attr("toggle"));
+					if (input.attr("type") == "password") {
+						input.attr("type", "text");
+					} 
+					else {
+						input.attr("type", "password");
+					}
+});
 		</script>
 	</body>
 </html>

@@ -11,10 +11,10 @@
     <title>LogIn Pattern</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="../static/assets/css/main.css" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <noscript>
-        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+        <link rel="stylesheet" href="../static/assets/css/noscript.css" /></noscript>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-app.js"></script>
@@ -75,7 +75,7 @@
                 <div id="" style="overflow:auto; height:500px;">
                     <form class="w3-container" autoScroll='true' id="userData">
                         <label class="w3-text-white" ><b>帳號</b></label>
-                        <input class="w3-input w3-border w3-light-grey" type="text" id="accBox">
+                        <input class="w3-input w3-border w3-light-grey" type="text" id="accBox" maxlength="16" required/>
                         <p class='infoWrong' id="accAlert"></p>
                         <br>
                         <label class="w3-text-white"><b>密碼(6-16位 以字母為首 英文數字及_構成的組合)</b></label>
@@ -88,34 +88,34 @@
                         <p class='infoWrong' id="passAlert2"></p>
                         <br>
                         <label class="w3-text-white"><b>海大E-mail</b></label>
-                        <input class="w3-input w3-border w3-light-grey" type="email">
-                        <p class='infoWrong' id="ntouAlert"></p>
+                        <input class="w3-input w3-border w3-light-grey" type="email" id="mailBox">
+                        <p class='infoWrong' id="emailAlert"></p>
                         <br>
                         <label class="w3-text-white"><b>本名</b></label>
+                        <input class="w3-input w3-border w3-light-grey" type="text" id="nameBox">
+                        <p class='infoWrong' id="nameAlert"></p>
+                        <br>
+                        <!----<label class="w3-text-white"><b>暱稱</b></label>
                         <input class="w3-input w3-border w3-light-grey" type="text">
                         <p class='infoWrong' id="ntouAlert"></p>
-                        <br>
-                        <label class="w3-text-white"><b>暱稱</b></label>
-                        <input class="w3-input w3-border w3-light-grey" type="text">
-                        <p class='infoWrong' id="ntouAlert"></p>
-                        <br>
+                        <br><--->
                         <label class="w3-text-white"><b>電話</b></label>
-                        <input class="w3-input w3-border w3-light-grey" type="tel">
-                        <p class='infoWrong' id="ntouAlert"></p>
+                        <input class="w3-input w3-border w3-light-grey" type="tel" id="telBox">
+                        <p class='infoWrong' id="phoneAlert"></p>
                         <br>
                         <label class="w3-text-white"><b>地址</b></label>
-                        <input class="w3-input w3-border w3-light-grey" type="text">
-                        <p class='infoWrong' id="ntouAlert"></p>
+                        <input class="w3-input w3-border w3-light-grey" type="text" id="addBox">
+                        <p class='infoWrong' id="addAlert"></p>
                         <br>
                         <label class="w3-text-white"><b>社群帳號</b></label>
-                        <input class="w3-input w3-border w3-light-grey" type="text">
-                        <p class='infoWrong' id="ntouAlert"></p>
+                        <input class="w3-input w3-border w3-light-grey" type="text" id="snsBox">
+                        <p class='infoWrong' id="snsAlert"></p>
                         <br>
                         <button type="button" class="w3-btn w3-blue-grey" onclick="checkdata()">提交</button>
                         <br>
                     </form>
                     <div>
-                        已經有帳號?  <button class="w3-btn w3-blue-grey" onclick="location.href='logIn.html'">登入</button>
+                        已經有帳號?  <button class="w3-btn w3-blue-grey" onclick="location.href='SignIn.html'">登入</button>
                     </div>
                 </div>
             </header>
@@ -144,9 +144,19 @@
             var acc = document.getElementById("accBox").value;
             var pass = document.getElementById("passBox").value;
             var pass2 = document.getElementById("passBox2").value;
-            //isWrong+= checkAccount(acc);
-            isWrong+= CheckPassword(pass); 
-            //isWrong+= CheckPass2(pass,pass2);
+            var email = document.getElementById("mailBox").value;
+            var name = document.getElementById("nameBox").value;
+            var tele = document.getElementById("telBox").value;
+            var add = document.getElementById("addBox").value;
+            var sns = document.getElementById("snsBox").value;
+            isWrong+= checkAccount(acc);
+            isWrong+= checkPassword(pass); 
+            isWrong+= checkPassword2(pass,pass2);
+            isWrong+= checkEmail(email);
+            isWrong+= checkName(name);
+            isWrong+= checkTelephome(tele);
+            isWrong+= checkAddress(add);
+            isWrong+= checkSNS(sns);
                 
             if (isWrong>0) {
                 window.alert("資料有誤 請檢查");
@@ -155,7 +165,8 @@
         function checkAccount(acc)
         {
             var accErr = document.getElementById("accAlert");
-             if (acc == "olie") {
+            var theFormat = /^[0-9a-zA-Z]\w{6,16}$/;
+             if (acc.match(theFormat)) {
                 accErr.innerHTML = "";
                 window.alert("JOJO");
                 return 0;
@@ -167,10 +178,15 @@
             }
           
         }
-        function CheckPassword(pass) 
+        function checkPassword(pass) 
         {   
             var passErr = document.getElementById("passAlert");
-            var passw = /^[A-Za-z]\w{6,16}$/;
+            var passw = /^[0-9A-Za-z]\w{6,16}$/;
+            if(pass == "")
+            {
+                passErr.innerText = "請輸入密碼";
+                return 1;
+            }
             if (pass.match(passw)) {
                 passErr.innerText = "";
                 return 0;
@@ -180,10 +196,10 @@
                 return 1;
             }
         }
-        function CheckPassword(pass,pass2)
+        function checkPassword2(pass,pass2)
         {   
             var passErr2 = document.getElementById("passAlert2");
-            if(pass === pass2)
+            if(pass == pass2)
             {
                 passErr2.innerText = "";
                 return 0;
@@ -193,8 +209,71 @@
                 passErr2.innerText = "密碼不一致 請重新輸入";
                 return 1;
             }
-
         }
+        function checkEmail(email)
+        {
+            var emailErr = document.getElementById("emailAlert");
+            if(email == "")
+            {
+                emailErr.innerText = "Email 不能為空白";
+            }
+            else
+            {
+                emailErr.innerText = "";
+            }
+        }
+        function checkName(name)
+        {
+            var nameErr = document.getElementById("nameAlert");
+            if(name == "")
+            {
+                nameErr.innerText = "名字不能為空白";
+            }
+            else
+            {
+                nameErr.innerText = "";
+            }
+        }
+        function checkTelephome(tele)
+        {
+            var passErr2 = document.getElementById("phoneAlert");
+            var numbers = /^[0-9]+$/;
+            if(tele.match(numbers))
+            {
+                passErr2.innerText = "";
+                return 0;
+            }
+            else
+            {
+                passErr2.innerText = "請輸入正確的電話號碼";
+                return 1;
+            }
+        }
+        function checkAddress(add)
+        {
+            var addErr = document.getElementById("addAlert");
+            if(add == "")
+            {
+                addErr.innerText = "地址不能為空白";
+            }
+            else
+            {
+                addErr.innerText = "";
+            }
+        }
+        function checkSNS(sns)
+        {
+            var snsErr = document.getElementById("snsAlert");
+            if(sns == "")
+            {
+                snsErr.innerText = "SNS不能為空白";
+            }
+            else
+            {
+                snsErr.innerText = "";
+            }
+        }
+        
     </script>
 </body> 
 </html>
