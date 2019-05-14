@@ -25,6 +25,18 @@ def index(request):
     products = firestore_ops.getProductBasicInfo()
     return render(request, 'index.html', {'products': products})
 
+def signIn(request):
+    pass
+
+def postSignIn(request):
+    pass
+
+def signUp(request):
+    pass
+
+def postSignUp(request):
+    pass
+
 def toSell(request):
     return render(request, 'ToSell.html')
 
