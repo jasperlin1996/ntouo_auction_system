@@ -6,6 +6,7 @@ import firebase_admin
 from django.shortcuts import render, redirect
 from firebase_admin import credentials, firestore
 from . import firestore_ops
+
 config = {
     "apiKey": "AIzaSyCF_Q4YD_W7FWb40pDU-NHW0ooYsnJWDUM",
     "authDomain": "auction-system-73960.firebaseapp.com",
@@ -46,15 +47,15 @@ def postToSell(request):
     if product_id < 0:
         product_id += sys.maxsize
 
-    # idToken = request.session['idToken']
-    # user = auth.get_account_info(idToken)
-    # user_id = user['users'][0]['localId'] # user collection's document id
+    idToken = request.session['idToken']
+    user = auth.get_account_info(idToken)
+    user_id = user['users'][0]['localId'] # user collection's document id
 
     # store to database
     try:
         firestore_ops.addProduct(user_id, product_id, product)
-    except:
+    except Exception as e:
+        print(e)
         print('firestore_ops.addProduct error')
-        return # error
     
     return redirect(toSell)

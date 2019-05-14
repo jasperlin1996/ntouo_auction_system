@@ -2,7 +2,8 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from google.cloud.firestore_v1 import ArrayUnion
-cred = credentials.Certificate('../firestore_key.json')
+
+cred = credentials.Certificate('/mnt/d/Projects/ntouo_auction_system/firestore_key.json')
 
 # 初始化firebase，注意不能重複初始化
 firebase_admin.initialize_app(cred)
@@ -18,14 +19,16 @@ def addProduct(user_id, product_id, product):
         product (dict): A dictionary which includes all data for the
             on-selling product.
     """
+    print(product)
+    print(product_id)
     try:
         # add a product
-        ref = db.collection("products").document(product_id)
+        ref = db.collection("products").document(str(product_id))
         ref.set(product) 
     except Exception as e:
         raise e
 
-def linkProductToUser(list_name="onsale_items", user_id, product_id):
+def linkProductToUser(user_id, product_id, list_name="onsale_items"):
     """
     Args:
         list_name (str): Decide which list @ firestore collection 
@@ -44,6 +47,6 @@ def linkProductToUser(list_name="onsale_items", user_id, product_id):
     # link the product to user(seller)
     try:
         ref = db.collection("users").document(user_id)
-        ref.update(list_name: ArrayUnion([product_id]))
+        ref.update({list_name: ArrayUnion([product_id])})
     except Exception as e:
         raise e
