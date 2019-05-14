@@ -22,7 +22,8 @@ auth = firebase.auth()
 storage = firebase.storage()
 
 def index(request):
-    return render(request, 'index.html')
+    products = firestore_ops.getProductBasicInfo()
+    return render(request, 'index.html', {'products': products})
 
 def toSell(request):
     return render(request, 'ToSell.html')

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../css/Share.css">
-    <link rel="stylesheet" type="text/css" href="../css/ToSell.css">
-    <script src="../js/ToSell.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="../css/Share.css"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="../css/ToSell.css"> -->
+    <!-- <script src="../js/ToSell.js"></script> -->
 
     <title>海大拍賣-上架商品</title>
 
@@ -22,11 +22,11 @@
     </header>
     <body>
         <div id="content">
-            <form method="POST" action="/posttosell/">
+            <form method="POST" action="/posttosell/" enctype="multipart/form-data">
                 {% csrf_token %}
                 <tr>
                     <td>圖片(gif,jpeg,png):</td>
-                    <td><input type="file" accept="image/gif, image/jpeg, image/png"></td>
+                    <td><input type="file" name="image" accept="image/gif, image/jpeg, image/png"></td>
                 </tr><br/>
                 <tr>
                     <td>名稱:</td>

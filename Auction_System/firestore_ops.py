@@ -50,3 +50,14 @@ def linkProductToUser(user_id, product_id, list_name="onsale_items"):
         ref.update({list_name: ArrayUnion([product_id])})
     except Exception as e:
         raise e
+
+def getProductBasicInfo():
+    products_basic_info = []
+    collection_ref = db.collection('products')
+
+    for doc in collection_ref.get():
+        ref = collection_ref.document(doc.id)
+        product = ref.get().to_dict()
+        if ('product_name' in product) and ('images' in product):
+            products_basic_info.append({'id': doc.id, 'product_name': product['product_name'], 'images': product['images']})
+    return products_basic_info
