@@ -3,7 +3,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from google.cloud.firestore_v1 import ArrayUnion
 
-ucred = credentials.Certificate('../firestore_key.json')
+cred = credentials.Certificate('firestore_key.json')
 
 # 初始化firebase，注意不能重複初始化
 firebase_admin.initialize_app(cred)
