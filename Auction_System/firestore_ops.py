@@ -4,7 +4,7 @@ from firebase_admin import firestore
 from google.cloud.firestore_v1 import ArrayUnion
 import datetime
 
-cred = credentials.Certificate('/mnt/d/Projects/ntouo_auction_system/firestore_key.json')
+cred = credentials.Certificate('firestore_key.json')
 
 # 初始化firebase，注意不能重複初始化
 firebase_admin.initialize_app(cred)
@@ -111,9 +111,39 @@ def getProduct(product_id):
     product = ref.get().to_dict()
     return product
 
+def getProductBasicInfo(product):
+    """
+    Args:
+        product (dict): All data of the products.
+    Return:
+        product_basic_info (dict): Return basic info we need, including
+        these elements:
+            {
+                'id',
+                'product_name',
+                'images'
+            }
+    """
+    if ('product_name' in product) and ('images' in product):
+        product_basic_info = {
+            'id': doc.id, 'product_name': product['product_name'], 'images': product['images']}
+    return product_basic_info
+
+def getAllProductBasicInfo():
+    """
+    Return:
+        products_basic_info (dict): Basic info for all products.
+    """
+    products_basic_info = []
+    collection_ref = db.collection('products')
+
+    for doc in collection_ref.get():
+        product = getProduct(doc.id)
+        basic_info = getProductBasicInfo(product)
+        products_basic_info.append(basic_info)
+
+    return products_basic_info
 
 def changeProductStatus(user_id, product_id, status):
     pass
-
-
 # --- Developing --- #
