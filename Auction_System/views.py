@@ -5,6 +5,7 @@ import pyrebase
 import firebase_admin
 from django.shortcuts import render, redirect
 from firebase_admin import credentials, firestore
+from django.views.decorators.csrf import csrf_exempt
 from . import firestore_ops
 
 config = {
@@ -23,21 +24,34 @@ storage = firebase.storage()
 
 def index(request):
     if ('idToken' not in request.session) or (request.session['idToken']==''):
-         request.session['idToken'] = ''
+        request.session['idToken'] = ''
     products = firestore_ops.getAllProductBasicInfo()
     return render(request, 'index.html', {'products': products})
 
 def signIn(request):
-    pass
+    idToken = request.session['idToken']
+    user = auth.get_account_info(idToken)
+    user_id = user['users'][0]['localId']
+    isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
+    return render(request, 'SignIn.html', {'isUserFillAll': isUserFillAll})
 
-def postSignIn(request):
-    pass
+def preSignUp(request):
+    return render(request, 'pre-SignUp.html')
 
 def signUp(request):
-    pass
+    idToken = request.session['idToken']
+    user = auth.get_account_info(idToken)
+    user_id = user['users'][0]['localId']
 
-def postSignUp(request):
-    pass
+    user_info = firestore_ops.createUserDict()
+    user_info['name'] = request.POST('name')
+    user_info['phone'] = request.POST('phone')
+    user_info['address'] = reqeust.POST('address')
+    user_info['contact'] = request.POST('contact')
+
+    firestore_ops.createNewUser(user_id, user_info)
+
+    return render(request, 'SignUp.html')
 
 def toSell(request):
     return render(request, 'ToSell.html')
@@ -72,3 +86,9 @@ def postToSell(request):
         print('firestore_ops.addProduct error')
 
     return redirect(toSell)
+
+@csrf_exempt
+def setSession(request):
+    idToken = request.POST['idToken']
+    request.session['idToken'] = idToken
+    return django.shortcuts.HttpResponse('set session successful')
