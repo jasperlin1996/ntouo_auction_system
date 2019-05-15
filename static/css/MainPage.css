@@ -1,0 +1,56 @@
+
+
+.row
+{
+  margin-top: 100px;
+  position: relative;
+  height:150px;
+  text-align: center;
+  max-width: 100%;
+}
+
+.img{
+  margin-top: 50px;
+  max-height:150px;
+  /* max-width: 250px; */
+}
+
+.vertical
+{
+    vertical-align: middle;
+}
+
+
+.page{
+  position: fixed;
+  color:black;
+  top:90%;
+  text-align: center;
+}
+
+.nav
+{
+  position: fixed;
+  z-index:2;
+  top:15%;
+}
+
+li{
+  border-color: black;
+  border-width:1px;
+  border-bottom: 1px solid;
+}
+
+.body{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  width: auto;
+  height: auto;
+  /* background-color: red; */
+  background-size: cover;
+  -webkit-filter: blur(0px);
+  z-index: 0;
+}
