@@ -1,3 +1,7 @@
+body {
+    font-family: DFKai-sb;
+}
+
 #content{
     position: absolute;
     margin-top: 6%;
@@ -31,6 +35,16 @@ img {
     width: 500px;
 }
 
+input {
+    font-family: DFKai-sb;
+    font-size: 15px;
+}
+
+p {
+    font-size: 10px;
+    color: red;
+}
+
 @media screen and (min-width: 900px) {
     #content{
         font-size: 25px;
@@ -47,7 +61,7 @@ img {
     }
 }
 
-@media screen and (max-width: 900px) and (min-width: 700px) {
+@media screen and (max-width: 900px) and (min-width: 570px) {
     #content{
         font-size: 20px;
         margin-left: 20%;
@@ -72,11 +86,11 @@ img {
     
     textarea {
         font-size: 20px;
-        width: 400px;
+        width: 300px;
     }
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 570px) {
     #content {
         width: 80%;
     }
@@ -94,7 +108,7 @@ img {
 
     td {
         position: relative;
-        width: 100px;
+        width: 150px;
         display: inline-block;
     }
 

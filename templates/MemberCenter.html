@@ -4,6 +4,9 @@
 
 <html>
 {% load staticfiles %}
+  <script>
+    var info = {{  | safe }};
+  </script>
   <link rel="SHORTCUT ICON" href="{% static 'img/background.jpg' %}"/>
   <script src="{% static 'js/jquery.js' %}"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/bar.css' %}">
