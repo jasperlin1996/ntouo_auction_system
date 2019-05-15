@@ -22,7 +22,9 @@ auth = firebase.auth()
 storage = firebase.storage()
 
 def index(request):
-    products = firestore_ops.getProductBasicInfo()
+    if ('idToken' not in request.session) or (request.session['idToken']==''):
+         request.session['idToken'] = ''
+    products = firestore_ops.getAllProductBasicInfo()
     return render(request, 'index.html', {'products': products})
 
 def signIn(request):
@@ -68,5 +70,5 @@ def postToSell(request):
     except Exception as e:
         print(e)
         print('firestore_ops.addProduct error')
-    
+
     return redirect(toSell)
