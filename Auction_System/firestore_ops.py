@@ -6,10 +6,10 @@ import datetime
 
 cred = credentials.Certificate('firestore_key.json')
 
-# 初始化firebase，注意不能重複初始化
+# init firebase
 firebase_admin.initialize_app(cred)
 
-# 初始化firestore
+# init firestore
 db = firestore.client()
 
 def addProduct(user_id, product_id, product):
@@ -42,7 +42,7 @@ def linkProductToUser(user_id, product_id, list_name="onsale_items"):
                     "done_items",
                 }
         user_id (str): The id link to the user's firestore document.
-        product_id (str): The id link to the product's firestore docuument.
+        product_id (str): The id link to the product's firestore document.
     """
 
     # link the product to user(seller)
@@ -52,6 +52,38 @@ def linkProductToUser(user_id, product_id, list_name="onsale_items"):
     except Exception as e:
         raise e
 
+
+def getProductBasicInfo(product):
+    """
+    Args:
+        product (dict): All data of the products.
+    Return:
+        product_basic_info (dict): Return basic info we need, including
+        these elements:
+            {
+                'id',
+                'product_name',
+                'images'
+            }
+    """
+    if ('product_name' in product) and ('images' in product):
+        product_basic_info = {
+            'id': doc.id, 'product_name': product['product_name'], 'images': product['images']}
+    return product_basic_info
+
+
+def flattenDict(d):
+    ret = {}
+    try:
+        for key, value in d.items():
+            if type(value) is not dict:
+                ret.update({key: value})
+            else:
+                for key_, value_ in flattenDict(value).items():
+                    ret.update({str(key)+'.'+str(key_): value_})
+    except Exception as e:
+        pass
+    return ret
 # --- Developing --- #
 
 
@@ -111,23 +143,6 @@ def getProduct(product_id):
     product = ref.get().to_dict()
     return product
 
-def getProductBasicInfo(product):
-    """
-    Args:
-        product (dict): All data of the products.
-    Return:
-        product_basic_info (dict): Return basic info we need, including
-        these elements:
-            {
-                'id',
-                'product_name',
-                'images'
-            }
-    """
-    if ('product_name' in product) and ('images' in product):
-        product_basic_info = {
-            'id': doc.id, 'product_name': product['product_name'], 'images': product['images']}
-    return product_basic_info
 
 def getAllProductBasicInfo():
     """
@@ -147,4 +162,44 @@ def getAllProductBasicInfo():
 
 def changeProductStatus(user_id, product_id, status):
     pass
+
+def createNewUser(user_id, user_data):
+    try:
+        ref = db.collection('users').document(user_id)
+        ref.set(user_data)
+    except Exception as e:
+        raise e
+
+
+def getUserInfo(user_id):
+    try:
+        ref = db.collection('users').document(user_id)
+        return ref.get().to_dict()
+    except Exception as e:
+        raise e
+
+
+def updateUserInfo(user_id, user_data):
+    try:
+        ref = db.collection('users').document(user_id)
+        ref.update(flattenDict(user_data))
+    except Exception as e:
+        raise e
+
+
+def checkUserInfoCompleteness(user_id):
+    try:
+        ref = db.collection('users').document(user_id)
+        data = ref.get().to_dict()
+        if data['name'] is not "" and \
+            data['phone'] is not "" and \
+            data['address'] is not "" and \
+            data['contact'] is not "":
+            return True
+        else:
+            return False
+    except Exception as e:
+        return False
+
+            
 # --- Developing --- #
