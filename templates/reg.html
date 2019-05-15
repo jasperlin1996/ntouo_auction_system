@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<!--
+	Aerial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>LogIn Pattern</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-auth.js"></script>
+    <style>
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+    
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #00000000;
+        }
+    
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #246E8E;
+        }
+    
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0F4D69;
+        }
+        .infoWrong{
+            color : rgb(255, 0, 0);
+        }
+        #userData{
+            text-align:center;
+        }
+        .field-icon {
+            float: right;
+            margin-left: -25px;
+            margin-top: -25px;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body id="is-preload">
+    <div id="wrapper">
+        <div id="bg"></div>
+        <div id="overlay"></div>
+        <div id="main">
+
+            <!-- Header -->
+            <header id="header">
+                <!----<h1>登入</h1>
+						<br>
+						<label>帳號：</label><input type="text" name="my_acc"><br>
+						<label>密碼：</label><input type="text" name="my_pass">
+						---->
+                <div>
+                    <h2>註冊</h2>
+                </div>
+                <br>
+                <div id="" style="overflow:auto; height:500px;">
+                    <form class="w3-container" autoScroll='true' id="userData">
+                        <label class="w3-text-white" ><b>帳號</b></label>
+                        <input class="w3-input w3-border w3-light-grey" type="text" id="accBox">
+                        <p class='infoWrong' id="accAlert"></p>
+                        <br>
+                        <label class="w3-text-white"><b>密碼(6-16位 以字母為首 英文數字及_構成的組合)</b></label>
+                        <input class="w3-input w3-border w3-light-grey" type="password" id="passBox" maxlength="16">
+                        <span toggle="#passBox" class="fa fa-fw fa-eye field-icon toggle-password" style="color:black;"></span>
+                        <p class='infoWrong' id="passAlert"></p>                    
+                        <br>
+                        <label class="w3-text-white"><b>確認密碼</b></label>
+                        <input class="w3-input w3-border w3-light-grey" type="password" id="passBox2" maxlength="16">
+                        <p class='infoWrong' id="passAlert2"></p>
+                        <br>
+                        <label class="w3-text-white"><b>海大E-mail</b></label>
+                        <input class="w3-input w3-border w3-light-grey" type="email">
+                        <p class='infoWrong' id="ntouAlert"></p>
+                        <br>
+                        <label class="w3-text-white"><b>本名</b></label>
+                        <input class="w3-input w3-border w3-light-grey" type="text">
+                        <p class='infoWrong' id="ntouAlert"></p>
+                        <br>
+                        <label class="w3-text-white"><b>暱稱</b></label>
+                        <input class="w3-input w3-border w3-light-grey" type="text">
+                        <p class='infoWrong' id="ntouAlert"></p>
+                        <br>
+                        <label class="w3-text-white"><b>電話</b></label>
+                        <input class="w3-input w3-border w3-light-grey" type="tel">
+                        <p class='infoWrong' id="ntouAlert"></p>
+                        <br>
+                        <label class="w3-text-white"><b>地址</b></label>
+                        <input class="w3-input w3-border w3-light-grey" type="text">
+                        <p class='infoWrong' id="ntouAlert"></p>
+                        <br>
+                        <label class="w3-text-white"><b>社群帳號</b></label>
+                        <input class="w3-input w3-border w3-light-grey" type="text">
+                        <p class='infoWrong' id="ntouAlert"></p>
+                        <br>
+                        <button type="button" class="w3-btn w3-blue-grey" onclick="checkdata()">提交</button>
+                        <br>
+                    </form>
+                    <div>
+                        已經有帳號?  <button class="w3-btn w3-blue-grey" onclick="location.href='logIn.html'">登入</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Footer -->
+            <footer id="footer">
+                <span class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.</span>
+            </footer>
+
+        </div>
+    </div>
+    <script>
+        $(".toggle-password").click(function () {
+
+                $(this).toggleClass("fa-eye fa-eye-slash");
+                var input = $($(this).attr("toggle"));
+                if (input.attr("type") == "password") {
+                    input.attr("type", "text");
+                } else {
+                    input.attr("type", "password");
+                }
+        });
+        function checkdata()
+        {
+            var isWrong = 0;
+            var acc = document.getElementById("accBox").value;
+            var pass = document.getElementById("passBox").value;
+            var pass2 = document.getElementById("passBox2").value;
+            //isWrong+= checkAccount(acc);
+            isWrong+= CheckPassword(pass); 
+            //isWrong+= CheckPass2(pass,pass2);
+                
+            if (isWrong>0) {
+                window.alert("資料有誤 請檢查");
+            }
+        }
+        function checkAccount(acc)
+        {
+            var accErr = document.getElementById("accAlert");
+             if (acc == "olie") {
+                accErr.innerHTML = "";
+                window.alert("JOJO");
+                return 0;
+            }
+            else {
+                accErr.innerHTML = "帳號有問題 請重新輸入";
+                console.log('nah');
+                return 1;
+            }
+          
+        }
+        function CheckPassword(pass) 
+        {   
+            var passErr = document.getElementById("passAlert");
+            var passw = /^[A-Za-z]\w{6,16}$/;
+            if (pass.match(passw)) {
+                passErr.innerText = "";
+                return 0;
+            }
+            else {
+                passErr.innerText = "密碼格式有誤";
+                return 1;
+            }
+        }
+        function CheckPassword(pass,pass2)
+        {   
+            var passErr2 = document.getElementById("passAlert2");
+            if(pass === pass2)
+            {
+                passErr2.innerText = "";
+                return 0;
+            }
+            else
+            {
+                passErr2.innerText = "密碼不一致 請重新輸入";
+                return 1;
+            }
+
+        }
+    </script>
+</body> 
+</html>
