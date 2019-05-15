@@ -10,7 +10,7 @@ function load() {
         var array = url.split('?');
         
         var id = array[1];
-        var info = {{ get_product_info | safe }};
+        var info = {{ product | safe }};
         if ({{ request.session.idToken }} == info.saler) {
             canChange = 1;
         }

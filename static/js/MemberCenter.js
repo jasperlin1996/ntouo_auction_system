@@ -2,25 +2,18 @@ var word = 0;
 
 // 顯示個人資訊頁面
 function person() {
-    var temp = "<table><tr><td>帳號:</td><td>";
-    temp += {{ account }};
-    temp += '</td></tr><tr><td>密碼:</td><td id="pass">********<input type="button" onclick="showPassword()" value="查看"></td></tr><tr><td>姓名:</td><td>';
-    temp += {{ user_name }};
-    temp += '</td></tr><tr><td>海大email</td><td>';
-    temp += {{ ntou_email }};
-    temp += '</td></tr><tr><td>電話:</td><td>';
-    temp += {{ phone }};
-    temp += '</td></tr><tr><td>地址:</td><td>';
-    temp += {{ address }};
-    temp += '</td></tr><tr><td>其他聯絡方式:</td><td><textarea rows="5" cols="50" readonly>';
-    temp += {{ contact }};
-    temp += '</textarea></td></tr><tr><td>購買評價:</td><td>';
-    temp += {{ buyer_rate }};
-    temp += '</td></tr><tr><td>販賣評價:</td><td>';
-    temp += {{ seller_rate }};
-    temp += '</td></tr><tr><td>第三方資訊</td><td>';
+    var temp = '<table><tr><td>海大email</td><td>' + {{ ntou_email }} + '</td></tr>';
+    temp += '<tr><td>密碼:</td><td id="pass">********<input type="button" onclick="showPassword()" value="查看"></td></tr>';
+    temp += '<tr><td>姓名:</td><td>' + {{ user_name }} + '</td></tr>';
+    temp += '<tr><td>電話:</td><td>' + {{ phone }} + '</td></tr>';
+    temp += '<tr><td>地址:</td><td>' + {{ address }} + '</td></tr>';
+    temp += '<tr><td>其他聯絡方式:</td><td><textarea rows="5" cols="50" readonly>' + {{ contact }} + '</textarea></td></tr>';
+    temp += '<tr><td>購買評價:</td><td>' + {{ buyer_rate }} + '</td></tr>';
+    temp += '<tr><td>販賣評價:</td><td>' + {{ seller_rate }} + '</td></tr>';
+    temp += '<tr><td>第三方資訊</td><td>';
     // 第三方資訊顯示
-    temp += '</td></tr><tr><td></td><td><input type="button" onclick="change()" value="修改"></td></tr></table>';
+    temp += '</td></tr>';
+    temp += '<tr><td></td><td><input type="button" onclick="change()" value="修改"></td></tr></table>';
     document.getElementById("content").innerHTML = temp;
 }
 
@@ -41,7 +34,7 @@ function likes() {
             temp += '"></a></td><td><a href="';
             temp += '../templates/Product.html?' + item[i].id;
             temp += '">'; + items[i].product_name;
-            temp += '</td></a></tr>';
+            temp += '</a></td></tr>';
         }
         temp += '</table>';
     }
@@ -65,7 +58,7 @@ function buying() {
             temp += '"></a></td><td><a href="';
             temp += '../templates/Product.html?' + item[i].id;
             temp += '">' + items[i].product_name;
-            temp += '</td></a></tr>';
+            temp += '</a></td></tr>';
         }
         temp += '</table>';
     }
@@ -89,7 +82,7 @@ function dealing() {
             temp += '"></a></td><td><a href="';
             temp += '../templates/Product.html?' + item[i].id;
             temp += '">' + items[i].product_name;
-            temp += '</td></a></tr>';
+            temp += '</a></td></tr>';
         }
         temp += '</table>';
     }
@@ -113,7 +106,7 @@ function selling() {
             temp += '"></a></td><td><a href="';
             temp += '../templates/Product.html?' + item[i].id
             temp += '">' + items[i].product_name;
-            temp += '</td></a></tr>';
+            temp += '</a></td></tr>';
         }
         temp += '</table>';
     }
@@ -137,7 +130,7 @@ function finish() {
             temp += '"></a></td><td><a href="';
             temp += '../templates/Product.html?' + item[i].id;
             temp += '">' + items[i].product_name;
-            temp += '</td></a></tr>';
+            temp += '</a></td></tr>';
         }
         temp += '</table>';
     }
@@ -156,26 +149,17 @@ function hidePassword() {
 
 // 更改個人資訊
 function change() {
-    var temp = "<table><tr><td>帳號:</td><td>";
-    temp += {{ account | safe }};
-    temp += '</td></tr><tr><td>密碼:</td><td>';
-    temp += '輸入密碼:<>';
-    temp += '</td></tr><tr><td>姓名:</td><td>';
-    temp += '<textarea rows="1" cols="30" name="user_name">' + {{ user_name | safe }} + '</textarea>';
-    temp += '</td></tr><tr><td>海大email</td><td>';
-    temp += {{ ntou_email | safe }};
-    temp += '</td></tr><tr><td>電話:</td><td>';
-    temp += '<textarea rows="1" cols="30" name="phone">' + {{ phone | safe }} + '</textarea>';
-    temp += '</td></tr><tr><td>地址:</td><td>';
-    temp += '<textarea rows="1" cols="30" name="address">' + {{ address | safe }} + '</textarea>'; // {{ address | safe }};
-    temp += '</td></tr><tr><td>其他聯絡方式:</td><td><textarea rows="5" cols="50" name="contact">';
-    temp += {{ contact | safe }};
-    temp += '</textarea></td></tr><tr><td>購買評價:</td><td>';
-    temp += {{ buyer_rate | safe }};
-    temp += '</td></tr><tr><td>販賣評價:</td><td>';
-    temp += {{ seller_rate | safe }};
-    temp += '</td></tr><tr><td>第三方資訊</td><td>';
-    // 第三方資訊顯示
-    temp += '</td></tr><tr><td></td><td><input type="submit" value="送出"><input type="button" onclick="person()" value="取消"></td></tr></table>';
+    var temp = '<table><tr><td>海大email</td><td>' + {{ ntou_email | safe }} + '</td></tr>';
+    temp += '<tr><td>密碼:</td><td>輸入新密碼<input name="password" type="password"></td></tr>';
+    temp += '<tr><td>姓名:</td><td><textarea rows="1" cols="30" name="user_name">' + {{ user_name | safe }} + '</textarea></td></tr>';
+    temp += '<tr><td>海大email</td><td>' + {{ ntou_email | safe }} + '</td></tr>';
+    temp += '<tr><td>電話:</td><td><textarea rows="1" cols="30" name="phone">' + {{ phone | safe }} + '</textarea></td></tr>';
+    temp += '<tr><td>地址:</td><td><textarea rows="1" cols="30" name="address">' + {{ address | safe }} + '</textarea></td></tr>';
+    temp += '<tr><td>其他聯絡方式:</td><td><textarea rows="5" cols="50" name="contact">' + {{ contact | safe }} + '</textarea></td></tr>';
+    temp += '<tr><td>購買評價:</td><td>' + {{ buyer_rate | safe }} + '</td></tr>';
+    temp += '<tr><td>販賣評價:</td><td>' + {{ seller_rate | safe }} + '</td></tr>';
+    var tp = {{ tp_info }};
+    temp += '<tr><td>第三方資訊</td><td>' + tp.provider + '</td></tr>';
+    temp += '<tr><td></td><td><input type="submit" value="送出"><input type="button" onclick="person()" value="取消"></td></tr></table>';
     document.getElementById("content").innerHTML = temp;
 }
