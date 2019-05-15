@@ -78,8 +78,8 @@ def createProductDict():
 
 def createUserDict():
     user = {
-        'account': '',
-        'password': '',
+        # 'account': '',
+        # 'password': '',
         'idToken': '',
         'name': '',
         'ntou_email': '',
