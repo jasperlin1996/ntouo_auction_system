@@ -25,14 +25,14 @@ def addProduct(user_id, product_id, product):
     try:
         # add a product
         ref = db.collection("products").document(str(product_id))
-        ref.set(product) 
+        ref.set(product)
     except Exception as e:
         raise e
 
 def linkProductToUser(user_id, product_id, list_name="onsale_items"):
     """
     Args:
-        list_name (str): Decide which list @ firestore collection 
+        list_name (str): Decide which list @ firestore collection
             ``users`` should ``product_id`` store at, including these
             options:
                 {
@@ -68,8 +68,9 @@ def getProductBasicInfo(product):
     """
     if ('product_name' in product) and ('images' in product):
         product_basic_info = {
-            'id': doc.id, 'product_name': product['product_name'], 'images': product['images']}
-    return product_basic_info
+            'id': product['id'], 'product_name': product['product_name'], 'images': product['images']}
+        return product_basic_info
+    return None
 
 
 def flattenDict(d):
@@ -156,7 +157,8 @@ def getAllProductBasicInfo():
 
         product = getProduct(doc.id)
         basic_info = getProductBasicInfo(product)
-        products_basic_info.append(basic_info)
+        if basic_info != None:
+            products_basic_info.append(basic_info)
 
     return products_basic_info
 

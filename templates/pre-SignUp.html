@@ -7,14 +7,15 @@
 <html>
 
 <head>
+    {% load staticfiles %}
     <meta charset="utf-8">
     <title>LogIn Pattern</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="../static/assets/css/main.css" />
+    <link rel="stylesheet" href="{% static 'css/signin.css' %}" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <noscript>
-        <link rel="stylesheet" href="../static/assets/css/noscript.css" /></noscript>
+        <link rel="stylesheet" href="{% static 'css/noscript.css' %}" /></noscript>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-app.js"></script>
@@ -79,7 +80,17 @@
                     <form class="w3-container" autoScroll='true' id="userData">
                         <div style="width:50%; margin:0px auto;" >
                             <label class="w3-text-white"><b>海大E-mail</b></label>
-                            <input class="w3-input w3-border w3-light-grey" type="email" id="mailBox"> @mail.ntou.edu.tw        
+                            <input class="w3-input w3-border w3-light-grey" type="email" id="mailBox">
+                            <br><br>
+                            <label class="w3-text-white"><b>密碼(6-16位 以字母為首 英文數字及_構成的組合)</b></label>
+                            <input class="w3-input w3-border w3-light-grey" type="password" id="passBox" maxlength="16" name="password">
+                            <span toggle="#passBox" class="fa fa-fw fa-eye field-icon toggle-password" style="color:black;"></span>
+                            <p class='infoWrong' id="passAlert"></p>                    
+                            <br>
+                            <label class="w3-text-white"><b>確認密碼</b></label>
+                            <input class="w3-input w3-border w3-light-grey" type="password" id="passBox2" maxlength="16">
+                            <p class='infoWrong' id="passAlert2"></p>
+                            <br>       
                         </div>
                         <p class='infoWrong' id="emailAlert"></p>
                         <br>
@@ -88,7 +99,7 @@
                     </form>
                     <br>
                     <div>
-                        已經有帳號? <button class="w3-btn w3-blue-grey" onclick="location.href='SignIn.html'">登入</button>
+                        已經有帳號? <button class="w3-btn w3-blue-grey" onclick="goSignIn()">登入</button>
                     </div>
                 </div>
             </header>
@@ -101,7 +112,99 @@
         </div>
     </div>
         <script>
-              
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+                apiKey: "AIzaSyCF_Q4YD_W7FWb40pDU-NHW0ooYsnJWDUM",
+                authDomain: "auction-system-73960.firebaseapp.com",
+                databaseURL: "https://auction-system-73960.firebaseio.com",
+                projectId: "auction-system-73960",
+                storageBucket: "auction-system-73960.appspot.com",
+                messagingSenderId: "650872511305",
+                appId: "1:650872511305:web:8afe3f2f1c33b4f6"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            
+             $(".toggle-password").click(function () {
+
+                $(this).toggleClass("fa-eye fa-eye-slash");
+                var input = $($(this).attr("toggle"));
+                if (input.attr("type") == "password") {
+                    input.attr("type", "text");
+                } 
+                else {
+                    input.attr("type", "password");
+                }
+            });
+            function checkdata()
+            {
+                var isWrong = 0;
+
+                var email = document.getElementById('mailBox').value;
+                var pass = document.getElementById("passBox").value;
+                var pass2 = document.getElementById("passBox2").value;
+                isWrong+= checkPassword(pass); 
+                isWrong+= checkPassword2(pass,pass2);
+                if (isWrong>0)
+                {
+                    window.alert("資料有誤 請檢察");
+                }
+                else
+                {
+                    //todo 進行帳號註冊
+                    firebase.auth().createUserWithEmailAndPassword(email, pass).catch(function(error) {
+                        // Handle Errors here.
+                        var errorCode = error.code;
+                        var errorMessage = error.message;
+                        // ...
+                        return;
+                    });
+                    firebase.auth().currentUser.sendEmailVerification().then(function() {
+                        // Email sent.
+                        window.alert('Please check verify email.');
+                        location.href = '{% url "signin" %}';
+                    }).catch(function(error) {
+                        // An error happened.
+                    });
+                }
+            }
+            
+        function checkPassword(pass) 
+        {   
+            var passErr = document.getElementById("passAlert");
+            var passw = /^[0-9A-Za-z]\w{6,16}$/;
+            if(pass == "")
+            {
+                passErr.innerText = "請輸入密碼";
+                return 1;
+            }
+            if (pass.match(passw)) {
+                passErr.innerText = "";
+                return 0;
+            }
+            else {
+                passErr.innerText = "密碼格式有誤";
+                return 1;
+            }
+        }
+        function checkPassword2(pass,pass2)
+        {   
+            var passErr2 = document.getElementById("passAlert2");
+            if(pass == pass2)
+            {
+                passErr2.innerText = "";
+                return 0;
+            }
+            else
+            {
+                passErr2.innerText = "密碼不一致 請重新輸入";
+                return 1;
+            }
+        }
+        function goSignIn()
+            {
+                location.href = " {% url 'signin' %}" ;
+            }
         </Script>
     </body>
     </html>
