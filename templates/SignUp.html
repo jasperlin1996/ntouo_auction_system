@@ -127,9 +127,14 @@
                 
             console.log("isWrong= "+isWrong);
             
-            if (isWrong>0) {
+            if (isWrong > 0) {
                 window.alert("資料有誤 請檢查");
                 console.log("資料有誤");
+            }
+            else {
+                $.post('{% url "post-signup" %}', {'name': name, 'phone': tele, 'address': add, 'contact': sns}, function(response) {
+                    location.href = '{% url "index" %}';
+                });
             }
         }
        

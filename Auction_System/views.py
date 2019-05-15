@@ -23,7 +23,7 @@ auth = firebase.auth()
 storage = firebase.storage()
 
 def index(request):
-    if ('idToken' not in request.session) or (request.session['idToken']==''):
+    if ('idToken' not in request.session) or (request.session['idToken'] == ''):
         request.session['idToken'] = ''
     products = firestore_ops.getAllProductBasicInfo()
     return render(request, 'index.html', {'products': products})
@@ -39,19 +39,22 @@ def preSignUp(request):
     return render(request, 'pre-SignUp.html')
 
 def signUp(request):
+    return render(request, 'SignUp.html')
+
+@csrf_exempt
+def postSignUp(request):
     idToken = request.session['idToken']
     user = auth.get_account_info(idToken)
     user_id = user['users'][0]['localId']
 
     user_info = firestore_ops.createUserDict()
-    user_info['name'] = request.POST('name')
-    user_info['phone'] = request.POST('phone')
-    user_info['address'] = reqeust.POST('address')
-    user_info['contact'] = request.POST('contact')
+    user_info['name'] = request.POST['name']
+    user_info['phone'] = request.POST['phone']
+    user_info['address'] = request.POST['address']
+    user_info['contact'] = request.POST['contact']
 
     firestore_ops.createNewUser(user_id, user_info)
-
-    return render(request, 'SignUp.html')
+    return django.shortcuts.HttpResponse('new user success')
 
 def toSell(request):
     return render(request, 'ToSell.html')

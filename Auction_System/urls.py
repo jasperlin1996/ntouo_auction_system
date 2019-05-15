@@ -24,6 +24,7 @@ urlpatterns = [
     path('signin/', views.signIn, name = 'signin'),
     path('presignup/', views.preSignUp, name = 'pre-signup'),
     path('signup/', views.signUp, name = 'signup'),
+    path('postsignup/', views.postSignUp, name = 'post-signup'),
     path('tosell/', views.toSell, name = 'to-sell'),
     path('posttosell/', views.postToSell, name = 'post-to-sell'),
     path('setsession/', views.setSession, name = 'set-session'),
