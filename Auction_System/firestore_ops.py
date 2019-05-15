@@ -193,15 +193,15 @@ def checkUserInfoCompleteness(user_id):
     try:
         ref = db.collection('users').document(user_id)
         data = ref.get().to_dict()
-        if data['name'] is not "" and \
-            data['phone'] is not "" and \
-            data['address'] is not "" and \
-            data['contact'] is not "":
+        if (data['name'] is not "") and \
+            (data['phone'] is not "") and \
+            (data['address'] is not "") and \
+            (data['contact'] is not ""):
             return True
         else:
             return False
     except Exception as e:
         return False
 
-            
+
 # --- Developing --- #

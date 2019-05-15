@@ -10,6 +10,10 @@ function index() {
   return (location.href = '/').toString();
 }
 
+function signOut() {
+  return (location.href = '/signout').toString();
+}
+
 var isLoading = true;
 var spinner = document.getElementById("loader");
 

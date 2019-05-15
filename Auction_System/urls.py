@@ -28,4 +28,5 @@ urlpatterns = [
     path('tosell/', views.toSell, name = 'to-sell'),
     path('posttosell/', views.postToSell, name = 'post-to-sell'),
     path('setsession/', views.setSession, name = 'set-session'),
+    path('signout/',views.signOut,name = 'signout'),
 ]

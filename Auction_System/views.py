@@ -29,10 +29,12 @@ def index(request):
     return render(request, 'index.html', {'products': products})
 
 def signIn(request):
-    idToken = request.session['idToken']
-    user = auth.get_account_info(idToken)
-    user_id = user['users'][0]['localId']
-    isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
+    isUserFillAll = False
+    if 'idToken' in request.session and request.session['idToken'] != '':
+        idToken = request.session['idToken']
+        user = auth.get_account_info(idToken)
+        user_id = user['users'][0]['localId']
+        isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
     return render(request, 'SignIn.html', {'isUserFillAll': isUserFillAll})
 
 def preSignUp(request):
@@ -40,6 +42,11 @@ def preSignUp(request):
 
 def signUp(request):
     return render(request, 'SignUp.html')
+
+def signOut(request):
+    request.session['idToken'] = ''
+    django.contrib.auth.logout(request)
+    return redirect(index)
 
 @csrf_exempt
 def postSignUp(request):

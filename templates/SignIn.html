@@ -18,7 +18,7 @@
 		<script src="https://www.gstatic.com/firebasejs/5.11.0/firebase.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-app.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-auth.js"></script>
-		
+
 	</head>
 	<body id="is-preload">
 		<div id="wrapper">
@@ -98,11 +98,12 @@
 							var current_user = firebase.auth().currentUser;
 							if (current_user.emailVerified == false) {
 								window.alert('please check the verification email.');
-								return;
+								// location.href = '{% url "signin" %}';
 							}
 							else {
 								// TODO check info
 								var isUserFillAll = '{{ isUserFillAll }}';
+								console.log(isUserFillAll);
 
 								if (isUserFillAll == 'False') {
 									location.href = '{% url "signup" %}';
@@ -146,15 +147,6 @@
 					checkLoginUser();
 				}
 
-				function log() {
-					firebase.auth().signOut().then(function () {
-						// Sign-out successful.
-						console.log('here');
-					}).catch(function (error) {
-						// An error happened.
-					});
-				}
-
 				function doLogIn()
 				{
 					var email = document.getElementById('accBox').value;
@@ -166,6 +158,7 @@
 						var errorCode = error.code;
 						var errorMessage = error.message;
 						// ...
+						window.alert(errorMessage);
 						return;
 					});
 					checkLoginUser();
@@ -180,7 +173,7 @@
 					var input = $($(this).attr("toggle"));
 					if (input.attr("type") == "password") {
 						input.attr("type", "text");
-					} 
+					}
 					else {
 						input.attr("type", "password");
 					}
