@@ -158,13 +158,14 @@
                         var errorMessage = error.message;
                         // ...
                         return;
-                    });
-                    firebase.auth().currentUser.sendEmailVerification().then(function() {
-                        // Email sent.
-                        window.alert('Please check verify email.');
-                        location.href = '{% url "signin" %}';
-                    }).catch(function(error) {
-                        // An error happened.
+                    }).then(function() {
+                        firebase.auth().currentUser.sendEmailVerification().then(function() {
+                            // Email sent.
+                            window.alert('Please check verify email.');
+                            location.href = '{% url "signin" %}';
+                        }).catch(function(error) {
+                            // An error happened.
+                        });
                     });
                 }
             }

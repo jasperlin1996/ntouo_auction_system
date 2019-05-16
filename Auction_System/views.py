@@ -23,19 +23,16 @@ auth = firebase.auth()
 storage = firebase.storage()
 
 def index(request):
-    if ('idToken' not in request.session) or (request.session['idToken'] == ''):
+    if 'idToken' not in request.session:
         request.session['idToken'] = ''
     products = firestore_ops.getAllProductBasicInfo()
-    return render(request, 'index.html', {'products': products})
+    name = ''
+    if request.session['idToken'] != '':
+        name = auth.get_account_info(request.session['idToken'])['users'][0]['providerUserInfo'][0]['email']
+    return render(request, 'index.html', {'products': products, 'name': name})
 
 def signIn(request):
-    isUserFillAll = False
-    if 'idToken' in request.session and request.session['idToken'] != '':
-        idToken = request.session['idToken']
-        user = auth.get_account_info(idToken)
-        user_id = user['users'][0]['localId']
-        isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
-    return render(request, 'SignIn.html', {'isUserFillAll': isUserFillAll})
+    return render(request, 'SignIn.html')
 
 def preSignUp(request):
     return render(request, 'pre-SignUp.html')
@@ -45,6 +42,7 @@ def signUp(request):
 
 def signOut(request):
     request.session['idToken'] = ''
+    print('signout: {}'.format(request.session['idToken']))
     django.contrib.auth.logout(request)
     return redirect(index)
 
@@ -61,7 +59,7 @@ def postSignUp(request):
     user_info['contact'] = request.POST['contact']
 
     firestore_ops.createNewUser(user_id, user_info)
-    return django.shortcuts.HttpResponse('new user success')
+    return django.shortcuts.HttpResponse('create new user success')
 
 def toSell(request):
     return render(request, 'ToSell.html')
@@ -101,4 +99,14 @@ def postToSell(request):
 def setSession(request):
     idToken = request.POST['idToken']
     request.session['idToken'] = idToken
+    print('hi')
     return django.shortcuts.HttpResponse('set session successful')
+
+@csrf_exempt
+def checkUserData(request):
+    idToken = request.session['idToken']
+    print('checkuserdata: {}'.format(idToken))
+    user = auth.get_account_info(idToken)
+    user_id = user['users'][0]['localId']
+    isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
+    return django.shortcuts.HttpResponse(str(isUserFillAll))
