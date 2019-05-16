@@ -3,7 +3,7 @@ import django
 import datetime
 import pyrebase
 import firebase_admin
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from firebase_admin import credentials, firestore
 from django.views.decorators.csrf import csrf_exempt
 from . import firestore_ops
@@ -21,6 +21,12 @@ config = {
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 storage = firebase.storage()
+
+def _getUserId(request):
+    idToken = request.session['idToken']
+    user = auth.get_account_info(idToken)
+    user_id = user['users'][0]['localId']
+    return user_id
 
 def index(request):
     if 'idToken' not in request.session:
@@ -40,17 +46,35 @@ def preSignUp(request):
 def signUp(request):
     return render(request, 'SignUp.html')
 
+def memberCenter(request):
+    user_id = _getUserId(request)
+    user_info = firestore_ops.getUserInfo(user_id)
+    return render(request, 'MemberCenter.html', {'user': user_info})
+
 def signOut(request):
     request.session['idToken'] = ''
     print('signout: {}'.format(request.session['idToken']))
     django.contrib.auth.logout(request)
     return redirect(index)
 
+def updateUserInfo(request):
+    user_id = _getUserId(request)
+
+    user_data = firestore_ops.createUserDict()
+    user_data['name'] = request.POST.get('user_name')
+    user_data['phone'] = request.POST.get('phone')
+    user_data['address'] = request.POST.get('address')
+    user_data['contact'] = request.POST.get('contact')
+
+    print(user_data)
+
+    firestore_ops.updateUserInfo(user_id, user_data)
+
+    return redirect(memberCenter)
+
 @csrf_exempt
 def postSignUp(request):
-    idToken = request.session['idToken']
-    user = auth.get_account_info(idToken)
-    user_id = user['users'][0]['localId']
+    user_id = _getUserId(request)
 
     user_info = firestore_ops.createUserDict()
     user_info['name'] = request.POST['name']
@@ -59,7 +83,7 @@ def postSignUp(request):
     user_info['contact'] = request.POST['contact']
 
     firestore_ops.createNewUser(user_id, user_info)
-    return django.shortcuts.HttpResponse('create new user success')
+    return HttpResponse('create new user success')
 
 def toSell(request):
     return render(request, 'ToSell.html')
@@ -100,7 +124,7 @@ def setSession(request):
     idToken = request.POST['idToken']
     request.session['idToken'] = idToken
     print('hi')
-    return django.shortcuts.HttpResponse('set session successful')
+    return HttpResponse('set session successful')
 
 @csrf_exempt
 def checkUserData(request):
@@ -109,4 +133,4 @@ def checkUserData(request):
     user = auth.get_account_info(idToken)
     user_id = user['users'][0]['localId']
     isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
-    return django.shortcuts.HttpResponse(str(isUserFillAll))
+    return HttpResponse(str(isUserFillAll))

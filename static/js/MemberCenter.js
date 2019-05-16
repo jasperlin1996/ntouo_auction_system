@@ -2,7 +2,7 @@
 function person() {
     var temp = '<table><tr><td>海大email</td><td>' + info.ntou_email + '</td></tr>';
     temp += '<tr><td>密碼:</td><td id="pass">********<input type="button" onclick="showPassword()" value="查看"></td></tr>';
-    temp += '<tr><td>姓名:</td><td>' + info.user_name + '</td></tr>';
+    temp += '<tr><td>姓名:</td><td>' + info.name + '</td></tr>';
     temp += '<tr><td>電話:</td><td>' + info.phone + '</td></tr>';
     temp += '<tr><td>地址:</td><td>' + info.address + '</td></tr>';
     temp += '<tr><td>其他聯絡方式:</td><td><textarea rows="5" cols="50" readonly>' + info.contact + '</textarea></td></tr>';
@@ -33,7 +33,7 @@ function likes() {
             temp += '</td></a></tr>';
         }
         temp += '</table>';
-    //}
+    }
     document.getElementById("content").innerHTML = temp;
 }
 
@@ -57,7 +57,7 @@ function buying() {
             temp += '</td></a></tr>';
         }
         temp += '</table>';
-    //}
+    }
     document.getElementById("content").innerHTML = temp;
 }
 
@@ -81,7 +81,7 @@ function dealing() {
             temp += '</td></a></tr>';
         }
         temp += '</table>';
-    //}
+    }
     document.getElementById("content").innerHTML = temp;
 }
 
@@ -105,7 +105,7 @@ function selling() {
             temp += '</td></a></tr>';
         }
         temp += '</table>';
-    //}
+    }
     document.getElementById("content").innerHTML = temp;
 }
 
@@ -129,7 +129,7 @@ function finish() {
             temp += '</td></a></tr>';
         }
         temp += '</table>';
-    //}
+    }
     document.getElementById("content").innerHTML = temp;
 }
 
@@ -145,12 +145,12 @@ function hidePassword() {
 
 // 更改個人資訊
 function change() {
-    var temp = '<form action="' + ''/*資料傳送目標*/ + '" onsubmit="return checkForm()"><table><tr><td>海大email</td><td>' + '123546@ntou'/*info.ntou_email*/ + '</td></tr>';
-    temp += '<tr><td>*密碼:</td><td>輸入新密碼<input type="password" id="password" name="password" value="' + info.password + '" required><br>確認密碼<input type="password" id="check" required><p id="error"></p></td></tr>';
-    temp += '<tr><td>*姓名:</td><td><input type="text" name="user_name" value="' + '王金魚'/*info.user_name*/ + '" required></td></tr>';
-    temp += '<tr><td>電話:</td><td>' + info.phone + '<br><input type="text" name="phone" pattern="[0-9]{10}"></td></tr>';
+    var temp = '<form method="POST" action="' + "/updateuserinfo/" + '" onsubmit="return checkForm()">\n' + csrf_token + '\n<table><tr><td>海大email</td><td>' + '123546@ntou'/*info.ntou_email*/ + '</td></tr>';
+    temp += '<tr><td>*密碼:</td><td>'/*輸入新密碼<input type="password" id="password" name="password" value="'*/ + info.password + /*'" required><br>確認密碼<input type="password" id="check" required><p id="error"></p>*/'</td></tr>';
+    temp += '<tr><td>*姓名:</td><td><input type="text" name="user_name" value="' + info.name + '" required></td></tr>';
+    temp += '<tr><td>電話:</td><td>' + info.phone + '<br><input type="tel" pattern="[0-9]{7,10}" name="phone"></td></tr>';
     temp += '<tr><td>*地址:</td><td><input type="text" name="address" value="' + info.address + '" required></td></tr>';
-    temp += '<tr><td>其他聯絡方式:</td><td><input type="text" name=contact" value="' + info.contact + '"></td></tr>';
+    temp += '<tr><td>其他聯絡方式:</td><td><input type="text" name="contact" value="' + info.contact + '"></td></tr>';
     temp += '<tr><td>購買評價:</td><td>' + info.buyer_rate + '</td></tr>';
     temp += '<tr><td>販賣評價:</td><td>' + info.seller_rate + '</td></tr>';
     var tp = info.tp_info;
@@ -165,15 +165,16 @@ function change() {
         else {
             document.getElementById("error").innerHTML = '';
         }
-    })
+    });
 }
 
 function checkForm() {
-    if(document.getElementById("check").value!=document.getElementById("password").value) {
+    /*if(document.getElementById("check").value!=document.getElementById("password").value) {
         alert("輸入密碼兩者不同!");
         return false;
     }
     else {
         return true;
-    }
+    }*/
+    return true;
 }
