@@ -1,0 +1,38 @@
+{% if msg %}
+<script>alert('{{msg}}')</script>
+{% endif %}
+
+<html>
+{% load staticfiles %}
+  <script>
+    var info = {{  | safe }};
+  </script>
+  <link rel="SHORTCUT ICON" href="{% static 'img/background.jpg' %}"/>
+  <script src="{% static 'js/jquery.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bar.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/MemberCenter.css' %}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+    <body>
+        {% csrf_token %}
+        <ul align="center">
+        <li onclick="person()">個人資料</li>
+        <li onclick="likes()">追蹤中</li>
+        <li onclick="buying()">競標中</li>
+        <li onclick="dealing()">交易中</li>
+        <li onclick="selling()">販賣中</li>
+        <li onclick="finish()">已完成</li>
+        <br><br>
+        <a href="{% templates 'ToSell.html' %}">賣東西</a></li>
+        </ul>
+        <div align="center" id="content">
+        </div>
+    </body>
+    <script src="{% static 'js/bar.js' %}"></script>
+  <script src="{% static 'js/MemberCenter.js' %}"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</html>
