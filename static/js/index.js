@@ -6,11 +6,9 @@ var hei = $(window).height();
 var maxwidth = screen.width;
 var pagecount = 1;
 var pageWidth;
-
 var product_count = 0;
 var products_length = products.length;
 var currentPage = 2;
-console.log(products);
 
 //產生頁碼
 while ((products_length / 20) > 0) {
@@ -28,20 +26,26 @@ while ((products_length / 20) > 0) {
   }
   pagecount++;
 }
-pagecount--;
+pagecount--; //最後多加的扣掉
+
 GetProducts(1);
 //更換頁面
 function GetProducts(index) {
-
+  //  loading
+  $("#loader").show();
+  $("#loadspace").css("display", "block");
+  isLoading = true;
+  //  換頁
   var pageString = "page" + index;
   var previousPageString = "page" + currentPage;
   var numOfProduct;
   product_count = 0;
-
+  //頁碼顏色
   document.getElementById(previousPageString).classList.remove("active");
   document.getElementById(pageString).classList.add("active");
   currentPage = index;
 
+  //填寫資料
   if ((products.length - (index - 1) * 20) >= 20)
     numOfProduct = 20;
   else
@@ -54,22 +58,37 @@ function GetProducts(index) {
       product_count = 0;
     }
     product_count++;
-    $("#row").append("<div class='col-md-2'><img src='" + products[i].images[0] + "' %}' class='img-thumbnail img' alt=" + products[i].product_name + "><p>" + products[i].product_name + "</p></div>");
+    if (i == ((index - 1) * 20 + numOfProduct) - 1)
+      $("#row").append("<div class='col-md-2'><img onload='start()' src='" + products[i].images[0] + "' %}' class='img-thumbnail img' alt=" + products[i].product_name + "><p>" + products[i].product_name + "</p></div>");
+    else
+      $("#row").append("<div class='col-md-2'><img src='" + products[i].images[0] + "' %}' class='img-thumbnail img' alt=" + products[i].product_name + "><p>" + products[i].product_name + "</p></div>");
   }
   $("#row").append("<div id='blank2' class='col-md-12'></div>");
+  changeblankCSS();
 }
 
-// >>的函示
+// >>的函式
 function nextPage() {
 
   if (currentPage != pagecount)
     GetProducts(currentPage + 1);
 }
 
-// <<的函示
+// <<的函式
 function previousPage() {
   if (currentPage != 1)
     GetProducts(currentPage - 1);
+}
+
+//換新頁面blank 的 css
+function changeblankCSS() {
+  if ($(window).width() > 1040) {
+    $("#blank1").css('height', hei * 0.001 + "px");
+    $("#blank2").css('height', hei * 0.08 + "px");
+  } else {
+    $("#blank1").css('height', hei * 0.05 + "px");
+    $("#blank2").css('height', hei * 0.15 + "px");
+  }
 }
 
 //變更視窗大小時
@@ -82,8 +101,7 @@ $(function() {
     $(".pos-f-t").css('top', barHeight + 'px');
     $("#bar2").css('margin-left', 50 + "px");
     $("#bar2").css('width', wid * 0.8 + "px");
-    $("#blank1").css('height', hei * 0.01 + "px");
-    $("#blank2").css('height', hei * 0.1 + "px");
+    changeblankCSS();
     $("#loadspace").css('top', barHeight + "px");
     if ($(window).width() < 1040) {
       $("#loadspace").css('top', barHeight + 58 + "px");

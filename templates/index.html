@@ -1,14 +1,12 @@
-{% if msg %}
-<script>alert('{{msg}}')</script>
-{% endif %}
 
 <html>
 {% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bar.css' %}">
   <link rel="shortcut icon" href="{% static 'img/ntoulogo.png' %}"/>
   <script src="{% static 'js/jquery.js' %}"></script>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/bar.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
   <head>
+    <title>主頁面</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
@@ -19,8 +17,8 @@
       </svg>
     </div>
   </div>
-  <body onload="start()">
 
+  <body onload="start()">
         {% csrf_token %}
         <nav class="nav navbar-default">
              <div class="container-fluid">
@@ -78,8 +76,8 @@
           </div>
         </form>
           <script>          //拿全部商品資訊  library型態  拿user是否登入token
-            var products = {{ products | safe }};
-            var userStatus = '{{ request.session.idToken }}';
+             var products = {{ products | safe }};
+             var userStatus = '{{ request.session.idToken }}';
           </script>
 
           <nav id="page" class="page">
@@ -87,10 +85,10 @@
              <li class="page-item"><a onclick="previousPage()" class="page-link" ><<</a></li>
             </ul>
           </nav>
-          <script src="{% static 'js/index.js' %}"></script>
   </body>
 
   <script src="{% static 'js/bar.js' %}"></script>
+  <script src="{% static 'js/index.js' %}"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
