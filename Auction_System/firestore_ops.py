@@ -127,8 +127,8 @@ def createUserDict():
         'bidding_items': [],
         'done_items': [],
         'onsale_items': [],
-        'buyer_rate': None,
-        'seller_rate': None,
+        'buyer_rate': 0,
+        'seller_rate': 0,
     }
     return user
 

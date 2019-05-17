@@ -1,5 +1,5 @@
 function signUpString() {
-  return (location.href = '/signup').toString();
+  return (location.href = '/presignup').toString();
 }
 
 function signIn() {

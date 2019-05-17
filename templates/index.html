@@ -76,8 +76,10 @@
           </div>
         </form>
           <script>          //拿全部商品資訊  library型態  拿user是否登入token
-             var products = {{ products | safe }};
-             var userStatus = '{{ request.session.idToken }}';
+
+            var products = {{ products | safe }};
+            var userStatus = '{{ request.session.idToken }}';
+            console.log('{{ name }}');
           </script>
 
           <nav id="page" class="page">
