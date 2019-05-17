@@ -21,7 +21,7 @@ from . import views
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index, name = 'index'),
-    # path('index/', views.index, name = 'index'),
+    path('index/', views.index, name = 'index'),
     path('signin/', views.signIn, name = 'signin'),
     path('presignup/', views.preSignUp, name = 'pre-signup'),
     path('signup/', views.signUp, name = 'signup'),
@@ -31,7 +31,7 @@ urlpatterns = [
     path('tosell/', views.toSell, name = 'to-sell'),
     path('posttosell/', views.postToSell, name = 'post-to-sell'),
     path('signout/', views.signOut, name = 'signout'),
-    path('setsession/', views.setSession, name = 'set-session'),,
+    path('setsession/', views.setSession, name = 'set-session'),
     path('', include('pwa.urls')),
     path('checkuserdata/', views.checkUserData, name = 'check-user-data'),
 ]

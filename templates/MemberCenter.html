@@ -11,6 +11,11 @@
   <script>
     var info = {{ user | safe }};
     var userStatus = '{{ request.session.idToken }}';
+    if (!userStatus)
+    {
+      location.href = "{% url 'signin' %}')";
+    }
+    console.log(userStatus);
     var csrf_token = "{% csrf_token %}";
   </script>
   <head>
@@ -33,7 +38,7 @@
         <li onclick="selling()">販賣中</li>
         <li onclick="finish()">已完成</li>
         <br><br>
-        <a href="{% url 'to-sell' %}">賣東西</a></li>
+        <a href="{% url 'to-sell' %}">賣東西</a>
         </ul>
         <div align="center" id="content">
         </div>

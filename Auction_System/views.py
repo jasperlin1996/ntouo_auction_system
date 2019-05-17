@@ -58,6 +58,8 @@ def postSignUp(request):
     return HttpResponse('create new user success')
 
 def memberCenter(request):
+    if request.session['idToken'] == '':
+        return redirect(signIn)
     user_id = _getUserId(request.session['idToken'])
     user_info = firestore_ops.getUserInfo(user_id)
     return render(request, 'MemberCenter.html', {'user': user_info})
