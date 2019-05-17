@@ -2,9 +2,7 @@ import sys
 import django
 import datetime
 import pyrebase
-import firebase_admin
 from django.shortcuts import render, redirect, HttpResponse
-from firebase_admin import credentials, firestore
 from django.views.decorators.csrf import csrf_exempt
 from . import firestore_ops
 
@@ -22,8 +20,7 @@ firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 storage = firebase.storage()
 
-def _getUserId(request):
-    idToken = request.session['idToken']
+def _getUserId(idToken):
     user = auth.get_account_info(idToken)
     user_id = user['users'][0]['localId']
     return user_id
@@ -32,6 +29,7 @@ def index(request):
     if 'idToken' not in request.session:
         request.session['idToken'] = ''
     products = firestore_ops.getAllProductBasicInfo()
+    # TODO show user name on index page
     name = ''
     if request.session['idToken'] != '':
         name = auth.get_account_info(request.session['idToken'])['users'][0]['providerUserInfo'][0]['email']
@@ -46,35 +44,8 @@ def preSignUp(request):
 def signUp(request):
     return render(request, 'SignUp.html')
 
-def memberCenter(request):
-    user_id = _getUserId(request)
-    user_info = firestore_ops.getUserInfo(user_id)
-    return render(request, 'MemberCenter.html', {'user': user_info})
-
-def signOut(request):
-    request.session['idToken'] = ''
-    print('signout: {}'.format(request.session['idToken']))
-    django.contrib.auth.logout(request)
-    return redirect(index)
-
-def updateUserInfo(request):
-    user_id = _getUserId(request)
-
-    user_data = firestore_ops.createUserDict()
-    user_data['name'] = request.POST.get('user_name')
-    user_data['phone'] = request.POST.get('phone')
-    user_data['address'] = request.POST.get('address')
-    user_data['contact'] = request.POST.get('contact')
-
-    print(user_data)
-
-    firestore_ops.updateUserInfo(user_id, user_data)
-
-    return redirect(memberCenter)
-
-@csrf_exempt
 def postSignUp(request):
-    user_id = _getUserId(request)
+    user_id = _getUserId(request.session['idToken'])
 
     user_info = firestore_ops.createUserDict()
     user_info['name'] = request.POST['name']
@@ -83,34 +54,50 @@ def postSignUp(request):
     user_info['contact'] = request.POST['contact']
 
     firestore_ops.createNewUser(user_id, user_info)
+
     return HttpResponse('create new user success')
+
+def memberCenter(request):
+    user_id = _getUserId(request.session['idToken'])
+    user_info = firestore_ops.getUserInfo(user_id)
+    return render(request, 'MemberCenter.html', {'user': user_info})
+
+def updateUserInfo(request):
+    user_id = _getUserId(request.session['idToken'])
+
+    user_data = firestore_ops.createUserDict()
+    user_data['name'] = request.POST['user_name']
+    user_data['phone'] = request.POST['phone']
+    user_data['address'] = request.POST['address']
+    user_data['contact'] = request.POST['contact']
+
+    firestore_ops.updateUserInfo(user_id, user_data)
+
+    return redirect(memberCenter)
 
 def toSell(request):
     return render(request, 'ToSell.html')
 
 def postToSell(request):
-    product = {}
-    # read image
-    product['product_name'] = request.POST.get('product_name')
-    product['trading_type'] = request.POST.get('trading_type')
-    product['price'] = request.POST.get('price')
-    product['current_price'] = request.POST.get('current_price')
-    product['price_per_mark'] = request.POST.get('price_per_mark')
-    product['category'] = request.POST.get('category')
-    product['description'] = request.POST.get('description')
-    product['trading_method'] = request.POST.get('trading_method')
-    product['deadline'] = request.POST.get('deadline')
+    user_id = _getUserId(request.session['idToken'])
+
+    product = firestore_ops.createProductDict()
+    # TODO read image
+    product['name'] = request.POST['product_name']
+    product['trading_type'] = request.POST['trading_type']
+    product['price'] = request.POST['price']
+    product['current_price'] = request.POST['current_price']
+    product['price_per_mark'] = request.POST['price_per_mark']
+    product['category'] = request.POST['category']
+    product['description'] = request.POST['description']
+    product['trading_method'] = request.POST['trading_method']
+    product['deadline'] = request.POST['deadline']
 
     s = ('').join(product.values()) + str(datetime.datetime.now())
     product_id = hash(s)
     if product_id < 0:
         product_id += sys.maxsize
 
-    idToken = request.session['idToken']
-    user = auth.get_account_info(idToken)
-    user_id = user['users'][0]['localId'] # user collection's document id
-
-    # store to database
     try:
         firestore_ops.addProduct(user_id, product_id, product)
     except Exception as e:
@@ -119,18 +106,19 @@ def postToSell(request):
 
     return redirect(toSell)
 
+def signOut(request):
+    request.session['idToken'] = ''
+    django.contrib.auth.logout(request)
+    return redirect(index)
+
 @csrf_exempt
 def setSession(request):
     idToken = request.POST['idToken']
     request.session['idToken'] = idToken
-    print('hi')
     return HttpResponse('set session successful')
 
 @csrf_exempt
 def checkUserData(request):
-    idToken = request.session['idToken']
-    print('checkuserdata: {}'.format(idToken))
-    user = auth.get_account_info(idToken)
-    user_id = user['users'][0]['localId']
+    user_id = _getUserId(request.session['idToken'])
     isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
     return HttpResponse(str(isUserFillAll))

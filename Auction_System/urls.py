@@ -21,15 +21,16 @@ from . import views
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index, name = 'index'),
+    path('index/', views.index, name = 'index'),
     path('signin/', views.signIn, name = 'signin'),
     path('presignup/', views.preSignUp, name = 'pre-signup'),
     path('signup/', views.signUp, name = 'signup'),
     path('postsignup/', views.postSignUp, name = 'post-signup'),
     path('membercenter/', views.memberCenter, name = 'member-center'),
+    path('updateuserinfo/', views.updateUserInfo, name = 'update-user-info'),
     path('tosell/', views.toSell, name = 'to-sell'),
     path('posttosell/', views.postToSell, name = 'post-to-sell'),
-    path('updateuserinfo/', views.updateUserInfo, name = 'update-user-info'),
+    path('signout/', views.signOut, name = 'signout'),
     path('setsession/', views.setSession, name = 'set-session'),
     path('checkuserdata/', views.checkUserData, name = 'check-user-data'),
-    path('signout/', views.signOut, name = 'signout'),
 ]

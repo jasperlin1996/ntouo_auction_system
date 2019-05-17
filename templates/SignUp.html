@@ -114,7 +114,6 @@
         {
             var isWrong = 0;
             
-            
             var name = document.getElementById("nameBox").value;
             var tele = document.getElementById("telBox").value;
             var add = document.getElementById("addBox").value;
@@ -132,8 +131,15 @@
                 console.log("資料有誤");
             }
             else {
-                $.post('{% url "post-signup" %}', {'name': name, 'phone': tele, 'address': add, 'contact': sns}, function(response) {
-                    location.href = '{% url "index" %}';
+                $.ajax({
+                    url: '{% url "post-signup" %}',
+                    type: "POST",
+                    data: {'name': name, 'phone': tele, 'address': add, 'contact': sns, csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    datatype: 'string',
+                    success: function(response) {
+                        console.log(response);
+                        location.href = '{% url "index" %}';
+                    }
                 });
             }
         }
