@@ -29,10 +29,11 @@ def index(request):
     if 'idToken' not in request.session:
         request.session['idToken'] = ''
     products = firestore_ops.getAllProductBasicInfo()
-    # TODO show user name on index page
+
     name = ''
     if request.session['idToken'] != '':
-        name = auth.get_account_info(request.session['idToken'])['users'][0]['providerUserInfo'][0]['email']
+        user_id = _getUserId(request.session['idToken'])
+        name = firestore_ops.getUserInfo(user_id)['name']
     return render(request, 'index.html', {'products': products, 'name': name})
 
 def signIn(request):
@@ -62,7 +63,7 @@ def memberCenter(request):
         return redirect(signIn)
     user_id = _getUserId(request.session['idToken'])
     user_info = firestore_ops.getUserInfo(user_id)
-    return render(request, 'MemberCenter.html', {'user': user_info})
+    return render(request, 'MemberCenter.html', {'user': user_info, 'name': user_info['name']})
 
 def updateUserInfo(request):
     user_id = _getUserId(request.session['idToken'])
