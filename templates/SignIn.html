@@ -25,7 +25,6 @@
 			<div id="bg"></div>
 			<div id="overlay"></div>
 			<div id="main">
-
 				<!-- Header -->
 					<header id="header">
 						<div>
@@ -48,7 +47,7 @@
 						<p>或使用第三方認證</p>
 						<nav>
 							<ul>
-								<li><a class="icon fa-twitter" onclick="pop()"><span class="label">Twitter</span></a></li>
+								<li><a class="icon fa-twitter" onclick="googleSignIn()"><span class="label">Twitter</span></a></li>
 								<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
 								<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
 								<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
@@ -61,7 +60,6 @@
 					<footer id="footer">
 						<span class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.</span>
 					</footer>
-
 			</div>
 		</div>
 		<script>
@@ -132,7 +130,7 @@
 					});
 				}
 
-				function pop() {
+				function googleSignIn() {
 					var provider = new firebase.auth.GoogleAuthProvider();
 					// firebase.auth().signInWithRedirect(provider);
 					firebase.auth().signInWithPopup(provider).then(function (result) {
@@ -142,6 +140,7 @@
 						var user = result.user;
 						// ...
 						console.log(firebase.auth().currentUser.email);
+						checkLoginUser();
 					}).catch(function (error) {
 						// Handle Errors here.
 						var errorCode = error.code;
@@ -153,8 +152,6 @@
 						// ...
 						console.log('ERROR');
 					});
-
-					checkLoginUser();
 				}
 
 				function doLogIn()
@@ -162,7 +159,7 @@
 					var email = document.getElementById('accBox').value;
 					var password = document.getElementById('passBox').value;
 					console.log("Check LogIn");
-					//todo post //把密碼和帳號丟到DB檢查
+					// TODO post // 把密碼和帳號丟到DB檢查
 					firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
 						// Handle Errors here.
 						var errorCode = error.code;
