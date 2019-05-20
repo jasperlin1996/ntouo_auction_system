@@ -8,7 +8,7 @@ var pagecount = 1;
 var pageWidth;
 var product_count = 0;
 var products_length = products.length;
-var currentPage = 2;
+var currentPage = 1;
 
 //產生頁碼
 while ((products_length / 20) > 0) {

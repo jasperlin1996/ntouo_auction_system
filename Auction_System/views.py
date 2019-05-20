@@ -34,6 +34,7 @@ def index(request):
     if request.session['idToken'] != '':
         user_id = _getUserId(request.session['idToken'])
         name = firestore_ops.getUserInfo(user_id)['name']
+
     return render(request, 'index.html', {'products': products, 'name': name})
 
 def signIn(request):

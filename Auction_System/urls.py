@@ -32,6 +32,6 @@ urlpatterns = [
     path('posttosell/', views.postToSell, name = 'post-to-sell'),
     path('signout/', views.signOut, name = 'signout'),
     path('setsession/', views.setSession, name = 'set-session'),
-    path('', include('pwa.urls')),
+    # path('', include('pwa.urls')),
     path('checkuserdata/', views.checkUserData, name = 'check-user-data'),
 ]

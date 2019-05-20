@@ -66,6 +66,7 @@ def getProductBasicInfo(product):
                 'images'
             }
     """
+
     if ('product_name' in product) and ('images' in product):
         product_basic_info = {
             'id': product['id'], 'product_name': product['product_name'], 'images': product['images']}
