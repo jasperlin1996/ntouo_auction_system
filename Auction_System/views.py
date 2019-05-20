@@ -115,6 +115,11 @@ def signOut(request):
     django.contrib.auth.logout(request)
     return redirect(index)
 
+def getIdToken(request):
+    if 'idToken' not in request.session:
+        request.session['idToken'] = ''
+    return HttpResponse(request.session['idToken'])
+
 @csrf_exempt
 def setSession(request):
     idToken = request.POST['idToken']
