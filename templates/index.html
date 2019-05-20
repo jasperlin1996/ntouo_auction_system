@@ -78,8 +78,6 @@
           <script>          //拿全部商品資訊  library型態  拿user是否登入token
 
             var products = {{ products | safe }};
-            console.log(products);
-            var userStatus = '{{ request.session.idToken }}';
             var name = '{{ name }}';
           </script>
 

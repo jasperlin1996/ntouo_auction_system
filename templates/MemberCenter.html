@@ -10,12 +10,6 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/MemberCenter.css' %}">
   <script>
     var info = {{ user | safe }};
-    var userStatus = '{{ request.session.idToken }}';
-    if (!userStatus)
-    {
-      location.href = "{% url 'signin' %}')";
-    }
-    console.log(userStatus);
     var csrf_token = "{% csrf_token %}";
     var name = '{{ name }}';
   </script>

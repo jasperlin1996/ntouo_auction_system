@@ -26,12 +26,10 @@ def _getUserId(idToken):
     return user_id
 
 def index(request):
-    if 'idToken' not in request.session:
-        request.session['idToken'] = ''
     products = firestore_ops.getAllProductBasicInfo()
 
     name = ''
-    if request.session['idToken'] != '':
+    if 'idToken' in request.session:
         user_id = _getUserId(request.session['idToken'])
         name = firestore_ops.getUserInfo(user_id)['name']
 
@@ -115,6 +113,7 @@ def signOut(request):
     django.contrib.auth.logout(request)
     return redirect(index)
 
+@csrf_exempt
 def getIdToken(request):
     if 'idToken' not in request.session:
         request.session['idToken'] = ''
