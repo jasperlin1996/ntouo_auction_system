@@ -1,0 +1,32 @@
+ /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+    
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #00000000;
+        }
+    
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #246E8E;
+        }
+    
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0F4D69;
+        }
+        .infoWrong{
+            color : rgb(255, 0, 0);
+        }
+        #userData{
+            text-align:center;
+        }
+        .field-icon {
+            float: right;
+            margin-left: -25px;
+            margin-top: -25px;
+            position: relative;
+            z-index: 2;
+        }

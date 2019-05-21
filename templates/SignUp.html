@@ -13,6 +13,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="{% static 'css/signin.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/scrollbar.css' %}" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <noscript>
         <link rel="stylesheet" href="{% static 'css/noscript.css' %} "/></noscript>
@@ -20,43 +21,9 @@
     <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-auth.js"></script>
-    <style>
-        /* width */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-    
-        /* Track */
-        ::-webkit-scrollbar-track {
-            background: #00000000;
-        }
-    
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-            background: #246E8E;
-        }
-    
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-            background: #0F4D69;
-        }
-        .infoWrong{
-            color : rgb(255, 0, 0);
-        }
-        #userData{
-            text-align:center;
-        }
-        .field-icon {
-            float: right;
-            margin-left: -25px;
-            margin-top: -25px;
-            position: relative;
-            z-index: 2;
-        }
-    </style>
 </head>
 
-<body id="is-preload">
+<body id="is-preload" onload="start()">
     <div id="wrapper">
         <div id="bg"></div>
         <div id="overlay"></div>
@@ -79,7 +46,7 @@
                         <input class="w3-input w3-border w3-light-grey" type="text" id="nameBox"placeholder="ex:Wang Siao Min" name="user_name">
                         <p class='infoWrong' id="nameAlert"></p>
                         <br>
-                        <!----<label class="w3-text-white"><b>暱稱</b></label>
+                        <!----<label class="w3-text-white"><b>暱稱</b></labelD
                         <input class="w3-input w3-border w3-light-grey" type="text">
                         <p class='infoWrong' id="ntouAlert"></p>
                         <br><--->
@@ -95,7 +62,7 @@
                         <input class="w3-input w3-border w3-light-grey" type="text" id="snsBox" placeholder="ex: FB:zuck" name="contact">
                         <p class='infoWrong' id="snsAlert"></p>
                         <br>
-                        <button type="button" class="w3-btn w3-blue-grey" onclick="checkdata()">提交</button>
+                        <button type="button" class="w3-btn w3-blue-grey" onclick="checkData()">提交</button>
                         <br>
                     </form>
                 </div>
@@ -108,100 +75,7 @@
 
         </div>
     </div>
-    <script>
-       
-        function checkdata()
-        {
-            var isWrong = 0;
-            
-            var name = document.getElementById("nameBox").value;
-            var tele = document.getElementById("telBox").value;
-            var add = document.getElementById("addBox").value;
-            var sns = document.getElementById("snsBox").value;
-            
-            isWrong+= checkName(name);
-            isWrong+= checkTelephome(tele);
-            isWrong+= checkAddress(add);
-            isWrong+= checkSNS(sns);
-                
-            console.log("isWrong= "+isWrong);
-            
-            if (isWrong > 0) {
-                window.alert("資料有誤 請檢查");
-                console.log("資料有誤");
-            }
-            else {
-                $.ajax({
-                    url: '{% url "post-signup" %}',
-                    type: "POST",
-                    data: {'name': name, 'phone': tele, 'address': add, 'contact': sns, csrfmiddlewaretoken: '{{ csrf_token }}'},
-                    datatype: 'string',
-                    success: function(response) {
-                        console.log(response);
-                        location.href = '{% url "index" %}';
-                    }
-                });
-            }
-        }
-       
-        function checkName(name)
-        {
-            var nameErr = document.getElementById("nameAlert");
-            if(name == "")
-            {
-                nameErr.innerText = "名字不能為空白";
-                return 1;
-            }
-            else
-            {
-                nameErr.innerText = "";
-                return 0;
-            }
-        }
-        function checkTelephome(tele)
-        {
-            var passErr2 = document.getElementById("phoneAlert");
-            var numbers = /^[0-9]+$/;
-            if(tele.match(numbers))
-            {
-                passErr2.innerText = "";
-                return 0;
-            }
-            else
-            {
-                passErr2.innerText = "請輸入正確的電話號碼";
-                return 1;
-            }
-        }
-        function checkAddress(add)
-        {
-            var addErr = document.getElementById("addAlert");
-            if(add == "")
-            {
-                addErr.innerText = "地址不能為空白";
-                return 1;
-            }
-            else
-            {
-                addErr.innerText = "";
-                return 0;
-            }
-        }
-        function checkSNS(sns)
-        {
-            var snsErr = document.getElementById("snsAlert");
-            if(sns == "")
-            {
-                snsErr.innerText = "SNS不能為空白";
-                return 1;
-            }
-            else
-            {
-                snsErr.innerText = "";
-                return 0;
-            }
-        }
-        
-    </script>
 </body> 
+    <script src="{% static 'js/bar.js' %}"></script>
+    <script src="{% static 'js/SignUp' %}"> </script>
 </html>
