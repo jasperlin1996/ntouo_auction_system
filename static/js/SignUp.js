@@ -30,13 +30,13 @@ function checkData() {
     }
     else {
         $.ajax({
-            url: '{% url "post-signup" %}',
+            url: '/post-signup/',
             type: "POST",
             data: { 'name': name, 'phone': tele, 'address': add, 'contact': sns, csrfmiddlewaretoken: '{{ csrf_token }}' },
             datatype: 'string',
             success: function (response) {
                 console.log(response);
-                location.href = '{% url "index" %}';
+                location.href = '/index/';
             }
         });
     }

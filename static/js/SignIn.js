@@ -24,7 +24,7 @@ window.onorientationchange = function() { document.body.scrollTop = 0; }
                 // check info
                 var isUserFillAll;
                 var promise_checkUserData = new Promise(function(resolve, reject){
-                    resolve($.post('{% url "check-user-data" %}', {}, function(response) {
+                    resolve($.post('/checkuserdata/', {}, function(response) {
                         console.log('response: ' + response);
                         isUserFillAll = response;
                     }));
@@ -33,18 +33,18 @@ window.onorientationchange = function() { document.body.scrollTop = 0; }
                     console.log('check_response: ' + isUserFillAll);
                     
                     if (isUserFillAll == 'False') {
-                        location.href = '{% url "signup" %}';
+                        location.href = '/signup/';
                     }
                     else if (isUserFillAll == 'True') {
                         window.alert('login success');
-                        location.href = '{% url "index" %}';
+                        location.href = '/index/';
                     }
                 });
             }
         }
 
         function setSession(idToken) {
-            $.post('{% url "set-session" %}', { 'idToken': idToken }, function (response) {
+            $.post('/set-session/', { 'idToken': idToken }, function (response) {
                 console.log(response);
                 checkEmailVerified();
             });
@@ -112,7 +112,7 @@ window.onorientationchange = function() { document.body.scrollTop = 0; }
         //跳至註冊頁面
         function goPreSignup()
         {
-            location.href = " {% url 'pre-signup' %}" ;
+            location.href = "/presignup/" ;
         }
 
         $(".toggle-password").click(function () {
