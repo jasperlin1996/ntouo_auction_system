@@ -116,7 +116,7 @@ def getIdToken(request):
 @csrf_exempt
 def getUserName(request):
     name = ''
-    if 'idToken' in request.session:
+    if 'idToken' in request.session and request.session['idToken'] != '':
         user_id = _getUserId(request.session['idToken'])
         name = firestore_ops.getUserInfo(user_id)['name']
     return HttpResponse(name)

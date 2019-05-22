@@ -21,11 +21,14 @@ function memberCenter() {
 
 var isLoading = true;
 var spinner = document.getElementById("loader");
-var userStatus = "";
+var user_status = "";
 var status = false;
+var category;
 
 var getId = new Promise(function(resolve, reject) {
   getIdToken();
+  getName();
+  getCategory();
   setTimeout(function() {
     if (status)
       resolve("suceess");
@@ -39,20 +42,37 @@ var getId = new Promise(function(resolve, reject) {
 function getIdToken() {
 
   $.post('/getidtoken/', function(response) {
-    userStatus = response;
-    // console.log(userStatus);
-    status = true;
+    user_status = response;
+    if (user_status)
+      status = true;
+    else
+      status = false;
+
   });
-  // console.log("a");
-  // console.log(status);
+}
+
+function getName() {
+  $.post('/getusername/', function(response) {
+    user_name = response;
+    // console.log(userStatus);
+  });
+
+}
+
+function getCategory() {
+  $.post('/getcategory/', function(response) {
+    category = response.split(",");
+    console.log(category);
+  });
 }
 
 getId.then(function() {
   setBody();
-});
 
-getId.catch(function() {
-  goSignIn();
+  for (i = 0; i < category.length; i++) {
+    $("#myNavbar").append("<li><a data-toggle='tab' href='#'><img class='categorie categorie-" + i + "'>" + category[i] + "</a></li>");
+    console.log(category[i]);
+  }
 });
 
 function goSignIn() {
@@ -66,8 +86,7 @@ function setBody() {
   //上方bar
   var need;
   var need2;
-  console.log(userStatus);
-  if (!userStatus) {
+  if (status) {
     need =
       " <header class='header1'><img style='position:absolute;width:50px;height:50px;margin-left:10px;margin-top:5px;' src='/static/img/ntoulogo.png'><div style='margin-top:15px'><a id='sign'>海大拍賣</a><input type=button value='搜尋'  style='font-size:15px;'><input type='text' style='width:100px;'>" +
       "<span id='bar' class='bar' style='color:white; float: right;'><a onclick= index()" +
@@ -78,9 +97,9 @@ function setBody() {
     need =
       " <header class='header1'><img style='position:absolute;width:50px;height:50px;margin-left:10px;margin-top:5px;' src='/static/img/ntoulogo.png'><div style='margin-top:15px'><a id='sign'>海大拍賣</a><input type=button value='搜尋'  style='font-size:15px;'><input type='text' style='width:100px;'>" +
       "<span id='bar' class='bar' style='color:white; float: right;'><a onclick= index()" +
-      ">主頁面</a><a onclick='memberCenter()'>會員中心</a><a onclick='openCommand()'>意見回饋</a><a>瀏覽紀錄</a><a onclick='signOut()'> 登出</a><a>" + name + "</a><span></div></header>";
+      ">主頁面</a><a onclick='memberCenter()'>會員中心</a><a onclick='openCommand()'>意見回饋</a><a>瀏覽紀錄</a><a onclick='signOut()'> 登出</a><a>" + user_name + "</a><span></div></header>";
     need2 = "<span id='bar2'><a onclick= index()" +
-      ">主頁面</a><a onclick='memberCenter()'>會員中心</a><a onclick='openCommand()'>意見回饋</a><a>瀏覽紀錄</a><a onclick='signOut()'> 登出</a><a>" + name + "</a></span>";
+      ">主頁面</a><a onclick='memberCenter()'>會員中心</a><a onclick='openCommand()'>意見回饋</a><a>瀏覽紀錄</a><a onclick='signOut()'> 登出</a><a>" + user_name + "</a></span>";
   }
 
   $("#afterBut").after(need2);

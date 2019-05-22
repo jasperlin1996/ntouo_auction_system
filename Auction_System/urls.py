@@ -32,6 +32,8 @@ urlpatterns = [
     path('posttosell/', views.postToSell, name = 'post-to-sell'),
     path('signout/', views.signOut, name = 'signout'),
     path('getidtoken/', views.getIdToken, name = 'get-id-token'),
+    path('getusername/',views.getUserName, name = 'get-user-name'),
+    path('getcategory/',views.getCategory, name='get-category'),
     path('setsession/', views.setSession, name = 'set-session'),
     # path('', include('pwa.urls')),
     path('checkuserdata/', views.checkUserData, name = 'check-user-data'),
