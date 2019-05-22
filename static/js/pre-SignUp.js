@@ -52,7 +52,7 @@ function checkData() {
             firebase.auth().currentUser.sendEmailVerification().then(function () {
                 // Email sent.
                 window.alert('Please check verify email.');
-                location.href = '{% url "signin" %}';
+                location.href = '/signin/';
             }).catch(function (error) {
                 // An error happened.
             });
@@ -97,5 +97,5 @@ function checkPassword2(pass, pass2) {
     }
 }
 function goSignIn() {
-    location.href = " {% url 'signin' %}";
+    location.href = "/signin/";
 }
