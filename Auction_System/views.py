@@ -27,13 +27,7 @@ def _getUserId(idToken):
 
 def index(request):
     products = firestore_ops.getAllProductBasicInfo()
-
-    name = ''
-    if 'idToken' in request.session:
-        user_id = _getUserId(request.session['idToken'])
-        name = firestore_ops.getUserInfo(user_id)['name']
-
-    return render(request, 'index.html', {'products': products, 'name': name})
+    return render(request, 'index.html', {'products': products})
 
 def signIn(request):
     return render(request, 'SignIn.html')
@@ -118,6 +112,19 @@ def getIdToken(request):
     if 'idToken' not in request.session:
         request.session['idToken'] = ''
     return HttpResponse(request.session['idToken'])
+
+@csrf_exempt
+def getUserName(request):
+    name = ''
+    if 'idToken' in request.session:
+        user_id = _getUserId(request.session['idToken'])
+        name = firestore_ops.getUserInfo(user_id)['name']
+    return HttpResponse(name)
+
+@csrf_exempt
+def getCategory(request):
+    category = ['3C', '家具', '運動', '服飾', '娛樂', '精品', '交通工具', '生活用品', '食品', '書籍', '鞋子', '音樂', '電玩', '動漫', '其他']
+    return HttpResponse(','.join(category))
 
 @csrf_exempt
 def setSession(request):
