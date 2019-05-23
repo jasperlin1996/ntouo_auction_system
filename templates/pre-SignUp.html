@@ -13,6 +13,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="{% static 'css/signin.css' %}" />
+		<link rel="shortcut icon" href="{% static 'img/ntoulogo.png' %}"/>
     <link rel="stylesheet" href="{% static 'css/scrollbar.css' %}" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <noscript>
@@ -21,7 +22,7 @@
     <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-auth.js"></script>
-    
+
 </head>
 
 <body id="is-preload" onload="start()">
@@ -50,12 +51,12 @@
                             <label class="w3-text-white"><b>密碼(6-16位 以字母為首 英文數字及_構成的組合)</b></label>
                             <input class="w3-input w3-border w3-light-grey" type="password" id="passBox" maxlength="16" name="password">
                             <span toggle="#passBox" class="fa fa-fw fa-eye field-icon toggle-password" style="color:black;"></span>
-                            <p class='infoWrong' id="passAlert"></p>                    
+                            <p class='infoWrong' id="passAlert"></p>
                             <br>
                             <label class="w3-text-white"><b>確認密碼</b></label>
                             <input class="w3-input w3-border w3-light-grey" type="password" id="passBox2" maxlength="16">
                             <p class='infoWrong' id="passAlert2"></p>
-                            <br>       
+                            <br>
                         </div>
                         <p class='infoWrong' id="emailAlert"></p>
                         <br>
@@ -77,9 +78,9 @@
         </div>
     </div>
         <script>
-        
+
         </Script>
     </body>
         <script src="{% static 'js/bar.js' %}"></script>
-        <script src="{% static 'js/pre-SignUp' %}"> </script>
+        <script src="{% static 'js/pre-SignUp.js' %}"> </script>
     </html>

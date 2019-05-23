@@ -25,6 +25,7 @@ urlpatterns = [
     path('signin/', views.signIn, name = 'signin'),
     path('presignup/', views.preSignUp, name = 'pre-signup'),
     path('signup/', views.signUp, name = 'signup'),
+    path('trade/',views.trade,name='trade'),
     path('postsignup/', views.postSignUp, name = 'post-signup'),
     path('membercenter/', views.memberCenter, name = 'member-center'),
     path('updateuserinfo/', views.updateUserInfo, name = 'update-user-info'),

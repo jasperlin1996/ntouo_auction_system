@@ -38,6 +38,8 @@ def preSignUp(request):
 def signUp(request):
     return render(request, 'SignUp.html')
 
+def trade(request):
+    return render(request,'Trade.html')
 def postSignUp(request):
     user_id = _getUserId(request.session['idToken'])
 

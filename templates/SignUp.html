@@ -13,6 +13,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="{% static 'css/signin.css' %}" />
+    <link rel="shortcut icon" href="{% static 'img/ntoulogo.png' %}"/>
     <link rel="stylesheet" href="{% static 'css/scrollbar.css' %}" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <noscript>
@@ -24,6 +25,9 @@
 </head>
 
 <body id="is-preload" onload="start()">
+  <script>
+    var csrf_token = '{{ csrf_token }}';
+  </script>
     <div id="wrapper">
         <div id="bg"></div>
         <div id="overlay"></div>
@@ -75,7 +79,7 @@
 
         </div>
     </div>
-</body> 
+</body>
     <script src="{% static 'js/bar.js' %}"></script>
-    <script src="{% static 'js/SignUp' %}"> </script>
+    <script src="{% static 'js/SignUp.js' %}"> </script>
 </html>
