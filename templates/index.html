@@ -19,7 +19,6 @@
   </div>
 
   <body onload="start()">
-        {% csrf_token %}
         <nav class="nav navbar-default">
              <div class="container-fluid">
                  <div>
@@ -27,7 +26,7 @@
                       <span>商品分類</span>
                          <li><a data-toggle="tab" href="#"><img class="categorie categorie-1">3C</a></li>
                          <li><a data-toggle="tab" href="#"><img class="categorie categorie-2">家用品</a></li>
-                         <li><a data-tog      le="tab" href="#"><img class="categorie categorie-3">運動</a></li>
+                         <li><a data-toggle="tab" href="#"><img class="categorie categorie-3">運動</a></li>
                          <li><a data-toggle="tab" href="#"><img class="categorie categorie-4">服飾</a></li>
                          <li><a data-toggle="tab" href="#"><img class="categorie categorie-5">娛樂</a></li>
                          <li><a data-toggle="tab" href="#"><img class="categorie categorie-6">精品</a></li>
@@ -67,14 +66,14 @@
              </div>
          </div>
 
-        <form>
-          <div class="container-fluid">
-            <div id="row" class="row">
-              <div id="blank1" class="col-md-12"></div>
-              <div class="col-md-1"></div>
-            </div>
+      
+        <div class="container-fluid data">
+          <div id="row" class="row">
+            <div id="blank1" class="col-md-12"></div>
+            <div class="col-md-1"></div>
           </div>
-        </form>
+        </div>
+        
           <script>          //拿全部商品資訊  library型態  拿user是否登入token
 
             var products = {{ products | safe }};

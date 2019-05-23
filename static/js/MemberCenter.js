@@ -145,12 +145,12 @@ function hidePassword() {
 
 // 更改個人資訊
 function change() {
-    var temp = '<form method="POST" action="' + "/updateuserinfo/" + '" onsubmit="return checkForm()">\n' + csrf_token + '\n<table><tr><td>海大email</td><td>' + '123546@ntou'/*info.ntou_email*/ + '</td></tr>';
+    var temp = '<form method="POST" action="' + "/updateuserinfo/" + '" onsubmit="return checkForm()">\n' + csrf_token + '\n<table><tr><td>海大email</td><td>' + info.ntou_email + '</td></tr>';
     temp += '<tr><td>*密碼:</td><td>'/*輸入新密碼<input type="password" id="password" name="password" value="'*/ + info.password + /*'" required><br>確認密碼<input type="password" id="check" required><p id="error"></p>*/'</td></tr>';
-    temp += '<tr><td>*姓名:</td><td><input type="text" name="user_name" value="' + info.name + '" required></td></tr>';
-    temp += '<tr><td>電話:</td><td>' + info.phone + '<br><input type="tel" pattern="[0-9]{7,10}" name="phone"></td></tr>';
-    temp += '<tr><td>*地址:</td><td><input type="text" name="address" value="' + info.address + '" required></td></tr>';
-    temp += '<tr><td>其他聯絡方式:</td><td><input type="text" name="contact" value="' + info.contact + '"></td></tr>';
+    temp += '<tr><td>*姓名:</td><td><input type="text" name="user_name" style="float:left" value="' + info.name + '" required></td></tr>';
+    temp += '<tr><td>電話:</td><td><br><input type="tel" pattern="[0-9]{7,10}" name="phone" value="' + info.phone + '"></td></tr>';
+    temp += '<tr><td>*地址:</td><td><input type="text" name="address" style="float:left" value="' + info.address + '" required></td></tr>';
+    temp += '<tr><td>其他聯絡方式:</td><td><textarea rows="5" cols="50" name="contact">' + info.contact + '</textarea></td></tr>';
     temp += '<tr><td>購買評價:</td><td>' + info.buyer_rate + '</td></tr>';
     temp += '<tr><td>販賣評價:</td><td>' + info.seller_rate + '</td></tr>';
     var tp = info.tp_info;
@@ -167,6 +167,17 @@ function change() {
         }
     });
 }
+
+// 游標移入時更改選單背景顏色
+$(function(){
+    $('li').hover(function(){
+        // 游標移入
+        $(this).addClass('liCover');
+    },function(){
+        // 游標移出
+        $(this).removeClass('liCover');
+    });
+});
 
 function checkForm() {
     /*if(document.getElementById("check").value!=document.getElementById("password").value) {
