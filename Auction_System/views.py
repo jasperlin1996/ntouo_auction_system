@@ -38,8 +38,6 @@ def preSignUp(request):
 def signUp(request):
     return render(request, 'SignUp.html')
 
-def trade(request):
-    return render(request,'Trade.html')
 def postSignUp(request):
     user_id = _getUserId(request.session['idToken'])
 
@@ -53,12 +51,15 @@ def postSignUp(request):
 
     return HttpResponse('create new user success')
 
+def trade(request):
+    return render(request,'Trade.html')
+
 def memberCenter(request):
     if request.session['idToken'] == '':
         return redirect(signIn)
     user_id = _getUserId(request.session['idToken'])
     user_info = firestore_ops.getUserInfo(user_id)
-    return render(request, 'MemberCenter.html', {'user': user_info, 'name': user_info['name']})
+    return render(request, 'MemberCenter.html', {'user': user_info})
 
 def updateUserInfo(request):
     user_id = _getUserId(request.session['idToken'])
@@ -100,7 +101,6 @@ def postToSell(request):
         firestore_ops.addProduct(user_id, product_id, product)
     except Exception as e:
         print(e)
-        print('firestore_ops.addProduct error')
 
     return redirect(toSell)
 

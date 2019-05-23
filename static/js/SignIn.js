@@ -30,12 +30,12 @@ function checkEmailVerified() {
     var isUserFillAll;
     var promise_checkUserData = new Promise(function(resolve, reject) {
       resolve($.post('/checkuserdata/', {}, function(response) {
-        console.log('response: ' + response);
+        // console.log('response: ' + response);
         isUserFillAll = response;
       }));
     });
     promise_checkUserData.then(function() {
-      console.log('check_response: ' + isUserFillAll);
+      // console.log('check_response: ' + isUserFillAll);
 
       if (isUserFillAll == 'False') {
         location.href = '/signup/';
