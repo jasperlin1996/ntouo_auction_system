@@ -29,6 +29,20 @@ def _getUserId(idToken):
 def _checkIdToken(request):
     return ('idToken' not in request.session) or (request.session['idToken'] == '')
 
+def _imageSaveAndUpload(image, idToken):
+    with open(image.name, 'wb+') as file:
+        for chunk in image.chunks():
+            file.write(chunk)
+    storage.child(image.name).put(image.name, idToken)
+    return storage.child(image.name).get_url(idToken)
+
+def _hashProduct(product):
+    s = ('').join(product.values()) + str(datetime.datetime.now())
+    product_id = hash(s)
+    if product_id < 0:
+        product_id += sys.maxsize
+    return product_id
+
 def index(request):
     products = firestore_ops.getAllProductBasicInfo()
     return render(request, 'index.html', {'products': products})
@@ -98,10 +112,14 @@ def postToSell(request):
     if _checkIdToken(request):
         return redirect(signIn)
 
+    product = firestore_ops.createProductDict()
+
     user_id = _getUserId(request.session['idToken'])
 
-    product = firestore_ops.createProductDict()
-    # TODO read image
+    image = request.FILES['image']
+    image_url = _imageSaveAndUpload(image, request.session['idToken'])
+
+    product['images'].append(image_url)
     product['name'] = request.POST['product_name']
     product['trading_type'] = request.POST['trading_type']
     product['price'] = request.POST['price']
@@ -112,10 +130,7 @@ def postToSell(request):
     product['trading_method'] = request.POST['trading_method']
     product['deadline'] = request.POST['deadline']
 
-    s = ('').join(product.values()) + str(datetime.datetime.now())
-    product_id = hash(s)
-    if product_id < 0:
-        product_id += sys.maxsize
+    product_id = _hashProduct(product)
 
     try:
         firestore_ops.addProduct(user_id, product_id, product)
