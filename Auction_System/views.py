@@ -25,20 +25,33 @@ def _getUserId(idToken):
     user_id = user['users'][0]['localId']
     return user_id
 
+# if idToken doesn't exist, return True
+def _checkIdToken(request):
+    return ('idToken' not in request.session) or (request.session['idToken'] == '')
+
 def index(request):
     products = firestore_ops.getAllProductBasicInfo()
     return render(request, 'index.html', {'products': products})
 
 def signIn(request):
+    if not _checkIdToken(request):
+        return redirect(index)
     return render(request, 'SignIn.html')
 
 def preSignUp(request):
+    if _checkIdToken(request):
+        return redirect(signIn)
     return render(request, 'pre-SignUp.html')
 
 def signUp(request):
+    if _checkIdToken(request):
+        return redirect(signIn)
     return render(request, 'SignUp.html')
 
 def postSignUp(request):
+    if _checkIdToken(request):
+        return redirect(signIn)
+
     user_id = _getUserId(request.session['idToken'])
 
     user_info = firestore_ops.createUserDict()
@@ -55,13 +68,17 @@ def trade(request):
     return render(request,'Trade.html')
 
 def memberCenter(request):
-    if request.session['idToken'] == '':
+    if _checkIdToken(request):
         return redirect(signIn)
+
     user_id = _getUserId(request.session['idToken'])
     user_info = firestore_ops.getUserInfo(user_id)
     return render(request, 'MemberCenter.html', {'user': user_info})
 
 def updateUserInfo(request):
+    if _checkIdToken(request):
+        return redirect(signIn)
+
     user_id = _getUserId(request.session['idToken'])
 
     user_data = firestore_ops.createUserDict()
@@ -78,6 +95,9 @@ def toSell(request):
     return render(request, 'ToSell.html')
 
 def postToSell(request):
+    if _checkIdToken(request):
+        return redirect(signIn)
+
     user_id = _getUserId(request.session['idToken'])
 
     product = firestore_ops.createProductDict()
@@ -118,7 +138,7 @@ def getIdToken(request):
 @csrf_exempt
 def getUserName(request):
     name = ''
-    if 'idToken' in request.session and request.session['idToken'] != '':
+    if not _checkIdToken(request):
         user_id = _getUserId(request.session['idToken'])
         name = firestore_ops.getUserInfo(user_id)['name']
     return HttpResponse(name)
@@ -136,6 +156,8 @@ def setSession(request):
 
 @csrf_exempt
 def checkUserData(request):
-    user_id = _getUserId(request.session['idToken'])
-    isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
-    return HttpResponse(str(isUserFillAll))
+    isUserFillAll = False
+    if not _checkIdToken(request):
+        user_id = _getUserId(request.session['idToken'])
+        isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
+    return HttpResponse(isUserFillAll)
