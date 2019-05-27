@@ -5,7 +5,7 @@ import pyrebase
 from django.shortcuts import render, redirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from . import firestore_ops
-
+from django.http import JsonResponse #andy
 config = {
     "apiKey": "AIzaSyCF_Q4YD_W7FWb40pDU-NHW0ooYsnJWDUM",
     "authDomain": "auction-system-73960.firebaseapp.com",
@@ -62,6 +62,15 @@ def signUp(request):
         return redirect(signIn)
     return render(request, 'SignUp.html')
 
+def trade(request):                                 #andy
+    if _checkIdToken(request):
+        return redirect(signIn)
+
+    user_id = _getUserId(request.session['idToken'])
+    user_info = firestore_ops.getUserInfo(user_id)
+    seller = firestore_ops.getSellerInfo("andddddy")
+    return render(request,'Trade.html', {'user': user_info,'seller':seller})
+
 def postSignUp(request):
     if _checkIdToken(request):
         return redirect(signIn)
@@ -77,9 +86,6 @@ def postSignUp(request):
     firestore_ops.createNewUser(user_id, user_info)
 
     return HttpResponse('create new user success')
-
-def trade(request):
-    return render(request,'Trade.html')
 
 def memberCenter(request):
     if _checkIdToken(request):
@@ -176,3 +182,9 @@ def checkUserData(request):
         user_id = _getUserId(request.session['idToken'])
         isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
     return HttpResponse(isUserFillAll)
+
+@csrf_exempt                                            #andy
+def getProductDetails(request):
+    product = firestore_ops.getProduct("0007")
+
+    return JsonResponse(product)

@@ -82,11 +82,11 @@ function previousPage() {
 
 //換新頁面blank 的 css
 function changeblankCSS() {
-  if ($(window).width() > 1040) {
+  if ($(window).width() > 768) {
     $("#blank1").css('height', hei * 0.001 + "px");
-    $("#blank2").css('height', hei * 0.08 + "px");
+    $("#blank2").css('height', hei * 0.05 + "px");
   } else {
-    $("#blank1").css('height', hei * 0.05 + "px");
+    $("#blank1").css('height', hei * 0.15 + "px");
     $("#blank2").css('height', hei * 0.15 + "px");
   }
 }
@@ -97,15 +97,15 @@ $(function() {
     wid = $(window).width();
     page.style.left = (wid / 2) - (pageWidth / 2) + "px";
 
-    var barHeight = $(".header1").height();
-    $(".pos-f-t").css('top', barHeight + 'px');
-    $("#bar2").css('margin-left', 50 + "px");
-    $("#bar2").css('width', wid * 0.8 + "px");
+    // var barHeight = $(".header1").height();
+    // $(".pos-f-t").css('top', barHeight + 'px');
+    // $("#bar2").css('margin-left', 50 + "px");
+    // $("#bar2").css('width', wid * 0.8 + "px");
     changeblankCSS();
-    $("#loadspace").css('top', barHeight + "px");
-    if ($(window).width() < 1040) {
-      $("#loadspace").css('top', barHeight + 58 + "px");
-    }
+    // $("#loadspace").css('top', barHeight + "px");
+    // if ($(window).width() < 1040) {
+    //   $("#loadspace").css('top', barHeight + 58 + "px");
+    // }
 
   }).resize()
 });

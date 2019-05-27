@@ -1,0 +1,109 @@
+<html>
+{% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/trade.css' %}">
+  <link rel="shortcut icon" href="{% static 'img/ntoulogo.png' %}"/>
+  <script src="{% static 'js/jquery.js' %}"></script>
+  <head>
+    <title>交易頁面</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  </head>
+  <div id="loadspace">
+    <div id="loader" class="loader" >
+      <svg viewBox="0 0 32 32" width="32" height="32">
+        <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
+      </svg>
+    </div>
+  </div>
+  <script>
+    var info = {{ user | safe }};
+    var seller = {{ seller | safe }};
+  </script>
+  <body onload="start()">
+
+     <div class="container-fluid data">
+         <div class="row">
+           <div class="col-md-2"></div>
+             <div class="col-md-3">
+                 <div class="well">
+                     <div class="row">
+                         <div class=" col-md-4">
+                             <img src="{%static '/img/buyer.png' %}" alt="" class="img-rounded img-responsive" />
+                         </div>
+                         <div class="col-md-8">
+                             <h4 id='buyer'></h4>
+                             <small><cite id='buyer-address'></cite></small>
+
+                                 <section id='buyer-email'></section>
+                                 <section id='buyer-phone'></section>
+                                 <section id='buyer-contact'></section>
+
+                             <!-- Split button -->
+                            <!--  <div class="btn-group">
+                                 <button type="button" class="btn btn-primary">
+                                     Social</button>
+                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                     <span class="caret"></span><span class="sr-only">Social</span>
+                                 </button>
+                                 <ul class="dropdown-menu" role="menu">
+                                     <li><a href="#">Twitter</a></li>
+                                     <li><a href="https://plus.google.com/+Jquery2dotnet/posts">Google +</a></li>
+                                     <li><a href="https://www.facebook.com/jquery2dotnet">Facebook</a></li>
+                                     <li class="divider"></li>
+                                     <li><a href="#">Github</a></li>
+                                 </ul>
+                             </div> -->
+                         </div>
+                     </div>
+                 </div>
+             </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-3">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="{%static '/img/Seller.png' %}" alt="" class="img-rounded img-responsive" />
+                        </div>
+                        <div class="col-md-8">
+                            <h4 id='seller'></h4>
+                            <small><cite id='seller-address'></cite></small>
+
+                                 <section id='seller-email'></section>
+                                 <section id='seller-phone'></section>
+                                 <section id='seller-contact'></section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+         <div class="col-md-2"></div>
+         <div class="col-md-8">
+             <div class="well">
+                 <div class="row">
+                     <div class="col-md-4">
+                         <img id="product-url" src="http://placehold.it/380x400" alt="" class="img-rounded img-responsive">
+                     </div>
+                     <div class="col-md-8">
+                         <h4 id='product-name'></h4>
+                        <small><cite ></cite></small>
+
+                                 <section id='product-price'></section>
+                                 <section id='product-method'></section>
+                                 <section id='product-description'></section>
+                     </div>
+                 </div>
+             </div>
+         </div>
+         <div class="col-md-2"></div>
+          </div>
+     </div>
+
+  </body>
+  <script src="{% static 'js/bar.js' %}"></script>
+  <script src="{% static 'js/trade.js' %}"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </html>

@@ -3,6 +3,7 @@
   float:right;
   margin-left:10px;
   margin-right:10px;
+  border-bottom: dotted 1px;
 }
 
 #sign{
@@ -14,16 +15,16 @@ th
     border-width: 1px;
 }
 
-
-header input[type=text]
+.header1 input[type=text]
 {
+  margin-top: 5px;
   margin-left: 15px;
   height:20px;
   margin-right: 15px;
   font-size:10px;
 }
 
-input[type=button]
+#bar input[type=button]
 {
 	background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
 	background-color:#ffffff;
@@ -34,7 +35,7 @@ input[type=button]
 
 }
 
-input[type=button] , input[type = text]
+.header1 input[type=button] ,.header1 input[type = text]
 {
   float:right;
   margin-right:20px;
@@ -51,7 +52,7 @@ input[type=button] , input[type = text]
   left:0%;
   box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 9px 1px rgba(0, 0, 0, 0.12), 0 4px 2px -2px rgba(0, 0, 0, 0.2);
   will-change: transform;
-  z-index: 2;
+  z-index: 100;
 }
 
 .loader {
@@ -105,4 +106,89 @@ input[type=button] , input[type = text]
         -webkit-transform: rotate(45deg);
         transform: rotate(45deg);
       }
+}
+.categorie{ background-image:url(/static/img/pic.png); margin-left:5px;margin-right:10px;background-color:black;height:17px;width: 20px;}
+.categorie-1{background-position: -2px -1px}
+.categorie-2{background-position: 24px -60px}
+.categorie-3{background-position: 45px 0px}
+.categorie-4{background-position: -2px -120px}
+.categorie-5{background-position: -2px -220px}
+.categorie-6{background-position: 45px -240px}
+.categorie-7{background-position: 24px -40px}
+.categorie-8{background-position: 45px -60px}
+.categorie-9{background-position: 45px -140px}
+.categorie-10{background-position: -2px -160px}
+.categorie-11{background-position: 45px -160px}
+.categorie-12{background-position: 24px -20px}
+
+.pos-f-t
+{
+  position: fixed;
+  width: 100%;
+  top:10%;
+  font-size: 8px;
+  color:#343a40;
+}
+#bar2
+{
+  position: absolute;
+  color: white;
+  float: left;
+  z-index: 2;
+}
+#bar2 a{
+  font-size: 12px;
+  margin-right: 2px;
+  margin-left: 5px;
+  float:right;
+}
+
+#loadspace
+{
+  position: fixed;
+  background-color: white;
+  width: 100%;
+  height:91%;
+  z-index:100;
+}
+#myNavbar li
+{
+  margin-bottom: 10px;
+}
+
+.collapse li
+{
+    font-size:20px;
+}
+
+.collapsing
+{
+  font-size: 20px;
+}
+
+#afterBut
+{
+  z-index: 2;
+}
+
+#myNavbar a
+{
+  text-decoration: none;
+  color: black;
+}
+@media screen and (max-width:1040px)
+{
+  .bar
+  {
+    display: none;
+  }
+}
+@media screen and (min-width:1040px)
+{
+  .pos-f-t
+  {
+    display: none;
+    font-size:5px;
+  }
+
 }

@@ -1,6 +1,6 @@
 .row
 {
-  height:150px;
+  height:0px;
   /* max-width: 100%; */
   margin: auto;
 }
@@ -66,73 +66,10 @@ ul span
   margin-bottom: 10px;
 }
 
-#myNavbar li
+#blank1, #blank2
 {
-  margin-bottom: 10px;
+  z-index: -1;
 }
-
-.pos-f-t
-{
-  position: fixed;
-  width: 100%;
-  top:10%;
-  font-size: 8px;
-  color:#343a40;
-}
-
-.collapse li
-{
-
-    font-size:20px;
-}
-
-.collapsing
-{
-  font-size: 20px;
-}
-
-#bar2
-{
-  position: absolute;
-  color: white;
-  float: left;
-  z-index: 2;
-}
-#bar2 a{
-  font-size: 12px;
-  margin-right: 2px;
-  margin-left: 5px;
-  float:right;
-}
-
-#loadspace
-{
-  position: fixed;
-  background-color: white;
-  width: 100%;
-  height:91%;
-  z-index:100;
-}
-
-#myNavbar a
-{
-  text-decoration: none;
-  color: black;
-}
-
-.categorie{ background-image:url(/static/img/pic.png); margin-left:5px;margin-right:10px;background-color:black;height:17px;width: 20px;}
-.categorie-1{background-position: -2px -1px}
-.categorie-2{background-position: 24px -60px}
-.categorie-3{background-position: 45px 0px}
-.categorie-4{background-position: -2px -120px}
-.categorie-5{background-position: -2px -220px}
-.categorie-6{background-position: 45px -240px}
-.categorie-7{background-position: 24px -40px}
-.categorie-8{background-position: 45px -60px}
-.categorie-9{background-position: 45px -140px}
-.categorie-10{background-position: -2px -160px}
-.categorie-11{background-position: 45px -160px}
-.categorie-12{background-position: 24px -20px}
 
 @media screen and (max-width:1040px)
 {
@@ -140,10 +77,10 @@ ul span
   {
     display:none;
   }
-  .bar
+  /* .bar
   {
     display: none;
-  }
+  } */
   form{
     top:15%;
   }
@@ -179,7 +116,7 @@ ul span
   }
 }
 
-@media screen and (min-width:1040px)
+/* @media screen and (min-width:1040px)
 {
   .pos-f-t
   {
@@ -187,4 +124,4 @@ ul span
     font-size:5px;
   }
 
-}
+} */

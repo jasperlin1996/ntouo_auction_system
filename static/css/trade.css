@@ -1,0 +1,73 @@
+.data
+{
+    position: relative;
+    top:15%;
+    /*text-align: center;*/
+    z-index: -1;
+}
+
+body
+{
+	z-index: -1;
+}
+h4
+{
+	text-align: center;
+}
+
+.glyphicon
+{
+	margin-bottom: 10px;
+ 	margin-right: 10px;
+}
+
+small
+{
+	display: block;
+	line-height: 1.428571429;
+	color: #999;
+}
+
+#afterBut
+{
+	float:left;
+	position: absolute;
+	font-size: 2em;
+}
+#mySmallNavbar
+{
+  margin-top:-20px;
+}
+
+.col-md-3 .well
+{
+	height: 300px;
+}
+
+.col-md-8 .well
+{
+  height:300px;
+}
+
+img
+{
+	height: 200px;
+	width: 200px;
+}
+
+.row div img{
+  position: relative;
+}
+#buyer-contact
+{
+  word-wrap:break-word;
+}
+
+
+@media screen and (max-width:768px)
+{
+  img{
+    height:50px;
+    width:50px;
+  }
+}
