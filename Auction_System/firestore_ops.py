@@ -92,37 +92,6 @@ def getAllProductBasicInfo():
 
     return products_basic_info
 
-def getProductTradeInfo(product_id):
-    """
-    Args:
-        product (dict): All data of the products.
-    Return:
-        product_basic_info (dict): Return basic info we need, including
-        these elements:
-            {
-                'product_name',
-                'images',
-                'category',
-                'description',
-                'price',
-                'status',
-                'trading_method',
-                'trading_type',
-            }
-    """
-    product = getProduct(product_id)
-    products_trade_info = {
-        'product_name': product['product_name'],
-        'images': product['images'],
-        'category': product['category'],
-        'description': product['description'],
-        'price': product['price'],
-        'status': product['status'],
-        'trading_method': product['trading_method'],
-        'trading_type': product['trading_type'],
-    }
-    return products_trade_info
-
 def flattenDict(d):
     ret = {}
     try:
@@ -139,6 +108,7 @@ def flattenDict(d):
 
 
 def createProductDict():
+    time_format = '%Y-%m-%d %H:%M'
     product = {
         'product_name': '',
         'id': '',
@@ -152,7 +122,8 @@ def createProductDict():
         'current_price': 0,
         'price_per_mark': 0,
         'highest_buyer_id': '',
-        'deadline': datetime.datetime.now(),
+        'create_time': datetime.datetime.strptime(datetime.datetime.now().strftime(time_format), time_format),
+        'deadline': datetime.datetime.strptime((datetime.datetime.now() + datetime.timedelta(days = 7)).strftime(time_format), time_format),
         'images': [],
         'qas': [],
     }
@@ -165,7 +136,7 @@ def createUserDict():
         # 'password': '',
         'idToken': '',
         'user_name': '',
-        'ntou_email': '',
+        'email': '',
         'phone': '',
         'contact': '',
         'address': '',
@@ -177,6 +148,7 @@ def createUserDict():
         'bidding_items': [],
         'done_items': [],
         'onsale_items': [],
+        'dealing_items': [],
         'buyer_rate': 0,
         'seller_rate': 0,
     }

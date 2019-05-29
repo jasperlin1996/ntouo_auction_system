@@ -84,7 +84,7 @@ function previousPage() {
 function changeblankCSS() {
   if ($(window).width() > 768) {
     $("#blank1").css('height', hei * 0.001 + "px");
-    $("#blank2").css('height', hei * 0.05 + "px");
+    $("#blank2").css('height', hei * 0.1 + "px");
   } else {
     $("#blank1").css('height', hei * 0.15 + "px");
     $("#blank2").css('height', hei * 0.15 + "px");

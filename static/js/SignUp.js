@@ -3,19 +3,31 @@
     表單確認後執行
     確認輸入資料之正確性
 */
+var firebaseConfig = {
+  apiKey: "AIzaSyCF_Q4YD_W7FWb40pDU-NHW0ooYsnJWDUM",
+  authDomain: "auction-system-73960.firebaseapp.com",
+  databaseURL: "https://auction-system-73960.firebaseio.com",
+  projectId: "auction-system-73960",
+  storageBucket: "auction-system-73960.appspot.com",
+  messagingSenderId: "650872511305",
+  appId: "1:650872511305:web:8afe3f2f1c33b4f6"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
 function checkData() {
 
   //紀錄輸入資料是否有誤
   var isWrong = 0;
 
   //提出input資料
-  var name = document.getElementById("nameBox").value;
+  var user_name = document.getElementById("nameBox").value;
   var tele = document.getElementById("telBox").value;
   var add = document.getElementById("addBox").value;
   var sns = document.getElementById("snsBox").value;
 
   //呼叫其他檢查function
-  isWrong += checkName(name);
+  isWrong += checkName(user_name);
   isWrong += checkTelephome(tele);
   isWrong += checkAddress(add);
   isWrong += checkSNS(sns);
@@ -27,14 +39,26 @@ function checkData() {
     window.alert("資料有誤 請檢查");
     console.log("資料有誤");
   } else {
+    var email = '';
+    var providerId = '';
+    var uid = '';
+    if (firebase.auth().currentUser != null) {
+      var provider_data = firebase.auth().currentUser.providerData[0];
+      email = provider_data.email;
+      providerId = provider_data.providerId;
+      uid = provider_data.uid;
+    }
     $.ajax({
       url: '/postsignup/',
       type: "POST",
       data: {
-        'name': name,
+        'user_name': user_name,
         'phone': tele,
         'address': add,
         'contact': sns,
+        'email': email,
+        'provider': providerId,
+        'uid': uid,
         csrfmiddlewaretoken: csrf_token
       },
       datatype: 'string',

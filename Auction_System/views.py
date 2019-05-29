@@ -1,3 +1,4 @@
+import os
 import sys
 import django
 import datetime
@@ -31,18 +32,29 @@ def _checkIdToken(request):
     return ('idToken' not in request.session) or (request.session['idToken'] == '')
 
 def _imageSaveAndUpload(image, idToken):
-    with open(image.name, 'wb+') as file:
+    path = '/home/andy/.tmp/'
+    with open(os.path.join(path, image.name), 'wb+') as file:
         for chunk in image.chunks():
             file.write(chunk)
-    storage.child(image.name).put(image.name, idToken)
+    storage.child(image.name).put(os.path.join(path, image.name), idToken)
     return storage.child(image.name).get_url(idToken)
 
 def _hashProduct(product):
-    s = ('').join(product.values()) + str(datetime.datetime.now())
+    s = ''.join(map(str, product.values()))
     product_id = hash(s)
     if product_id < 0:
         product_id += sys.maxsize
     return product_id
+
+def _datetime2FrontendFormat(time):
+    # input (datetime): yyyy-mm-dd HH:MM:SS
+    # output (str): yyyy-mm-ddTHH:MM
+    return 'T'.join(str(time.strftime('%Y-%m-%d %H:%M')).split())
+
+def _frontendFormat2Datetime(time):
+    # input (str): yyyy-mm-ddTHH:MM
+    # output (datetime): yyyy-mm-dd HH:MM
+    return datetime.datetime.strptime(' '.join(time.split('T')), '%Y-%m-%d %H:%M')
 
 def index(request):
     products = firestore_ops.getAllProductBasicInfo()
@@ -54,8 +66,6 @@ def signIn(request):
     return render(request, 'SignIn.html')
 
 def preSignUp(request):
-    if _checkIdToken(request):
-        return redirect(signIn)
     return render(request, 'pre-SignUp.html')
 
 def signUp(request):
@@ -67,8 +77,11 @@ def trade(request):
     if _checkIdToken(request):
         return redirect(signIn)
 
-    product_id = request.POST['id'] # TODO post id to backend
-    product = firestore_ops.getProductTradeInfo(product_id)
+    product_id = '0008' # request.POST['id'] # TODO post id to backend
+    product = firestore_ops.getProduct(product_id)
+
+    product['create_time'] = _datetime2FrontendFormat(product['create_time'])
+    product['deadline'] = _datetime2FrontendFormat(product['deadline'])
 
     user_id = _getUserId(request.session['idToken'])
     user_info = firestore_ops.getUserInfo(user_id)
@@ -82,13 +95,23 @@ def postSignUp(request):
     if _checkIdToken(request):
         return redirect(signIn)
 
-    user_id = _getUserId(request.session['idToken'])
+    idToken  = request.session['idToken']
+    user_id = _getUserId(idToken)
 
     user_info = firestore_ops.createUserDict()
+
     user_info['user_name'] = request.POST['user_name']
     user_info['phone'] = request.POST['phone']
     user_info['address'] = request.POST['address']
     user_info['contact'] = request.POST['contact']
+    if 'email' in request.POST:
+        user_info['email'] = request.POST['email']
+        user_info['tp_info']['provider'] = request.POST['provider']
+        user_info['tp_info']['uid'] = request.POST['uid']
+    else:
+        user_info['email'] = auth.get_account_info(idToken)['users'][0]['providerUserInfo'][0]['email']
+    user_info['idToken'] = idToken
+    # TODO tp_info
 
     firestore_ops.createNewUser(user_id, user_info)
 
@@ -141,12 +164,12 @@ def postToSell(request):
     product['category'] = request.POST['category']
     product['description'] = request.POST['description']
     product['trading_method'] = request.POST['trading_method']
-    product['deadline'] = request.POST['deadline']
-
-    product_id = _hashProduct(product)
+    product['deadline'] = _frontendFormat2Datetime(request.POST['deadline'])
+    product['seller'] = user_id
+    product['id'] = _hashProduct(product)
 
     try:
-        firestore_ops.addProduct(user_id, product_id, product)
+        firestore_ops.addProduct(user_id, product['id'], product)
     except Exception as e:
         print(e)
 

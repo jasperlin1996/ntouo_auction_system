@@ -1,8 +1,8 @@
 // 顯示個人資訊頁面
 function person() {
-    var temp = '<table><tr><td>海大email</td><td>' + info.ntou_email + '</td></tr>';
+    var temp = '<table><tr><td>email</td><td>' + info.email + '</td></tr>';
     temp += '<tr><td>密碼:</td><td id="pass">********<input type="button" onclick="showPassword()" value="查看"></td></tr>';
-    temp += '<tr><td>姓名:</td><td>' + info.name + '</td></tr>';
+    temp += '<tr><td>姓名:</td><td>' + info.user_name + '</td></tr>';
     temp += '<tr><td>電話:</td><td>' + info.phone + '</td></tr>';
     temp += '<tr><td>地址:</td><td>' + info.address + '</td></tr>';
     temp += '<tr><td>其他聯絡方式:</td><td><textarea rows="5" cols="50" readonly>' + info.contact + '</textarea></td></tr>';
@@ -145,9 +145,9 @@ function hidePassword() {
 
 // 更改個人資訊
 function change() {
-    var temp = '<form method="POST" action="' + "/updateuserinfo/" + '" onsubmit="return checkForm()">\n' + csrf_token + '\n<table><tr><td>海大email</td><td>' + info.ntou_email + '</td></tr>';
+    var temp = '<form method="POST" action="' + "/updateuserinfo/" + '" onsubmit="return checkForm()">\n' + csrf_token + '\n<table><tr><td>email</td><td>' + info.email + '</td></tr>';
     temp += '<tr><td>*密碼:</td><td>'/*輸入新密碼<input type="password" id="password" name="password" value="'*/ + info.password + /*'" required><br>確認密碼<input type="password" id="check" required><p id="error"></p>*/'</td></tr>';
-    temp += '<tr><td>*姓名:</td><td><input type="text" name="user_name" style="float:left" value="' + info.name + '" required></td></tr>';
+    temp += '<tr><td>*姓名:</td><td><input type="text" name="user_name" style="float:left" value="' + info.user_name + '" required></td></tr>';
     temp += '<tr><td>電話:</td><td><br><input type="tel" pattern="[0-9]{7,10}" name="phone" value="' + info.phone + '"></td></tr>';
     temp += '<tr><td>*地址:</td><td><input type="text" name="address" style="float:left" value="' + info.address + '" required></td></tr>';
     temp += '<tr><td>其他聯絡方式:</td><td><textarea rows="5" cols="50" name="contact">' + info.contact + '</textarea></td></tr>';
@@ -157,7 +157,7 @@ function change() {
     temp += '<tr><td>第三方資訊</td><td>' + tp.provider + '</td></tr>';
     temp += '<tr><td></td><td><input type="submit" value="送出"><input type="button" onclick="person()" value="取消"></td></tr></table></form>';
     document.getElementById("content").innerHTML = temp;
-    
+
     $('#check').change(function(){
         if(document.getElementById("check").value!=document.getElementById("password").value){
             document.getElementById("error").innerHTML = '輸入與前者不符';
