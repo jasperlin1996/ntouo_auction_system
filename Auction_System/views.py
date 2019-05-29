@@ -67,7 +67,7 @@ def trade(request):
     if _checkIdToken(request):
         return redirect(signIn)
 
-    product_id = request.POST['id'] # TODO post id to backend
+    product_id = '0002'#request.POST['id'] # TODO post id to backend
     product = firestore_ops.getProduct(product_id)
     del product['qas']
     del product['deadline']
@@ -75,12 +75,12 @@ def trade(request):
     del product['id']
     del product['highest_buyer_id']
 
-    print(product)
+    # print(product)
 
     user_id = _getUserId(request.session['idToken'])
     user_info = firestore_ops.getUserInfo(user_id)
 
-    seller_id = product['seller_id'] # TODO save seller_id to database
+    seller_id =  "yl7ZEcyrDHRHeySNn1o0qg8Mpbm2" #product['seller'] # TODO save seller_id to database
     seller_info = firestore_ops.getUserInfo(seller_id)
 
     return render(request,'Trade.html', {'user': user_info, 'seller': seller_info, 'product': product})

@@ -9,6 +9,11 @@ $('#product-name').html(product.product_name + "(商品)");
 $('#product-url').attr("src", product.images[0]);
 $('#product-price').html("<i class='glyphicon glyphicon-usd'></i>" + product.price);
 $('#product-method').html("<i class='glyphicon glyphicon-thumbs-up'></i>" + product.trading_method);
+$('#product-category').html("<i class='glyphicon glyphicon-inbox'></i>" + product.category);
+if(product.status == 0)
+  $('#product-status').html("<i class='glyphicon glyphicon-tag'></i>待出售");
+if(product.trading_type == 0)
+  $('#product-type').html("<i class='glyphicon glyphicon-tag'></i>直購");
 $('#product-description').html("<i class='glyphicon glyphicon-comment'></i>" + product.description);
 
 

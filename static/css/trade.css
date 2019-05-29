@@ -4,13 +4,14 @@
     top:15%;
     /*text-align: center;*/
     z-index: -1;
+    font-size: 20px;
 }
 
 body
 {
 	z-index: -1;
 }
-h4
+h2
 {
 	text-align: center;
 }
@@ -41,7 +42,7 @@ small
 
 .col-md-3 .well
 {
-	height: 300px;
+	height: 400px;
 }
 
 .col-md-8 .well
@@ -53,6 +54,12 @@ img
 {
 	height: 200px;
 	width: 200px;
+}
+
+#shake
+{
+  margin-top: 150px;
+  width: 100%;
 }
 
 .row div img{
@@ -69,5 +76,10 @@ img
   img{
     height:50px;
     width:50px;
+  }
+
+  #shake
+  {
+    height: 200px;
   }
 }
