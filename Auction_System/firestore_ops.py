@@ -206,14 +206,3 @@ def checkUserInfoCompleteness(user_id):
 
 
 # --- Developing --- #
-def getSellerInfo(seller_id):           #andy
-
-    seller=[]
-    # ref = db.collection('users')
-    # for doc in ref.get():
-    #     temp = doc.id
-    #     seller.append(temp)
-
-    ref = db.collection('users').document("zDW2ZxyaBydnLxePKlOwpxvblZn1")
-    seller = ref.get().to_dict()
-    return seller

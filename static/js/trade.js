@@ -5,18 +5,6 @@ $('#buyer-email').html("<i class='glyphicon glyphicon-envelope'></i>" + info.ema
 $('#buyer-phone').html("<i class='glyphicon glyphicon-phone'></i>" + info.phone);
 $('#buyer-contact').html("<i class='glyphicon glyphicon-list-alt'></i>" + info.contact);
 
-
-$.ajax({
-  url: "/getproductdetails/",
-  type: 'POST',
-  cache: false,
-  async: false,
-  success: function(response) {
-    product = response;
-  }
-});
-console.log(product);
-
 $('#product-name').html(product.product_name + "(商品)");
 $('#product-url').attr("src", product.images[0]);
 $('#product-price').html("<i class='glyphicon glyphicon-usd'></i>" + product.price);

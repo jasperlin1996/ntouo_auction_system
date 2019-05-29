@@ -2,10 +2,11 @@ import sys
 import django
 import datetime
 import pyrebase
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from . import firestore_ops
-from django.http import JsonResponse #andy
+
 config = {
     "apiKey": "AIzaSyCF_Q4YD_W7FWb40pDU-NHW0ooYsnJWDUM",
     "authDomain": "auction-system-73960.firebaseapp.com",
@@ -62,14 +63,27 @@ def signUp(request):
         return redirect(signIn)
     return render(request, 'SignUp.html')
 
-def trade(request):                                 #andy
+def trade(request):
     if _checkIdToken(request):
         return redirect(signIn)
 
+    product_id = request.POST['id'] # TODO post id to backend
+    product = firestore_ops.getProduct(product_id)
+    del product['qas']
+    del product['deadline']
+    del product['create_time']
+    del product['id']
+    del product['highest_buyer_id']
+
+    print(product)
+
     user_id = _getUserId(request.session['idToken'])
     user_info = firestore_ops.getUserInfo(user_id)
-    seller = firestore_ops.getSellerInfo("andddddy")
-    return render(request,'Trade.html', {'user': user_info,'seller':seller})
+
+    seller_id = product['seller_id'] # TODO save seller_id to database
+    seller_info = firestore_ops.getUserInfo(seller_id)
+
+    return render(request,'Trade.html', {'user': user_info, 'seller': seller_info, 'product': product})
 
 def postSignUp(request):
     if _checkIdToken(request):
@@ -182,9 +196,3 @@ def checkUserData(request):
         user_id = _getUserId(request.session['idToken'])
         isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
     return HttpResponse(isUserFillAll)
-
-@csrf_exempt                                            #andy
-def getProductDetails(request):
-    product = firestore_ops.getProduct("0007")
-
-    return JsonResponse(product)
