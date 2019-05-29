@@ -73,6 +73,55 @@ def getProductBasicInfo(product):
         return product_basic_info
     return None
 
+# TODO getNProductBasicInfo(n)
+
+def getAllProductBasicInfo():
+    """
+    Return:
+        products_basic_info (dict): Basic info for all products.
+    """
+    products_basic_info = []
+    collection_ref = db.collection('products')
+
+    for doc in collection_ref.get():
+
+        product = getProduct(doc.id)
+        basic_info = getProductBasicInfo(product)
+        if basic_info != None:
+            products_basic_info.append(basic_info)
+
+    return products_basic_info
+
+def getProductTradeInfo(product_id):
+    """
+    Args:
+        product (dict): All data of the products.
+    Return:
+        product_basic_info (dict): Return basic info we need, including
+        these elements:
+            {
+                'product_name',
+                'images',
+                'category',
+                'description',
+                'price',
+                'status',
+                'trading_method',
+                'trading_type',
+            }
+    """
+    product = getProduct(product_id)
+    products_trade_info = {
+        'product_name': product['product_name'],
+        'images': product['images'],
+        'category': product['category'],
+        'description': product['description'],
+        'price': product['price'],
+        'status': product['status'],
+        'trading_method': product['trading_method'],
+        'trading_type': product['trading_type'],
+    }
+    return products_trade_info
 
 def flattenDict(d):
     ret = {}
@@ -91,7 +140,7 @@ def flattenDict(d):
 
 def createProductDict():
     product = {
-        'name': '',
+        'product_name': '',
         'id': '',
         'status': 0,
         'trading_type': 0,
@@ -115,7 +164,7 @@ def createUserDict():
         # 'account': '',
         # 'password': '',
         'idToken': '',
-        'name': '',
+        'user_name': '',
         'ntou_email': '',
         'phone': '',
         'contact': '',
@@ -145,23 +194,6 @@ def getProduct(product_id):
     product = ref.get().to_dict()
     return product
 
-
-def getAllProductBasicInfo():
-    """
-    Return:
-        products_basic_info (dict): Basic info for all products.
-    """
-    products_basic_info = []
-    collection_ref = db.collection('products')
-
-    for doc in collection_ref.get():
-
-        product = getProduct(doc.id)
-        basic_info = getProductBasicInfo(product)
-        if basic_info != None:
-            products_basic_info.append(basic_info)
-
-    return products_basic_info
 
 def changeProductStatus(user_id, product_id, status):
     pass
@@ -194,7 +226,7 @@ def checkUserInfoCompleteness(user_id):
     try:
         ref = db.collection('users').document(user_id)
         data = ref.get().to_dict()
-        if (data['name'] is not "") and \
+        if (data['user_name'] is not "") and \
             (data['phone'] is not "") and \
             (data['address'] is not "") and \
             (data['contact'] is not ""):
