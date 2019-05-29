@@ -67,20 +67,13 @@ def trade(request):
     if _checkIdToken(request):
         return redirect(signIn)
 
-    product_id = '0002'#request.POST['id'] # TODO post id to backend
-    product = firestore_ops.getProduct(product_id)
-    del product['qas']
-    del product['deadline']
-    del product['create_time']
-    del product['id']
-    del product['highest_buyer_id']
-
-    # print(product)
+    product_id = request.POST['id'] # TODO post id to backend
+    product = firestore_ops.getProductTradeInfo(product_id)
 
     user_id = _getUserId(request.session['idToken'])
     user_info = firestore_ops.getUserInfo(user_id)
 
-    seller_id =  "yl7ZEcyrDHRHeySNn1o0qg8Mpbm2" #product['seller'] # TODO save seller_id to database
+    seller_id = product['seller']
     seller_info = firestore_ops.getUserInfo(seller_id)
 
     return render(request,'Trade.html', {'user': user_info, 'seller': seller_info, 'product': product})
@@ -92,7 +85,7 @@ def postSignUp(request):
     user_id = _getUserId(request.session['idToken'])
 
     user_info = firestore_ops.createUserDict()
-    user_info['name'] = request.POST['name']
+    user_info['user_name'] = request.POST['user_name']
     user_info['phone'] = request.POST['phone']
     user_info['address'] = request.POST['address']
     user_info['contact'] = request.POST['contact']
@@ -116,7 +109,7 @@ def updateUserInfo(request):
     user_id = _getUserId(request.session['idToken'])
 
     user_data = firestore_ops.createUserDict()
-    user_data['name'] = request.POST['user_name']
+    user_data['user_name'] = request.POST['user_name']
     user_data['phone'] = request.POST['phone']
     user_data['address'] = request.POST['address']
     user_data['contact'] = request.POST['contact']
@@ -140,7 +133,7 @@ def postToSell(request):
     image_url = _imageSaveAndUpload(image, request.session['idToken'])
 
     product['images'].append(image_url)
-    product['name'] = request.POST['product_name']
+    product['product_name'] = request.POST['product_name']
     product['trading_type'] = request.POST['trading_type']
     product['price'] = request.POST['price']
     product['current_price'] = request.POST['current_price']
@@ -172,11 +165,11 @@ def getIdToken(request):
 
 @csrf_exempt
 def getUserName(request):
-    name = ''
+    user_name = ''
     if not _checkIdToken(request):
         user_id = _getUserId(request.session['idToken'])
-        name = firestore_ops.getUserInfo(user_id)['name']
-    return HttpResponse(name)
+        user_name = firestore_ops.getUserInfo(user_id)['user_name']
+    return HttpResponse(user_name)
 
 @csrf_exempt
 def getCategory(request):
