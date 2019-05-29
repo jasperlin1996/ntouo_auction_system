@@ -32,7 +32,7 @@ def _checkIdToken(request):
     return ('idToken' not in request.session) or (request.session['idToken'] == '')
 
 def _imageSaveAndUpload(image, idToken):
-    path = '/home/andy/.tmp/'
+    path = '../.tmp/'
     with open(os.path.join(path, image.name), 'wb+') as file:
         for chunk in image.chunks():
             file.write(chunk)
@@ -66,12 +66,36 @@ def signIn(request):
     return render(request, 'SignIn.html')
 
 def preSignUp(request):
+    if not _checkIdToken(request):
+        return redirect(index)
     return render(request, 'pre-SignUp.html')
 
 def signUp(request):
     if _checkIdToken(request):
         return redirect(signIn)
     return render(request, 'SignUp.html')
+
+def postSignUp(request):
+    if _checkIdToken(request):
+        return redirect(signIn)
+
+    idToken  = request.session['idToken']
+    user_id = _getUserId(idToken)
+
+    user_info = firestore_ops.createUserDict()
+
+    user_info['user_name'] = request.POST['user_name']
+    user_info['phone'] = request.POST['phone']
+    user_info['address'] = request.POST['address']
+    user_info['contact'] = request.POST['contact']
+    user_info['email'] = request.POST['email']
+    user_info['tp_info']['provider'] = request.POST['provider']
+    user_info['tp_info']['uid'] = request.POST['uid']
+    user_info['idToken'] = idToken
+
+    firestore_ops.createNewUser(user_id, user_info)
+
+    return HttpResponse('create new user success')
 
 def trade(request):
     if _checkIdToken(request):
@@ -90,32 +114,6 @@ def trade(request):
     seller_info = firestore_ops.getUserInfo(seller_id)
 
     return render(request,'Trade.html', {'user': user_info, 'seller': seller_info, 'product': product})
-
-def postSignUp(request):
-    if _checkIdToken(request):
-        return redirect(signIn)
-
-    idToken  = request.session['idToken']
-    user_id = _getUserId(idToken)
-
-    user_info = firestore_ops.createUserDict()
-
-    user_info['user_name'] = request.POST['user_name']
-    user_info['phone'] = request.POST['phone']
-    user_info['address'] = request.POST['address']
-    user_info['contact'] = request.POST['contact']
-    if 'email' in request.POST:
-        user_info['email'] = request.POST['email']
-        user_info['tp_info']['provider'] = request.POST['provider']
-        user_info['tp_info']['uid'] = request.POST['uid']
-    else:
-        user_info['email'] = auth.get_account_info(idToken)['users'][0]['providerUserInfo'][0]['email']
-    user_info['idToken'] = idToken
-    # TODO tp_info
-
-    firestore_ops.createNewUser(user_id, user_info)
-
-    return HttpResponse('create new user success')
 
 def memberCenter(request):
     if _checkIdToken(request):
@@ -178,7 +176,7 @@ def postToSell(request):
 def signOut(request):
     request.session['idToken'] = ''
     django.contrib.auth.logout(request)
-    return redirect(index)
+    return render(request, 'SignOut.html')
 
 @csrf_exempt
 def getIdToken(request):

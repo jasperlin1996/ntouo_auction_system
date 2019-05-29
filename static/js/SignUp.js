@@ -39,12 +39,11 @@ function checkData() {
     window.alert("資料有誤 請檢查");
     console.log("資料有誤");
   } else {
-    var email = '';
+    var provider_data = firebase.auth().currentUser.providerData[0];
+    var email = provider_data.email;
     var providerId = '';
     var uid = '';
-    if (firebase.auth().currentUser != null) {
-      var provider_data = firebase.auth().currentUser.providerData[0];
-      email = provider_data.email;
+    if (provider_data.providerId != 'password') {
       providerId = provider_data.providerId;
       uid = provider_data.uid;
     }

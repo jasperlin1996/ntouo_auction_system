@@ -1,0 +1,26 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.11.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-auth.js"></script>
+<script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyCF_Q4YD_W7FWb40pDU-NHW0ooYsnJWDUM",
+        authDomain: "auction-system-73960.firebaseapp.com",
+        databaseURL: "https://auction-system-73960.firebaseio.com",
+        projectId: "auction-system-73960",
+        storageBucket: "auction-system-73960.appspot.com",
+        messagingSenderId: "650872511305",
+        appId: "1:650872511305:web:8afe3f2f1c33b4f6"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    firebase.auth().signOut().then(function() {
+        // Sign-out successful.
+        location.href = '/index/';
+    }).catch(function(error) {
+        // An error happened.
+        console.log('signout failed.');
+    });
+</script>

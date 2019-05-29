@@ -30,12 +30,10 @@ function checkEmailVerified() {
     var isUserFillAll;
     var promise_checkUserData = new Promise(function(resolve, reject) {
       resolve($.post('/checkuserdata/', {}, function(response) {
-        // console.log('response: ' + response);
         isUserFillAll = response;
       }));
     });
     promise_checkUserData.then(function() {
-      // console.log('check_response: ' + isUserFillAll);
 
       if (isUserFillAll == 'False') {
         location.href = '/signup/';
@@ -51,7 +49,6 @@ function setSession(idToken) {
   $.post('/setsession/', {
     'idToken': idToken
   }, function(response) {
-    console.log(response);
     checkEmailVerified();
   });
 }
@@ -79,7 +76,6 @@ function googleSignIn() {
     // The signed-in user info.
     var user = result.user;
     // ...
-    console.log(firebase.auth().currentUser.email);
     checkLoginUser();
   }).catch(function(error) {
     // Handle Errors here.
@@ -97,7 +93,6 @@ function googleSignIn() {
 function doLogIn() {
   var email = document.getElementById('accBox').value;
   var password = document.getElementById('passBox').value;
-  console.log("Check LogIn");
   // TODO post // 把密碼和帳號丟到DB檢查
   firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
     // Handle Errors here.
@@ -107,7 +102,6 @@ function doLogIn() {
     window.alert(errorMessage);
     return -1;
   }).then(function(response) {
-    console.log(response);
     if (response != -1) {
       checkLoginUser();
     }
