@@ -44,7 +44,7 @@ def _hashProduct(product):
     product_id = hash(s)
     if product_id < 0:
         product_id += sys.maxsize
-    return product_id
+    return str(product_id)
 
 def _datetime2FrontendFormat(time):
     # input (datetime): yyyy-mm-dd HH:MM:SS
@@ -164,7 +164,7 @@ def postToSell(request):
     product['trading_method'] = request.POST['trading_method']
     product['deadline'] = _frontendFormat2Datetime(request.POST['deadline'])
     product['seller'] = user_id
-    product['id'] = str(_hashProduct(product))
+    product['id'] = _hashProduct(product)
 
     try:
         firestore_ops.addProduct(user_id, product['id'], product)
