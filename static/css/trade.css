@@ -4,7 +4,7 @@
     top:15%;
     /*text-align: center;*/
     z-index: -1;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 body
@@ -40,14 +40,14 @@ small
   margin-top:-20px;
 }
 
-.col-md-3 .well
+.col-md-4  .well
 {
-	height: 400px;
+	height: 40%;
 }
 
 .col-md-8 .well
 {
-  height:300px;
+  height:50%;
 }
 
 img
@@ -64,7 +64,22 @@ img
 
 .row div img{
   position: relative;
+
 }
+
+.row{
+  height:100%;
+}
+
+#product-url{
+  position: absolute;
+            margin: auto;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+}
+
 #buyer-contact
 {
   word-wrap:break-word;

@@ -164,7 +164,7 @@ def postToSell(request):
     product['trading_method'] = request.POST['trading_method']
     product['deadline'] = _frontendFormat2Datetime(request.POST['deadline'])
     product['seller'] = user_id
-    product['id'] = _hashProduct(product)
+    product['id'] = str(_hashProduct(product))
 
     try:
         firestore_ops.addProduct(user_id, product['id'], product)

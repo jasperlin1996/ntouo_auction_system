@@ -6,6 +6,12 @@
   border-bottom: dotted 1px;
 }
 
+#bar a:hover , #sign:hover
+{
+  color:rgba(200,200,200,0.8);
+}
+
+
 #sign{
   margin-left: 70px;
 }
