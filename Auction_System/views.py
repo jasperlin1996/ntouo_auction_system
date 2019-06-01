@@ -27,33 +27,58 @@ def _getUserId(idToken):
     user_id = user['users'][0]['localId']
     return user_id
 
-# if idToken doesn't exist, return True
 def _checkIdToken(request):
-    return ('idToken' not in request.session) or (request.session['idToken'] == '')
+    '''
+        Returns:
+            (bool): check whether idToken exist
+                exist => True
+                doesn't exist => False
+    '''
+    try:
+        idToken = request.session['idToken']
+        user = auth.get_account_info(idToken)
+        return True
+    except:
+        request.session['idToken'] = ''
+    return False
 
-def _imageSaveAndUpload(image, idToken):
+def _imageSaveAndUpload(filename, image, idToken):
     path = '../.tmp/'
-    with open(os.path.join(path, image.name), 'wb+') as file:
+    with open(os.path.join(path, filename), 'wb+') as file:
         for chunk in image.chunks():
             file.write(chunk)
-    storage.child(image.name).put(os.path.join(path, image.name), idToken)
-    return storage.child(image.name).get_url(idToken)
+    storage.child(filename).put(os.path.join(path, filename), idToken)
+    return storage.child(filename).get_url(idToken)
 
 def _hashProduct(product):
-    s = ''.join(map(str, product.values()))
+    '''
+        Args:
+            product (dict): product info
+        Returns:
+            product_id (str): if product info isn't False, concat with str type and hash
+    '''
+    s = ''.join(map(lambda x: str(x) if x else '', product.values()))
     product_id = hash(s)
     if product_id < 0:
         product_id += sys.maxsize
     return str(product_id)
 
 def _datetime2FrontendFormat(time):
-    # input (datetime): yyyy-mm-dd HH:MM:SS
-    # output (str): yyyy-mm-ddTHH:MM
+    '''
+        Args:
+            time (datetime): %Y-%m-%d %H:%M:%S (yyyy-mm-dd HH:MM:SS)
+        Returns:
+            (str): %Y-%m-%dT%H:%M (yyyy-mm-ddTHH:MM)
+    '''
     return 'T'.join(str(time.strftime('%Y-%m-%d %H:%M')).split())
 
 def _frontendFormat2Datetime(time):
-    # input (str): yyyy-mm-ddTHH:MM
-    # output (datetime): yyyy-mm-dd HH:MM
+    '''
+        Args:
+            time (str): %Y-%m-%dT%H:%M (yyyy-mm-ddTHH:MM)
+        Returns:
+            (datetime): %Y-%m-%d %H:%M (yyyy-mm-dd HH:MM)
+    '''
     return datetime.datetime.strptime(' '.join(time.split('T')), '%Y-%m-%d %H:%M')
 
 def index(request):
@@ -61,22 +86,22 @@ def index(request):
     return render(request, 'index.html', {'products': products})
 
 def signIn(request):
-    if not _checkIdToken(request):
+    if _checkIdToken(request):
         return redirect(index)
     return render(request, 'SignIn.html')
 
 def preSignUp(request):
-    if not _checkIdToken(request):
+    if _checkIdToken(request):
         return redirect(index)
     return render(request, 'pre-SignUp.html')
 
 def signUp(request):
-    if _checkIdToken(request):
+    if not _checkIdToken(request):
         return redirect(signIn)
     return render(request, 'SignUp.html')
 
 def postSignUp(request):
-    if _checkIdToken(request):
+    if not _checkIdToken(request):
         return redirect(signIn)
 
     idToken  = request.session['idToken']
@@ -98,7 +123,7 @@ def postSignUp(request):
     return HttpResponse('create new user success')
 
 def trade(request):
-    if _checkIdToken(request):
+    if not _checkIdToken(request):
         return redirect(signIn)
 
     product_id = '0008' # request.POST['id'] # TODO post id to backend
@@ -116,7 +141,7 @@ def trade(request):
     return render(request,'Trade.html', {'user': user_info, 'seller': seller_info, 'product': product})
 
 def memberCenter(request):
-    if _checkIdToken(request):
+    if not _checkIdToken(request):
         return redirect(signIn)
 
     user_id = _getUserId(request.session['idToken'])
@@ -124,7 +149,7 @@ def memberCenter(request):
     return render(request, 'MemberCenter.html', {'user': user_info})
 
 def updateUserInfo(request):
-    if _checkIdToken(request):
+    if not _checkIdToken(request):
         return redirect(signIn)
 
     user_id = _getUserId(request.session['idToken'])
@@ -140,20 +165,19 @@ def updateUserInfo(request):
     return redirect(memberCenter)
 
 def toSell(request):
+    if not _checkIdToken(request):
+        return redirect(signIn)
+
     return render(request, 'ToSell.html')
 
 def postToSell(request):
-    if _checkIdToken(request):
+    if not _checkIdToken(request):
         return redirect(signIn)
 
     product = firestore_ops.createProductDict()
 
     user_id = _getUserId(request.session['idToken'])
 
-    image = request.FILES['image']
-    image_url = _imageSaveAndUpload(image, request.session['idToken'])
-
-    product['images'].append(image_url)
     product['product_name'] = request.POST['product_name']
     product['trading_type'] = request.POST['trading_type']
     product['price'] = request.POST['price']
@@ -165,6 +189,12 @@ def postToSell(request):
     product['deadline'] = _frontendFormat2Datetime(request.POST['deadline'])
     product['seller'] = user_id
     product['id'] = _hashProduct(product)
+
+    image = request.FILES['image']
+    filename = product['id'] + '_' + str(len(product['images'])) + '.' + image.name.split('.')[-1]
+    image_url = _imageSaveAndUpload(filename, image, request.session['idToken'])
+
+    product['images'].append(image_url)
 
     try:
         firestore_ops.addProduct(user_id, product['id'], product)
@@ -187,7 +217,7 @@ def getIdToken(request):
 @csrf_exempt
 def getUserName(request):
     user_name = ''
-    if not _checkIdToken(request):
+    if _checkIdToken(request):
         user_id = _getUserId(request.session['idToken'])
         user_name = firestore_ops.getUserInfo(user_id)['user_name']
     return HttpResponse(user_name)
@@ -206,7 +236,7 @@ def setSession(request):
 @csrf_exempt
 def checkUserData(request):
     isUserFillAll = False
-    if not _checkIdToken(request):
+    if _checkIdToken(request):
         user_id = _getUserId(request.session['idToken'])
         isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
-    return HttpResponse(isUserFillAll)
+    return HttpResponse(isUserFillAll) # TODO return json
