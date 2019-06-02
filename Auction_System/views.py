@@ -203,6 +203,11 @@ def postToSell(request):
 
     return redirect(toSell)
 
+@csrf_exempt
+def postProductId(request):             #andy
+    product_id = request.POST['id']
+    return HttpResponse(product_id)
+
 def signOut(request):
     request.session['idToken'] = ''
     django.contrib.auth.logout(request)

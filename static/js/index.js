@@ -59,13 +59,38 @@ function GetProducts(index) {
     }
     product_count++;
     if (i == ((index - 1) * 20 + numOfProduct) - 1)
-      $("#row").append("<div class='col-md-2'><img onload='start()' src='" + products[i].images[0] + "' %}' class='img-thumbnail img' alt=" + products[i].product_name + "><p>" + products[i].product_name + "</p></div>");
+      $("#row").append("<div class='col-md-2'><img onload='start()' id='"+ products[i].id + "' src='" + products[i].images[0] + "' %}' class='img-thumbnail img' alt=" + products[i].product_name + "><p>" + products[i].product_name + "</p></div>");
     else
-      $("#row").append("<div class='col-md-2'><img src='" + products[i].images[0] + "' %}' class='img-thumbnail img' alt=" + products[i].product_name + "><p>" + products[i].product_name + "</p></div>");
+      $("#row").append("<div class='col-md-2'><img id='"+ products[i].id +"' src='" + products[i].images[0] + "' %}' class='img-thumbnail img' alt=" + products[i].product_name + "><p>" + products[i].product_name + "</p></div>");
   }
   $("#row").append("<div id='blank2' class='col-md-12'></div>");
   changeblankCSS();
+  $('.col-md-2').on('mousedown',function()
+  {
+    var myproductid = $(this).children()[0].id;
+    $.ajax(
+      {
+        url:"/postproductid/",
+        type:'POST',
+        data:{'id':myproductid},
+        cache:false,
+        async:false,
+        success:function(response)
+        {
+          console.log("post id "+response);
+        }
+      });
+
+  });
+
 }
+
+
+function test()
+{
+  console.log("@2");
+}
+
 
 // >>的函式
 function nextPage() {
@@ -96,16 +121,7 @@ $(function() {
   $(window).resize(function() {
     wid = $(window).width();
     page.style.left = (wid / 2) - (pageWidth / 2) + "px";
-
-    // var barHeight = $(".header1").height();
-    // $(".pos-f-t").css('top', barHeight + 'px');
-    // $("#bar2").css('margin-left', 50 + "px");
-    // $("#bar2").css('width', wid * 0.8 + "px");
     changeblankCSS();
-    // $("#loadspace").css('top', barHeight + "px");
-    // if ($(window).width() < 1040) {
-    //   $("#loadspace").css('top', barHeight + 58 + "px");
-    // }
 
   }).resize()
 });

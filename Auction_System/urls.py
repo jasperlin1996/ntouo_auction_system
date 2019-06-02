@@ -31,6 +31,7 @@ urlpatterns = [
     path('updateuserinfo/', views.updateUserInfo, name = 'update-user-info'),
     path('tosell/', views.toSell, name = 'to-sell'),
     path('posttosell/', views.postToSell, name = 'post-to-sell'),
+    path('postproductid/',views.postProductId, name ='post-product-id'),     #andy
     path('signout/', views.signOut, name = 'signout'),
     path('getidtoken/', views.getIdToken, name = 'get-id-token'),
     path('getusername/', views.getUserName, name = 'get-user-name'),

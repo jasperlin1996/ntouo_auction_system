@@ -34,6 +34,7 @@ $("body").prepend("<div class='pos-f-t'><nav  class='navbar navbar-dark bg-dark'
   "<div class='bg-dark'>" +
   "<ul id='mySmallNavbar'></ul><br></div></div></div>");
 
+
 $.ajax({
   url: "/getusername/",
   type: 'POST',
