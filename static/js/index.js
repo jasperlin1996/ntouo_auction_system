@@ -29,6 +29,7 @@ while ((products_length / 20) > 0) {
 pagecount--; //最後多加的扣掉
 
 GetProducts(1);
+
 //更換頁面
 function GetProducts(index) {
   //  loading
@@ -50,7 +51,6 @@ function GetProducts(index) {
     numOfProduct = 20;
   else
     numOfProduct = products.length - (index - 1) * 20;
-
   $("#row").html("<div id='blank1' class='col-md-12'></div><div class='col-md-1'></div>");
   for (var i = ((index - 1) * 20); i < ((index - 1) * 20 + numOfProduct); i++) {
     if (product_count == 5) {
@@ -84,13 +84,6 @@ function GetProducts(index) {
   });
 
 }
-
-
-function test()
-{
-  console.log("@2");
-}
-
 
 // >>的函式
 function nextPage() {

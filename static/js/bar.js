@@ -14,6 +14,11 @@ function signOut() {
   return (location.href = '/signout').toString();
 }
 
+// function goSignIn() {
+//   location.href = "{% url 'signin' %}";
+// }
+
+
 function memberCenter() {
   return (location.href = '/membercenter').toString();
 }
@@ -25,6 +30,7 @@ var user_name = "";
 var user_status = false;
 var category;
 
+//增加縮小視窗後的bar
 $("body").prepend("<div class='pos-f-t'><nav  class='navbar navbar-dark bg-dark'>" +
   "<button id='afterBut' class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarToggleExternalContent' aria-controls='navbarToggleExternalContent' aria-expanded='false' aria-label='Toggle navigation'>" +
   "<span class='navbar-toggler-icon'></span>" +
@@ -34,7 +40,7 @@ $("body").prepend("<div class='pos-f-t'><nav  class='navbar navbar-dark bg-dark'
   "<div class='bg-dark'>" +
   "<ul id='mySmallNavbar'></ul><br></div></div></div>");
 
-
+//拿到username
 $.ajax({
   url: "/getusername/",
   type: 'POST',
@@ -45,6 +51,7 @@ $.ajax({
   }
 });
 
+//拿到idtoken
 $.ajax({
   url: "/getidtoken/",
   type: 'POST',
@@ -56,6 +63,7 @@ $.ajax({
   }
 });
 
+//拿到分類表
 $.ajax({
   url: "/getcategory/",
   type: 'POST',
@@ -67,11 +75,6 @@ $.ajax({
 });
 
 setBody();
-
-
-function goSignIn() {
-  location.href = "{% url 'signin' %}";
-}
 
 function setBody() {
   for (i = 0; i < category.length; i++) {

@@ -14,6 +14,12 @@
   border-radius: 20px;
 }
 
+.row div[class=col-md-2]:hover
+{
+  background-color: rgba(0,0,0,0.5);
+  cursor:pointer;
+}
+
 .row div p
 {
   position: absolute;   /*手機版關掉*/
