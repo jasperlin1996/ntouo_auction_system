@@ -122,11 +122,10 @@ def postSignUp(request):
 
     return HttpResponse('create new user success')
 
-def trade(request):
+def trade(request, product_id):
     if not _checkIdToken(request):
         return redirect(signIn)
 
-    product_id = '0008' # request.POST['id'] # TODO post id to backend
     product = firestore_ops.getProduct(product_id)
 
     product['create_time'] = _datetime2FrontendFormat(product['create_time'])
@@ -203,15 +202,16 @@ def postToSell(request):
 
     return redirect(toSell)
 
-@csrf_exempt
-def postProductId(request):             #andy
-    product_id = request.POST['id']
-    return HttpResponse(product_id)
-
 def signOut(request):
     request.session['idToken'] = ''
     django.contrib.auth.logout(request)
     return render(request, 'SignOut.html')
+
+@csrf_exempt
+def postProductId2Product(request):
+    product_id = request.POST['id']
+    # TODO redirect to Product.html
+    return HttpResponse(product_id)
 
 @csrf_exempt
 def getIdToken(request):

@@ -70,7 +70,7 @@ function GetProducts(index) {
     var myproductid = $(this).children()[0].id;
     $.ajax(
       {
-        url:"/postproductid/",
+        url:"/postproductid2product/",
         type:'POST',
         data:{'id':myproductid},
         cache:false,
