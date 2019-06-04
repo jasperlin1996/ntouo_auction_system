@@ -47,13 +47,12 @@ function load(){
     }
     var str= year + "-" + month + "-" + date + "T";
     str += hour + ":" + minute;
-    document.getElementById("deadline").setAttribute("min", str);
     document.getElementById("deadline").setAttribute("value", str);
 
     // 顯示分類選單
     var categorys;
     $.ajax({
-        url: "/getCategory/",
+        url: "/getcategory/",
         type: "POST",
         async: false,
         cache: false,
@@ -73,7 +72,7 @@ function load(){
 
     // 顯示賣家名稱
     $.ajax({
-        url: "/getUserName/",
+        url: "/getusername/",
         type: "POST",
         async: false,
         cache: false,
@@ -103,12 +102,17 @@ function switch_trading() {
 // 檢查輸入價格
 function checkForm(){
     if (document.getElementById("sale").checked) { // 確認為拍賣模式
-        var max = document.getElementById("max").value; // 直購價
-        var now = document.getElementById("now").value; // 底價
-        var step = document.getElementById("step").value; // 每標價格
-        
+        var max = Number(document.getElementById("max").value); // 直購價
+        var now = Number(document.getElementById("now").value); // 底價
+        var step = Number(document.getElementById("step").value); // 每標價格
+
+        console.log(typeof(max));
+        console.log(now);
+        console.log(step);
+
         if (max < now + step) {
             window.alert("直購價不可低於開始價格加上每標底價！");
+            return false;
         }
     }
     return true;

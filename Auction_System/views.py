@@ -81,6 +81,38 @@ def _frontendFormat2Datetime(time):
     '''
     return datetime.datetime.strptime(' '.join(time.split('T')), '%Y-%m-%d %H:%M')
 
+def _parseItems(items):
+    """
+        Args:
+            items (list): items in user database
+                element: {
+                    id
+                }
+                possible items: {
+                    tracking_items,
+                    bidding_items,
+                    dealing_items,
+                    done_items,
+                    onsale_items
+                }
+        Returns:
+            items (list): items in user database
+                element: {
+                    product_name,
+                    id,
+                    images
+                }
+                images (list): contains product images' url
+    """
+    for i in range(len(items)):
+        product = firestore_ops.getProduct(items[i])
+        items[i] = {
+            'product_name': product['product_name'],
+            'id': product['id'],
+            'images': product['images']
+        }
+    return items
+
 def index(request):
     products = firestore_ops.getAllProductBasicInfo()
     return render(request, 'index.html', {'products': products})
@@ -145,6 +177,12 @@ def memberCenter(request):
 
     user_id = _getUserId(request.session['idToken'])
     user_info = firestore_ops.getUserInfo(user_id)
+    print(user_info)
+    user_info['tracking_items'] = _parseItems(user_info['tracking_items'])
+    user_info['bidding_items'] = _parseItems(user_info['bidding_items'])
+    user_info['dealing_items'] = _parseItems(user_info['dealing_items'])
+    user_info['done_items'] = _parseItems(user_info['done_items'])
+    user_info['onsale_items'] = _parseItems(user_info['onsale_items'])
     return render(request, 'MemberCenter.html', {'user': user_info})
 
 def updateUserInfo(request):
@@ -169,7 +207,7 @@ def toSell(request):
 
     return render(request, 'ToSell.html')
 
-def postToSell(request):
+def postToSell(request): # TODO update onsale_items
     if not _checkIdToken(request):
         return redirect(signIn)
 
@@ -178,11 +216,11 @@ def postToSell(request):
     user_id = _getUserId(request.session['idToken'])
 
     product['product_name'] = request.POST['product_name']
-    product['trading_type'] = request.POST['trading_type']
+    product['category'] = request.POST['category']
+    product['trading_type'] = int(request.POST['trading_type'])
     product['price'] = request.POST['price']
     product['current_price'] = request.POST['current_price']
     product['price_per_mark'] = request.POST['price_per_mark']
-    product['category'] = request.POST['category']
     product['description'] = request.POST['description']
     product['trading_method'] = request.POST['trading_method']
     product['deadline'] = _frontendFormat2Datetime(request.POST['deadline'])
@@ -197,6 +235,9 @@ def postToSell(request):
 
     try:
         firestore_ops.addProduct(user_id, product['id'], product)
+        user = firestore_ops.getUserInfo(user_id)
+        user['onsale_items'].append(product['id'])
+        firestore_ops.updateUserInfo(user_id, user)
     except Exception as e:
         print(e)
 

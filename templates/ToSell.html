@@ -9,19 +9,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
-    <div id="loadspace">
-        <div id="loader" class="loader" >
-            <svg viewBox="0 0 32 32" width="32" height="32">
-                <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
-            </svg>
-        </div>
-    </div>
     <body>
         <div id="realTimeImg">
             <img id="image" src="../static/img/ntoulogo.png">
-        </div>
+        </div>''
         <div id="content">
             <form method="POST" action="/posttosell/" enctype="multipart/form-data" onsubmit="return checkForm()">
+                {% csrf_token %}
                 <table>
                     <tr>
                         <td>圖片(gif,jpeg,png):</td>
@@ -34,15 +28,15 @@
                     <tr>
                         <td>分類:</td>
                         <td>
-                            <select id="category">
+                            <select id="category" name="category">
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>直購/拍賣:</td> 
                         <td>
-                            <input id="sell" type="radio" name="trading_type" onclick="switch_trading()" value="direct" checked="true"/>直購
-                            <input id="sale" type="radio" name="trading_type" onclick="switch_trading()" value="auction"/>拍賣
+                            <input id="sell" type="radio" name="trading_type" onclick="switch_trading()" value="1" checked="true"/>直購
+                            <input id="sale" type="radio" name="trading_type" onclick="switch_trading()" value="0"/>拍賣
                         </td>
                     </tr>
                     <tr>

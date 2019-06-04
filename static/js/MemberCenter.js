@@ -23,9 +23,9 @@ function likes() {
         temp = '<table id="obj">';
         for (var i = 0; i < items.length; i++) {
             temp += '<tr><td><img src="';
-            temp += items[i].image;
-            temp += '" id="' + item[i].id;
-            temp += '" onclick="ToProduct(this)"></td><td id="' + item[i].id;
+            temp += items[i].images[0];
+            temp += '" id="' + items[i].id;
+            temp += '" onclick="ToProduct(this)"></td><td id="' + items[i].id;
             temp += '" onclick="ToProduct(this)">';
             temp += items[i].product_name;
             temp += '</td></tr>';
@@ -46,9 +46,9 @@ function buying() {
         temp = '<table id="obj">';
         for (var i = 0; i < items.length; i++) {
             temp += '<tr><td><img src="';
-            temp += items[i].image;
-            temp += '" id="' + item[i].id;
-            temp += '" onclick="ToProduct(this)"></td><td id="' + item[i].id;
+            temp += items[i].images[0];
+            temp += '" id="' + items[i].id;
+            temp += '" onclick="ToProduct(this)"></td><td id="' + items[i].id;
             temp += '" onclick="ToProduct(this)">';
             temp += items[i].product_name;
             temp += '</td></tr>';
@@ -69,9 +69,9 @@ function dealing() {
         temp = '<table id="obj">';
         for (var i = 0; i < items.length; i++) {
             temp += '<tr><td><img src="';
-            temp += items[i].image;
-            temp += '" id="' + item[i].id;
-            temp += '" onclick="ToTrade(this)"></td><td id="' + item[i].id;
+            temp += items[i].images[0];
+            temp += '" id="' + items[i].id;
+            temp += '" onclick="ToTrade(this)"></td><td id="' + items[i].id;
             temp += '" onclick="ToTrade(this)">';
             temp += items[i].product_name;
             temp += '</td></tr>';
@@ -92,9 +92,9 @@ function selling() {
         temp = '<table id="obj">';
         for (var i = 0; i < items.length; i++) {
             temp += '<tr><td><img src="';
-            temp += items[i].image;
-            temp += '" id="' + item[i].id;
-            temp += '" onclick="ToTrade(this)"></td><td id="' + item[i].id;
+            temp += items[i].images[0];
+            temp += '" id="' + items[i].id;
+            temp += '" onclick="ToTrade(this)"></td><td id="' + items[i].id;
             temp += '" onclick="ToTrade(this)">';
             temp += items[i].product_name;
             temp += '</td></tr>';
@@ -115,9 +115,9 @@ function finish() {
         temp = '<table id="obj">';
         for (var i = 0; i < items.length; i++) {
             temp += '<tr><td><img src="';
-            temp += items[i].image;
-            temp += '" id="' + item[i].id;
-            temp += '" onclick="ToProduct(this)"></td><td id="' + item[i].id;
+            temp += items[i].images[0];
+            temp += '" id="' + items[i].id;
+            temp += '" onclick="ToProduct(this)"></td><td id="' + items[i].id;
             temp += '" onclick="ToProduct(this)">';
             temp += items[i].product_name;
             temp += '</td></tr>';
@@ -157,7 +157,7 @@ function ToTrade(obj){
 
 // 更改個人資訊
 function change() {
-    var temp = '<form method="POST" action="' + "/updateuserinfo/" + '" onsubmit="return checkForm()">\n' + csrf_token + '\n<table><tr><td>email</td><td>' + info.email + '</td></tr>';
+    var temp = '<form method="POST" action="' + "/updateuserinfo/" + '">\n' + csrf_token + '\n<table><tr><td>email</td><td>' + info.email + '</td></tr>';
     temp += '<tr><td>*姓名:</td><td><input type="text" name="user_name" style="float:left" value="' + info.user_name + '" required></td></tr>';
     temp += '<tr><td>電話:</td><td><br><input type="tel" pattern="[0-9]{7,10}" name="phone" value="' + info.phone + '"></td></tr>';
     temp += '<tr><td>*地址:</td><td><input type="text" name="address" style="float:left" value="' + info.address + '" required></td></tr>';
@@ -189,14 +189,3 @@ $(function(){
         $(this).removeClass('liCover');
     });
 });
-
-function checkForm() {
-    /*if(document.getElementById("check").value!=document.getElementById("password").value) {
-        alert("輸入密碼兩者不同!");
-        return false;
-    }
-    else {
-        return true;
-    }*/
-    return true;
-}
