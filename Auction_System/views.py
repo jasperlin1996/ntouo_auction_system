@@ -28,12 +28,12 @@ def _getUserId(idToken):
     return user_id
 
 def _checkIdToken(request):
-    '''
+    """
         Returns:
             (bool): check whether idToken exist
                 exist => True
                 doesn't exist => False
-    '''
+    """
     try:
         idToken = request.session['idToken']
         user = auth.get_account_info(idToken)
@@ -51,12 +51,12 @@ def _imageSaveAndUpload(filename, image, idToken):
     return storage.child(filename).get_url(idToken)
 
 def _hashProduct(product):
-    '''
+    """
         Args:
             product (dict): product info
         Returns:
             product_id (str): if product info isn't False, concat with str type and hash
-    '''
+    """
     s = ''.join(map(lambda x: str(x) if x else '', product.values()))
     product_id = hash(s)
     if product_id < 0:
@@ -64,21 +64,21 @@ def _hashProduct(product):
     return str(product_id)
 
 def _datetime2FrontendFormat(time):
-    '''
+    """
         Args:
             time (datetime): %Y-%m-%d %H:%M:%S (yyyy-mm-dd HH:MM:SS)
         Returns:
             (str): %Y-%m-%dT%H:%M (yyyy-mm-ddTHH:MM)
-    '''
+    """
     return 'T'.join(str(time.strftime('%Y-%m-%d %H:%M')).split())
 
 def _frontendFormat2Datetime(time):
-    '''
+    """
         Args:
             time (str): %Y-%m-%dT%H:%M (yyyy-mm-ddTHH:MM)
         Returns:
             (datetime): %Y-%m-%d %H:%M (yyyy-mm-dd HH:MM)
-    '''
+    """
     return datetime.datetime.strptime(' '.join(time.split('T')), '%Y-%m-%d %H:%M')
 
 def _parseItems(items):
@@ -106,11 +106,7 @@ def _parseItems(items):
     """
     for i in range(len(items)):
         product = firestore_ops.getProduct(items[i])
-        items[i] = {
-            'product_name': product['product_name'],
-            'id': product['id'],
-            'images': product['images']
-        }
+        items[i] = firestore_ops.getProductBasicInfo(product)
     return items
 
 def index(request):
@@ -207,7 +203,7 @@ def toSell(request):
 
     return render(request, 'ToSell.html')
 
-def postToSell(request): # TODO update onsale_items
+def postToSell(request):
     if not _checkIdToken(request):
         return redirect(signIn)
 
