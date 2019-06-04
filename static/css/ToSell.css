@@ -1,0 +1,120 @@
+#content {
+    position: absolute;
+    top: 100px;
+}
+
+input[type=submit]{
+    background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background-color:#ffffff;
+	border-radius:10px;
+	font-size:15px;
+	font-weight:bold;
+	padding:0px 10px;
+}
+
+input[type=text] {
+    float:left;
+}
+
+input:read-only {
+    background-color: #FFC1C1;
+}
+
+textarea {
+    border-style: solid;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+input[type=number]{
+    -moz-appearance: textfield;
+}
+
+@media screen and (min-width: 1350px) {
+    #content {
+        left: 40%;
+        width: 40%;
+    }
+
+    #realTimeImg {
+        position: relative;
+        top: 100px;
+        left: 10%;
+    }
+
+    #image {
+        width: 400px;
+        height: 300px;
+    }
+
+    table {
+        font-size: 20px;
+        width: 100%;
+    }
+
+    td {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 1350px) and (min-width: 660px) {
+    #content {
+        left: 50%;
+        width: 50%;
+    }
+
+    #realTimeImg {
+        position: relative;
+        top: 100px;
+        left: 10px;
+        width: 400Px;
+    }
+
+    #image {
+        width: 320px;
+        height: 240px;
+    }
+
+    table {
+        font-size: 20px;
+        width: 100%;
+    }
+
+    tr {
+        width: 100%;
+    }
+
+    td {
+        width: 60%;
+    }
+}
+
+@media screen and (max-width: 660px) {
+    #content {
+        position: relative;
+        width: 100%;
+        top: 150px;
+    }
+
+    #realTimeImg {
+        position: relative;
+        top: 50px;
+        left: 20%;
+    }
+    
+    #image {
+        width: 200px;
+        height: 150x;
+    }
+
+    table {
+        font-size: 20px;
+        width: 100%;
+    }
+
+    td {
+        width: 200px;
+    }
+}

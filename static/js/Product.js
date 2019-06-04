@@ -1,7 +1,6 @@
 window.onload = load;
 
 function load() {
-    var canChange = 0;
     var url = location.href;
     if(url.indexOf('?')==-1) {
         alert("無商品!");
@@ -10,14 +9,6 @@ function load() {
     else {
         var array = url.split('?');
         var id = array[1];
-
-        if (url.indexOf('&')!=-1) {
-            canChange = 1;
-        }
-        
-        if ({{ request.session.idToken }} == info.saler) {
-            canChange = 1;
-        }
 
         var str = '';
         str += '<table><tr><td>圖片:</td><td><img src="';

@@ -1,83 +1,86 @@
-<!DOCTYPE html>
 <html>
-    <meta charset="UTF-8">
-    <!-- <link rel="stylesheet" type="text/css" href="../css/Share.css"> -->
-    <!-- <link rel="stylesheet" type="text/css" href="../css/ToSell.css"> -->
-    <!-- <script src="../js/ToSell.js"></script> -->
-
-    <title>海大拍賣-上架商品</title>
-
-    <header class="header">
-        <div>
-            <span>
-                <a href="../web/Main.html">海大拍賣</a>
-            </span>
-            <input style="margin-left:50px;" id="search" type="text">
-            <input type="button" value="搜尋">
-            <span style="float: right;">
-                <a href="../web/SignIn.html">登入</a>
-                <a href="../web/SignUp.html">註冊</a>
-            </span>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bar.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/ntoulogo.png' %}"/>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ToSell.css' %}">
+    <head>
+        <title>主頁面</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <div id="loadspace">
+        <div id="loader" class="loader" >
+            <svg viewBox="0 0 32 32" width="32" height="32">
+                <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
+            </svg>
         </div>
-    </header>
+    </div>
     <body>
+        <div id="realTimeImg">
+            <img id="image" src="../static/img/ntoulogo.png">
+        </div>
         <div id="content">
-            <form method="POST" action="/posttosell/" enctype="multipart/form-data">
-                {% csrf_token %}
-                <tr>
-                    <td>圖片(gif,jpeg,png):</td>
-                    <td><input type="file" name="image" accept="image/gif, image/jpeg, image/png"></td>
-                </tr><br/>
-                <tr>
-                    <td>名稱:</td>
-                    <td><input id="name" type="text" class="text" name="product_name" required/></td>
-                </tr><br>
-                <tr>
-                    <td>直購/拍賣:</td>
-                    <td>
-                        <input id="sell" type="radio" name="trading_type" value="direct" checked="true"/>直購
-                        <input id="sale" type="radio" name="trading_type" value="auction"/>拍賣
-                    </td>
-                </tr><br>
-                <tr>
-                    <td>直購價:</td>
-                    <td><input id="max" type="text" class="text" name="price" required/>元</td>
-                </tr><br>
-                <tr>
-                    <td>底價:</td>
-                    <td><input id="now" type="text" class="text" name="current_price"/>元</td>
-                </tr><br>
-                <tr>
-                    <td>每標底價:</td>
-                    <td><input id="step" type="text" class="text" name="price_per_mark"/>元</td>
-                </tr><br>
-                <tr>
-                    <td>分類:</td>
-                    <select name="category">
-                        <option value="3C">3C</option>
-                        <option value="food">食品</option>
-                        <option value="grocery">雜貨</option>
-                        <option value="others">其他</option>
-                    </select>
-                </tr><br>
-                <tr>
-                    <td>敘述:</td>
-                    <td><input id="description" type="text" class="block" name="description"/></td>
-                </tr><br>
-                <tr>
-                    <td>希望交易方式:</td>
-                    <td><input id="hope" type="text" class="block" name="trading_method"/></td>
-                </tr><br>
-                <tr>
-                    <td>賣家:</td>
-                    <td><input id="seller" type="text" class="text" value="username read only" required readonly/></td>
-                </tr><br>
-                <tr>
-                    <td>結標日期:</td>
-                    <td><input id="deadline" type="datetime-local" class="text" name="deadline" required></td>
-                </tr><br>
-                <tr><td></td><td><input id="submit" type = "submit" value = "確認上架"></td></tr>
+            <form method="POST" action="/posttosell/" enctype="multipart/form-data" onsubmit="return checkForm()">
+                <table>
+                    <tr>
+                        <td>圖片(gif,jpeg,png):</td>
+                        <td><input id="imgIn" type="file" name="image" accept="image/gif, image/jpeg, image/png"></td>
+                    </tr>
+                    <tr>
+                        <td>名稱:</td>
+                        <td><input id="name" type="text" name="product_name" required/></td>
+                    </tr>
+                    <tr>
+                        <td>分類:</td>
+                        <td>
+                            <select id="category">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>直購/拍賣:</td> 
+                        <td>
+                            <input id="sell" type="radio" name="trading_type" onclick="switch_trading()" value="direct" checked="true"/>直購
+                            <input id="sale" type="radio" name="trading_type" onclick="switch_trading()" value="auction"/>拍賣
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>直購價:</td>
+                        <td><input id="max" type="number" name="price" required/>元</td>
+                    </tr>
+                    <tr>
+                        <td>底價:</td>
+                        <td><input id="now" type="number" name="current_price" readonly/>元</td>
+                    </tr>
+                    <tr>
+                        <td>每標底價:</td>
+                        <td><input id="step" type="number" name="price_per_mark" readonly/>元</td>
+                    </tr>
+                    <tr>
+                        <td>敘述:</td>
+                        <td><textarea id="description" name="description" cols="20" rows="5"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>希望交易方式:</td>
+                        <td><input id="hope" type="text" class="block" name="trading_method"/></td>
+                    </tr>
+                    <tr>
+                        <td>賣家:</td>
+                        <td><input id="seller" type="text" value="username read only" required readonly/></td>
+                    </tr>
+                    <tr>
+                        <td>結標日期:</td>
+                        <td><input id="deadline" type="datetime-local" name="deadline" required></td>
+                    </tr>
+                    <tr><td></td><td><input id="submit" type = "submit" value = "確認上架"></td></tr>
+                </table>
             </form>
         </div>
     </body>
+    <script src="{% static 'js/bar.js' %}"></script>
+    <script src="{% static 'js/ToSell.js' %}"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </html>
