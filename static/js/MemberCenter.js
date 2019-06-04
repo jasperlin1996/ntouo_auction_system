@@ -1,7 +1,6 @@
 // 顯示個人資訊頁面
 function person() {
     var temp = '<table><tr><td>email</td><td>' + info.email + '</td></tr>';
-    temp += '<tr><td>密碼:</td><td id="pass">********<input type="button" onclick="showPassword()" value="查看"></td></tr>';
     temp += '<tr><td>姓名:</td><td>' + info.user_name + '</td></tr>';
     temp += '<tr><td>電話:</td><td>' + info.phone + '</td></tr>';
     temp += '<tr><td>地址:</td><td>' + info.address + '</td></tr>';
@@ -23,14 +22,13 @@ function likes() {
     else {
         temp = '<table id="obj">';
         for (var i = 0; i < items.length; i++) {
-            temp += '<tr><td><a href="';
-            temp += '../templates/Product.html?' + item[i].id;
-            temp += '"><img src="';
+            temp += '<tr><td><img src="';
             temp += items[i].image;
-            temp += '"></a></td><td><a href="';
-            temp += '../templates/Product.html?' + item[i].id;
-            temp += '">' + items[i].product_name;
-            temp += '</td></a></tr>';
+            temp += '" id="' + item[i].id;
+            temp += '" onclick="ToProduct(this)"></td><td id="' + item[i].id;
+            temp += '" onclick="ToProduct(this)">';
+            temp += items[i].product_name;
+            temp += '</td></tr>';
         }
         temp += '</table>';
     }
@@ -47,14 +45,13 @@ function buying() {
     else {
         temp = '<table id="obj">';
         for (var i = 0; i < items.length; i++) {
-            temp += '<tr><td><a href="';
-            temp += '../templates/Product.html?' + item[i].id;
-            temp += '"><img src="';
+            temp += '<tr><td><img src="';
             temp += items[i].image;
-            temp += '"></a></td><td><a href="';
-            temp += '../templates/Product.html?' + item[i].id;
-            temp += '">' + items[i].product_name;
-            temp += '</td></a></tr>';
+            temp += '" id="' + item[i].id;
+            temp += '" onclick="ToProduct(this)"></td><td id="' + item[i].id;
+            temp += '" onclick="ToProduct(this)">';
+            temp += items[i].product_name;
+            temp += '</td></tr>';
         }
         temp += '</table>';
     }
@@ -71,14 +68,13 @@ function dealing() {
     else {
         temp = '<table id="obj">';
         for (var i = 0; i < items.length; i++) {
-            temp += '<tr><td><a href="';
-            temp += '../templates/Product.html?' + item[i].id;
-            temp += '"><img src="';
+            temp += '<tr><td><img src="';
             temp += items[i].image;
-            temp += '"></a></td><td><a href="';
-            temp += '../templates/Product.html?' + item[i].id;
-            temp += '">' + items[i].product_name;
-            temp += '</td></a></tr>';
+            temp += '" id="' + item[i].id;
+            temp += '" onclick="ToTrade(this)"></td><td id="' + item[i].id;
+            temp += '" onclick="ToTrade(this)">';
+            temp += items[i].product_name;
+            temp += '</td></tr>';
         }
         temp += '</table>';
     }
@@ -95,14 +91,13 @@ function selling() {
     else {
         temp = '<table id="obj">';
         for (var i = 0; i < items.length; i++) {
-            temp += '<tr><td><a href="';
-            temp += '../templates/Product.html?&' + item[i].id;
-            temp += '"><img src="';
+            temp += '<tr><td><img src="';
             temp += items[i].image;
-            temp += '"></a></td><td><a href="';
-            temp += '../templates/Product.html?&' + item[i].id;
-            temp += '">' + items[i].product_name;
-            temp += '</td></a></tr>';
+            temp += '" id="' + item[i].id;
+            temp += '" onclick="ToTrade(this)"></td><td id="' + item[i].id;
+            temp += '" onclick="ToTrade(this)">';
+            temp += items[i].product_name;
+            temp += '</td></tr>';
         }
         temp += '</table>';
     }
@@ -114,39 +109,55 @@ function finish() {
     var items = info.done_items;
     var temp = "";
     if (items.length == 0) {
-        temp = "<p>無已完成商品</p>";
+        temp = "<p>已完成商品</p>";
     }
     else {
         temp = '<table id="obj">';
         for (var i = 0; i < items.length; i++) {
-            temp += '<tr><td><a href="';
-            temp += '../templates/Product.html?' + item[i].id;
-            temp += '"><img src="';
+            temp += '<tr><td><img src="';
             temp += items[i].image;
-            temp += '"></a></td><td><a href="';
-            temp += '../templates/Product.html?' + item[i].id;
-            temp += '">' + items[i].product_name;
-            temp += '</td></a></tr>';
+            temp += '" id="' + item[i].id;
+            temp += '" onclick="ToProduct(this)"></td><td id="' + item[i].id;
+            temp += '" onclick="ToProduct(this)">';
+            temp += items[i].product_name;
+            temp += '</td></tr>';
         }
         temp += '</table>';
     }
     document.getElementById("content").innerHTML = temp;
 }
 
-// 顯示密碼
-function showPassword() {
-    document.getElementById("pass").innerHTML = info.password + '<input type="button" onclick="hidePassword()" value="隱藏">';
+// 前往商品頁面
+function ToProduct(obj) {
+    $.ajax({
+        url: "/postproductid2product/",
+        type: "POST",
+        async: false,
+        cache: false,
+        data:{"id":obj.id},
+        error: function(){
+            window.alert("找不到商品！");
+        }
+    })
 }
 
-// 隱藏密碼
-function hidePassword() {
-    document.getElementById("pass").innerHTML = '********<input type="button" onclick="showPassword()" value="查看">'
+// 前往交易頁面
+function ToTrade(obj){
+    $.ajax({
+        url: "/postproductid2trade/",
+        type: "POST",
+        async: false,
+        cache: false,
+        data:{"id":obj.id},
+        error: function(){
+            window.alert("找不到商品！");
+        }
+    })
 }
 
 // 更改個人資訊
 function change() {
     var temp = '<form method="POST" action="' + "/updateuserinfo/" + '" onsubmit="return checkForm()">\n' + csrf_token + '\n<table><tr><td>email</td><td>' + info.email + '</td></tr>';
-    temp += '<tr><td>*密碼:</td><td>'/*輸入新密碼<input type="password" id="password" name="password" value="'*/ + info.password + /*'" required><br>確認密碼<input type="password" id="check" required><p id="error"></p>*/'</td></tr>';
     temp += '<tr><td>*姓名:</td><td><input type="text" name="user_name" style="float:left" value="' + info.user_name + '" required></td></tr>';
     temp += '<tr><td>電話:</td><td><br><input type="tel" pattern="[0-9]{7,10}" name="phone" value="' + info.phone + '"></td></tr>';
     temp += '<tr><td>*地址:</td><td><input type="text" name="address" style="float:left" value="' + info.address + '" required></td></tr>';
