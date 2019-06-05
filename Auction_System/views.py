@@ -295,11 +295,11 @@ def setSession(request):
 
 @csrf_exempt
 def checkUserData(request):
-    isUserFillAll = False
+    status = False
     if _checkIdToken(request):
         user_id = _getUserId(request.session['idToken'])
-        isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
-    return HttpResponse(isUserFillAll) # TODO return json
+        status = firestore_ops.checkUserInfoCompleteness(user_id)
+    return JsonResponse({'status': status})
 
 @csrf_exempt
 def setTrackingProduct(request):

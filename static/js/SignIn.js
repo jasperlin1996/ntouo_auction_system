@@ -27,19 +27,21 @@ function checkEmailVerified() {
     window.alert('please check the verification email.');
   } else {
     // check info
-    var isUserFillAll;
-    var promise_checkUserData = new Promise(function(resolve, reject) {
-      resolve($.post('/checkuserdata/', {}, function(response) {
-        isUserFillAll = response;
-      }));
-    });
-    promise_checkUserData.then(function() {
+    // var isUserFillAll;
 
-      if (isUserFillAll == 'False') {
-        location.href = '/signup/';
-      } else if (isUserFillAll == 'True') {
-        window.alert('login success');
-        location.href = '/index/';
+    $.ajax({
+      url: '/checkuserdata/',
+      type: 'POST',
+      cache: false,
+      async: false,
+      success: function(response) {
+        if (response.status == true) {
+          window.alert('login success');
+          location.href = '/index/';
+        }
+        else {
+          location.href = '/signup/';
+        }
       }
     });
   }
