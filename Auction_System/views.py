@@ -197,6 +197,9 @@ def updateUserInfo(request):
 
     return redirect(memberCenter)
 
+def product(request, product_id):
+    return render(request, 'Product.html')
+
 def toSell(request):
     if not _checkIdToken(request):
         return redirect(signIn)
@@ -247,8 +250,12 @@ def signOut(request):
 @csrf_exempt
 def postProductId2Product(request):
     product_id = request.POST['id']
-    # TODO redirect to Product.html
-    return HttpResponse(product_id)
+    return HttpResponse('/product/' + product_id)
+
+@csrf_exempt
+def postProductId2Trade(reqeust):
+    product_id = request.POST['id']
+    return HttpResponse('/trade/' + product_id)
 
 @csrf_exempt
 def getIdToken(request):

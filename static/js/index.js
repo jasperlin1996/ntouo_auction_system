@@ -69,18 +69,17 @@ function GetProducts(index) {
   {
     var myproductid = $(this).children()[0].id;
     $.ajax(
+    {
+      url:"/postproductid2product/",
+      type:'POST',
+      data:{'id':myproductid},
+      cache:false,
+      async:false,
+      success:function(response)
       {
-        url:"/postproductid2product/",
-        type:'POST',
-        data:{'id':myproductid},
-        cache:false,
-        async:false,
-        success:function(response)
-        {
-          console.log("post id "+response);
-        }
-      });
-
+        location.href = response;
+      }
+    });
   });
 
 }
