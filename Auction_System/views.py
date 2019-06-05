@@ -154,18 +154,19 @@ def trade(request, product_id):
     if not _checkIdToken(request):
         return redirect(signIn)
 
-    product = firestore_ops.getProduct(product_id)
-
-    product['create_time'] = _datetime2FrontendFormat(product['create_time'])
-    product['deadline'] = _datetime2FrontendFormat(product['deadline'])
-
     user_id = _getUserId(request.session['idToken'])
     user_info = firestore_ops.getUserInfo(user_id)
 
-    seller_id = product['seller']
-    seller_info = firestore_ops.getUserInfo(seller_id)
+    product = firestore_ops.getProduct(product_id)
 
-    return render(request,'Trade.html', {'user': user_info, 'seller': seller_info, 'product': product})
+    if product['status'] == 2 and (user_id == product['highest_buyer_id'] or user_id == product['seller']):
+        product['create_time'] = _datetime2FrontendFormat(product['create_time'])
+        product['deadline'] = _datetime2FrontendFormat(product['deadline'])
+
+        seller_info = firestore_ops.getUserInfo(product['seller'])
+        
+        return render(request,'Trade.html', {'user': user_info, 'seller': seller_info, 'product': product})
+    return redirect(memberCenter)
 
 def memberCenter(request):
     if not _checkIdToken(request):
