@@ -89,17 +89,6 @@ function selling() {
         temp = "<p>無販賣中商品</p>";
     }
     else {
-        // temp = '<table id="obj">';
-        // for (var i = 0; i < items.length; i++) {
-        //     temp += '<tr><td><img src="';
-        //     temp += items[i].images[0];
-        //     temp += '" id="' + items[i].id;
-        //     temp += '" onclick="ToTrade(this)"></td><td id="' + items[i].id;
-        //     temp += '" onclick="ToTrade(this)">';
-        //     temp += items[i].product_name;
-        //     temp += '</td></tr>';
-        // }
-        // temp += '</table>';
         temp = '<div class="container-fluid"><div class="row">';
         for (var i = 0; i < items.length; i++) {
             temp += '<div class="col-md-2"><img src="';

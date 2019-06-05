@@ -270,9 +270,7 @@ def postProductId2Trade(reqeust):
 
 @csrf_exempt
 def getIdToken(request):
-    if 'idToken' not in request.session:
-        request.session['idToken'] = ''
-    return HttpResponse(request.session['idToken'])
+    return JsonResponse({'status': _checkIdToken(request)})
 
 @csrf_exempt
 def getUserName(request):
