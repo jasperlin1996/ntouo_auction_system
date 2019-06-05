@@ -205,6 +205,12 @@ def product(request, product_id):
     product['seller'] = seller['user_name']
     return render(request, 'Product.html', {'product': product})
 
+def bidProduct(request):
+    return redirect(request, product)
+
+def purchaseProduct(request):
+    return redirect(request, product)
+
 def toSell(request):
     if not _checkIdToken(request):
         return redirect(signIn)
