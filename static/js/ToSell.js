@@ -115,5 +115,14 @@ function checkForm(){
             return false;
         }
     }
+    // 檢查上傳檔案格式
+    var accept = [".gif",".jpeg",".jpg",".png"];
+    var update = document.getElementById("imgIn").value;
+    update = update.substring(update.lastIndexOf('.'));
+    if (accept.indexOf(update) < 0) {
+        window.alert("上傳檔案格式錯誤");
+        document.getElementById("imgIn").value = null;
+        return false;
+    }
     return true;
 }
