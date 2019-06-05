@@ -107,6 +107,11 @@ ul span
   {
     top:15%;
   }
+  .data
+  {
+    position: absolute;
+    top:15%;
+  }
 }
 
 @media screen and (max-width:768px)
@@ -120,13 +125,3 @@ ul span
     position: relative;
   }
 }
-
-/* @media screen and (min-width:1040px)
-{
-  .pos-f-t
-  {
-    display: none;
-    font-size:5px;
-  }
-
-} */

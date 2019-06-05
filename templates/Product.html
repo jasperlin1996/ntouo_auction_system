@@ -68,7 +68,7 @@
         </tr>
         <tr>
           <td>
-            <input type="button" onclick="tracking()" value="追蹤此商品" style="position:relative;top:-20px;left:-190px;font-size:15px;">
+            <input type="button" onclick="tracking()" value="追蹤此商品" style="position:relative;font-size:15px;">
           </td>
           <td>
             <form method="POST" action="/postproduct/" onsubmit="return checkForm()">
@@ -78,18 +78,18 @@
             </form>
             <form method="POST" action="/purchaseproduct/">
               <input type="text" name="id" style="display: none">
-              <input type="button" style="position:relative;top:-45px;font-size:15px" value="直接購買">
+              <input type="button" style="position:relative;top:0px;font-size:15px" value="直接購買">
             </form>
           </td>
         </tr>
       </table>
-  </div>
   <!--問與答-->
   <div align="center">
     <p>問與答</p>
     <table id="qa">
     </table>
   </div>
+</div>
   </body>
   <script src="{% static 'js/bar.js' %}"></script>
   <script src="{% static 'js/Product.js' %}"></script>
