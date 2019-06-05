@@ -20,30 +20,42 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+function checkUserData()
+{
+  $.ajax({
+    url: '/checkuserdata/',
+    type: 'POST',
+    cache: false,
+    async: false,
+    success: function(response) {
+      if (response.status == true) {
+        window.alert('login success');
+        location.href = '/index/';
+      }
+      else {
+        location.href = '/signup/';
+      }
+    }
+  });
+}
+
 function checkEmailVerified() {
   var user = firebase.auth().currentUser;
   // check user email verify
   if (user.emailVerified == false) {
     window.alert('please check the verification email.');
+    user.sendEmailVerification().then(function () {
+      // Email sent.
+    }).catch(function (error) {
+      // An error happened.
+    });
   } else {
     // check info
-    // var isUserFillAll;
-
-    $.ajax({
-      url: '/checkuserdata/',
-      type: 'POST',
-      cache: false,
-      async: false,
-      success: function(response) {
-        if (response.status == true) {
-          window.alert('login success');
-          location.href = '/index/';
-        }
-        else {
-          location.href = '/signup/';
-        }
-      }
-    });
+    user.getIdToken().then(function(idToken) {
+      setSession(idToken);
+    }).then(function() {
+      checkUserData();
+    })
   }
 }
 
@@ -55,10 +67,7 @@ function setSession(idToken) {
     cache: false,
     async: false,
     success: function(response) {
-      if (response.status == true) {
-        checkEmailVerified();
-      }
-      else {
+      if (response.status == false) {
         window.alert('Something Wrong, Please SignIn Again.');
         location.href = '/signin/';
       }
@@ -70,9 +79,7 @@ function checkLoginUser() {
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       // User is signed in.
-      user.getIdToken().then(function(idToken) {
-        setSession(idToken);
-      });
+      checkEmailVerified();
     } else {
       // No user is signed in.
       console.log('not SignIn');
@@ -80,15 +87,13 @@ function checkLoginUser() {
   });
 }
 
-function googleSignIn() {
-  var provider = new firebase.auth.GoogleAuthProvider();
-  // firebase.auth().signInWithRedirect(provider);
+function thirdPartySignIn(provider)
+{
   firebase.auth().signInWithPopup(provider).then(function(result) {
     // This gives you a Google Access Token. You can use it to access the Google API.
     var token = result.credential.accessToken;
     // The signed-in user info.
     var user = result.user;
-    // ...
     checkLoginUser();
   }).catch(function(error) {
     // Handle Errors here.
@@ -98,9 +103,14 @@ function googleSignIn() {
     var email = error.email;
     // The firebase.auth.AuthCredential type that was used.
     var credential = error.credential;
-    // ...
-    console.log('ERROR');
+    console.log(error);
+    location.href = '/signin/';
   });
+}
+
+function googleSignIn() {
+  var provider = new firebase.auth.GoogleAuthProvider();
+  thirdPartySignIn(provider);
 }
 
 function facebookSignIn()
@@ -110,7 +120,8 @@ function facebookSignIn()
 
 function githubSignIn()
 {
-  // TODO github signin 
+  var provider = new firebase.auth.GithubAuthProvider();
+  thirdPartySignIn(provider);
 }
 
 function doLogIn() {
