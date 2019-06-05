@@ -7,7 +7,7 @@ function person() {
     temp += '<tr><td>其他聯絡方式:</td><td><textarea rows="5" cols="50" readonly>' + info.contact + '</textarea></td></tr>';
     temp += '<tr><td>購買評價:</td><td>' + info.buyer_rate + '</td></tr>';
     temp += '<tr><td>販賣評價:</td><td>' + info.seller_rate + '</td></tr>';
-    temp += '<tr><td>第三方資訊</td><td>' + info.tp_info + '</td></tr>';
+    temp += '<tr><td>第三方資訊</td><td>' + info.tp_info.provider + '</td></tr>';
     temp += '<tr><td></td><td><input type="button" onclick="change()" value="修改"></td></tr></table>';
     document.getElementById("content").innerHTML = temp;
 }
@@ -20,17 +20,17 @@ function likes() {
         temp = "<p>無追蹤中商品</p>";
     }
     else {
-        temp = '<table id="obj">';
-        for (var i = 0; i < items.length; i++) {
-            temp += '<tr><td><img src="';
-            temp += items[i].images[0];
-            temp += '" id="' + items[i].id;
-            temp += '" onclick="ToProduct(this)"></td><td id="' + items[i].id;
-            temp += '" onclick="ToProduct(this)">';
-            temp += items[i].product_name;
-            temp += '</td></tr>';
-        }
-        temp += '</table>';
+      temp = '<div class="container-fluid"><div class="row">';
+      for (var i = 0; i < items.length; i++) {
+          temp += '<div class="col-md-2"><img src="';
+          temp += items[i].images[0];
+          temp += '" id="' + items[i].id;
+          temp += '" onclick="ToProduct(this)"><p id="' + items[i].id;
+          temp += '" onclick="ToProduct(this)">';
+          temp += items[i].product_name;
+          temp += '</p></div>';
+      }
+      temp += '</div></div>';
     }
     document.getElementById("content").innerHTML = temp;
 }
@@ -43,17 +43,17 @@ function buying() {
         temp = "<p>無競標中商品</p>";
     }
     else {
-        temp = '<table id="obj">';
-        for (var i = 0; i < items.length; i++) {
-            temp += '<tr><td><img src="';
-            temp += items[i].images[0];
-            temp += '" id="' + items[i].id;
-            temp += '" onclick="ToProduct(this)"></td><td id="' + items[i].id;
-            temp += '" onclick="ToProduct(this)">';
-            temp += items[i].product_name;
-            temp += '</td></tr>';
-        }
-        temp += '</table>';
+      temp = '<div class="container-fluid"><div class="row">';
+      for (var i = 0; i < items.length; i++) {
+          temp += '<div class="col-md-2"><img src="';
+          temp += items[i].images[0];
+          temp += '" id="' + items[i].id;
+          temp += '" onclick="ToProduct(this)"><p id="' + items[i].id;
+          temp += '" onclick="ToProduct(this)">';
+          temp += items[i].product_name;
+          temp += '</p></div>';
+      }
+      temp += '</div></div>';
     }
     document.getElementById("content").innerHTML = temp;
 }
@@ -66,17 +66,17 @@ function dealing() {
         temp = "<p>無交易中商品</p>";
     }
     else {
-        temp = '<table id="obj">';
-        for (var i = 0; i < items.length; i++) {
-            temp += '<tr><td><img src="';
-            temp += items[i].images[0];
-            temp += '" id="' + items[i].id;
-            temp += '" onclick="ToTrade(this)"></td><td id="' + items[i].id;
-            temp += '" onclick="ToTrade(this)">';
-            temp += items[i].product_name;
-            temp += '</td></tr>';
-        }
-        temp += '</table>';
+      temp = '<div class="container-fluid"><div class="row">';
+      for (var i = 0; i < items.length; i++) {
+          temp += '<div class="col-md-2"><img src="';
+          temp += items[i].images[0];
+          temp += '" id="' + items[i].id;
+          temp += '" onclick="ToTrade(this)"><p id="' + items[i].id;
+          temp += '" onclick="ToTrade(this)">';
+          temp += items[i].product_name;
+          temp += '</p></div>';
+      }
+      temp += '</div></div>';
     }
     document.getElementById("content").innerHTML = temp;
 }
@@ -89,17 +89,28 @@ function selling() {
         temp = "<p>無販賣中商品</p>";
     }
     else {
-        temp = '<table id="obj">';
+        // temp = '<table id="obj">';
+        // for (var i = 0; i < items.length; i++) {
+        //     temp += '<tr><td><img src="';
+        //     temp += items[i].images[0];
+        //     temp += '" id="' + items[i].id;
+        //     temp += '" onclick="ToTrade(this)"></td><td id="' + items[i].id;
+        //     temp += '" onclick="ToTrade(this)">';
+        //     temp += items[i].product_name;
+        //     temp += '</td></tr>';
+        // }
+        // temp += '</table>';
+        temp = '<div class="container-fluid"><div class="row">';
         for (var i = 0; i < items.length; i++) {
-            temp += '<tr><td><img src="';
+            temp += '<div class="col-md-2"><img src="';
             temp += items[i].images[0];
             temp += '" id="' + items[i].id;
-            temp += '" onclick="ToProduct(this)"></td><td id="' + items[i].id;
+            temp += '" onclick="ToProduct(this)"><p id="' + items[i].id;
             temp += '" onclick="ToProduct(this)">';
             temp += items[i].product_name;
-            temp += '</td></tr>';
+            temp += '</p></div>';
         }
-        temp += '</table>';
+        temp += '</div></div>';
     }
     document.getElementById("content").innerHTML = temp;
 }

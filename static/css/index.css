@@ -83,10 +83,9 @@ ul span
   {
     display:none;
   }
-  /* .bar
-  {
-    display: none;
-  } */
+  body{
+    height: 0;
+  }
   form{
     top:15%;
   }

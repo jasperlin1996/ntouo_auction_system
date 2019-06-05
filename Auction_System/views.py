@@ -173,7 +173,6 @@ def memberCenter(request):
 
     user_id = _getUserId(request.session['idToken'])
     user_info = firestore_ops.getUserInfo(user_id)
-    print(user_info)
     user_info['tracking_items'] = _parseItems(user_info['tracking_items'])
     user_info['bidding_items'] = _parseItems(user_info['bidding_items'])
     user_info['dealing_items'] = _parseItems(user_info['dealing_items'])
@@ -243,9 +242,9 @@ def postToSell(request):
         user['onsale_items'].append(product['id'])
         firestore_ops.updateUserInfo(user_id, user)
     except Exception as e:
-        print(e)
+        return HttpResponse('error')
 
-    return redirect(toSell)
+    return redirect(memberCenter)
 
 def signOut(request):
     request.session['idToken'] = ''
