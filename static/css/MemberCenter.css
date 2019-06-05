@@ -22,6 +22,11 @@ a{
     text-decoration: none;
 }
 
+p /*andy*/
+{
+  text-align: center;
+}
+
 input[type=submit]{
     background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
 	background-color:#ffffff;
@@ -70,7 +75,7 @@ input {
         display: inline-block;
         width: 50%;
     }
-    
+
     textarea {
         font-size: 20px;
         width: 400px;
@@ -82,7 +87,7 @@ input {
         font-size: 20px;
         margin-left: 20%;
     }
-    
+
     button {
         width: 50px;
     }
@@ -99,7 +104,7 @@ input {
     #obj {
         width: 80%;
     }
-    
+
     textarea {
         font-size: 20px;
         width: 300px;
