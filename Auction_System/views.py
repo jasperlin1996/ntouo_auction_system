@@ -289,9 +289,13 @@ def getCategory(request):
 
 @csrf_exempt
 def setSession(request):
-    idToken = request.POST['idToken']
-    request.session['idToken'] = idToken
-    return HttpResponse('set session successful')
+    try:
+        idToken = request.POST['idToken']
+        request.session['idToken'] = idToken
+        return JsonResponse({'status': True})
+    except Exception as e:
+        print(e)
+    return JsonResponse({'status': False})
 
 @csrf_exempt
 def checkUserData(request):
@@ -311,7 +315,7 @@ def setTrackingProduct(request):
             user_data['tracking_items'].append(product_id)
         try:
             firestore_ops.updateUserInfo(user_id, user_data)
-        except:
-            return JsonResponse({'status': False})
-        return JsonResponse({'status': True})
+            return JsonResponse({'status': True})
+        except Exception as e:
+            print(e)
     return JsonResponse({'status': False})

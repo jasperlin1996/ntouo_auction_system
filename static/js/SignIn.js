@@ -48,10 +48,21 @@ function checkEmailVerified() {
 }
 
 function setSession(idToken) {
-  $.post('/setsession/', {
-    'idToken': idToken
-  }, function(response) {
-    checkEmailVerified();
+  $.ajax({
+    url: '/setsession/',
+    type: 'POST',
+    data: {'idToken': idToken},
+    cache: false,
+    async: false,
+    success: function(response) {
+      if (response.status == true) {
+        checkEmailVerified();
+      }
+      else {
+        window.alert('Something Wrong, Please SignIn Again.');
+        location.href = '/signin/';
+      }
+    }
   });
 }
 
@@ -94,12 +105,12 @@ function googleSignIn() {
 
 function facebookSignIn()
 {
-
+  // TODO facebook signin
 }
 
 function githubSignIn()
 {
-  
+  // TODO github signin 
 }
 
 function doLogIn() {
