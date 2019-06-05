@@ -270,9 +270,7 @@ def postProductId2Trade(reqeust):
 
 @csrf_exempt
 def getIdToken(request):
-    if 'idToken' not in request.session:
-        request.session['idToken'] = ''
-    return HttpResponse(request.session['idToken'])
+    return JsonResponse({'status': _checkIdToken(request)})
 
 @csrf_exempt
 def getUserName(request):
@@ -289,17 +287,21 @@ def getCategory(request):
 
 @csrf_exempt
 def setSession(request):
-    idToken = request.POST['idToken']
-    request.session['idToken'] = idToken
-    return HttpResponse('set session successful')
+    try:
+        idToken = request.POST['idToken']
+        request.session['idToken'] = idToken
+        return JsonResponse({'status': True})
+    except Exception as e:
+        print(e)
+    return JsonResponse({'status': False})
 
 @csrf_exempt
 def checkUserData(request):
-    isUserFillAll = False
+    status = False
     if _checkIdToken(request):
         user_id = _getUserId(request.session['idToken'])
-        isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
-    return HttpResponse(isUserFillAll) # TODO return json
+        status = firestore_ops.checkUserInfoCompleteness(user_id)
+    return JsonResponse({'status': status})
 
 @csrf_exempt
 def setTrackingProduct(request):
@@ -311,7 +313,7 @@ def setTrackingProduct(request):
             user_data['tracking_items'].append(product_id)
         try:
             firestore_ops.updateUserInfo(user_id, user_data)
-        except:
-            return JsonResponse({'status': False})
-        return JsonResponse({'status': True})
+            return JsonResponse({'status': True})
+        except Exception as e:
+            print(e)
     return JsonResponse({'status': False})

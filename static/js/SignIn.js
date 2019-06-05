@@ -27,29 +27,42 @@ function checkEmailVerified() {
     window.alert('please check the verification email.');
   } else {
     // check info
-    var isUserFillAll;
-    var promise_checkUserData = new Promise(function(resolve, reject) {
-      resolve($.post('/checkuserdata/', {}, function(response) {
-        isUserFillAll = response;
-      }));
-    });
-    promise_checkUserData.then(function() {
+    // var isUserFillAll;
 
-      if (isUserFillAll == 'False') {
-        location.href = '/signup/';
-      } else if (isUserFillAll == 'True') {
-        window.alert('login success');
-        location.href = '/index/';
+    $.ajax({
+      url: '/checkuserdata/',
+      type: 'POST',
+      cache: false,
+      async: false,
+      success: function(response) {
+        if (response.status == true) {
+          window.alert('login success');
+          location.href = '/index/';
+        }
+        else {
+          location.href = '/signup/';
+        }
       }
     });
   }
 }
 
 function setSession(idToken) {
-  $.post('/setsession/', {
-    'idToken': idToken
-  }, function(response) {
-    checkEmailVerified();
+  $.ajax({
+    url: '/setsession/',
+    type: 'POST',
+    data: {'idToken': idToken},
+    cache: false,
+    async: false,
+    success: function(response) {
+      if (response.status == true) {
+        checkEmailVerified();
+      }
+      else {
+        window.alert('Something Wrong, Please SignIn Again.');
+        location.href = '/signin/';
+      }
+    }
   });
 }
 
@@ -88,6 +101,16 @@ function googleSignIn() {
     // ...
     console.log('ERROR');
   });
+}
+
+function facebookSignIn()
+{
+  // TODO facebook signin
+}
+
+function githubSignIn()
+{
+  // TODO github signin 
 }
 
 function doLogIn() {

@@ -12,6 +12,32 @@ function person() {
     document.getElementById("content").innerHTML = temp;
 }
 
+function addtemp(string,items)
+{
+  console.log(items);
+  var myfunction="";
+  if(string === "交易中"){
+    myfunction = "ToTrade()";
+  }
+  else {
+    myfuncction = "ToProduct()";
+  }
+
+  temp = '<div class="container-fluid"><div class="row">';
+  for (var i = 0; i < items.length; i++) {
+      temp += '<div class="col-md-2"><img src="';
+      temp += items[i].images[0];
+      temp += '" id="' + items[i].id;
+      temp += '" onclick="'+myfunction+'"><p id="' + items[i].id;
+      temp += '" onclick="'+myfunction+'">';
+      temp += items[i].product_name;
+      temp += '</p></div>';
+  }
+  temp += '</div></div>';
+  return temp;
+}
+
+
 // 顯示追蹤中清單頁面
 function likes() {
     var items = info.tracking_items;
@@ -20,17 +46,7 @@ function likes() {
         temp = "<p>無追蹤中商品</p>";
     }
     else {
-      temp = '<div class="container-fluid"><div class="row">';
-      for (var i = 0; i < items.length; i++) {
-          temp += '<div class="col-md-2"><img src="';
-          temp += items[i].images[0];
-          temp += '" id="' + items[i].id;
-          temp += '" onclick="ToProduct(this)"><p id="' + items[i].id;
-          temp += '" onclick="ToProduct(this)">';
-          temp += items[i].product_name;
-          temp += '</p></div>';
-      }
-      temp += '</div></div>';
+        temp = addtemp("追蹤中",items);
     }
     document.getElementById("content").innerHTML = temp;
 }
@@ -43,17 +59,8 @@ function buying() {
         temp = "<p>無競標中商品</p>";
     }
     else {
-      temp = '<div class="container-fluid"><div class="row">';
-      for (var i = 0; i < items.length; i++) {
-          temp += '<div class="col-md-2"><img src="';
-          temp += items[i].images[0];
-          temp += '" id="' + items[i].id;
-          temp += '" onclick="ToProduct(this)"><p id="' + items[i].id;
-          temp += '" onclick="ToProduct(this)">';
-          temp += items[i].product_name;
-          temp += '</p></div>';
-      }
-      temp += '</div></div>';
+      temp = addtemp("競標中",items);
+
     }
     document.getElementById("content").innerHTML = temp;
 }
@@ -66,17 +73,8 @@ function dealing() {
         temp = "<p>無交易中商品</p>";
     }
     else {
-      temp = '<div class="container-fluid"><div class="row">';
-      for (var i = 0; i < items.length; i++) {
-          temp += '<div class="col-md-2"><img src="';
-          temp += items[i].images[0];
-          temp += '" id="' + items[i].id;
-          temp += '" onclick="ToTrade(this)"><p id="' + items[i].id;
-          temp += '" onclick="ToTrade(this)">';
-          temp += items[i].product_name;
-          temp += '</p></div>';
-      }
-      temp += '</div></div>';
+    temp = addtemp("交易中",items);
+
     }
     document.getElementById("content").innerHTML = temp;
 }
@@ -89,28 +87,7 @@ function selling() {
         temp = "<p>無販賣中商品</p>";
     }
     else {
-        // temp = '<table id="obj">';
-        // for (var i = 0; i < items.length; i++) {
-        //     temp += '<tr><td><img src="';
-        //     temp += items[i].images[0];
-        //     temp += '" id="' + items[i].id;
-        //     temp += '" onclick="ToTrade(this)"></td><td id="' + items[i].id;
-        //     temp += '" onclick="ToTrade(this)">';
-        //     temp += items[i].product_name;
-        //     temp += '</td></tr>';
-        // }
-        // temp += '</table>';
-        temp = '<div class="container-fluid"><div class="row">';
-        for (var i = 0; i < items.length; i++) {
-            temp += '<div class="col-md-2"><img src="';
-            temp += items[i].images[0];
-            temp += '" id="' + items[i].id;
-            temp += '" onclick="ToProduct(this)"><p id="' + items[i].id;
-            temp += '" onclick="ToProduct(this)">';
-            temp += items[i].product_name;
-            temp += '</p></div>';
-        }
-        temp += '</div></div>';
+      temp = addtemp("販賣中",items);
     }
     document.getElementById("content").innerHTML = temp;
 }
@@ -123,17 +100,7 @@ function finish() {
         temp = "<p>已完成商品</p>";
     }
     else {
-        temp = '<table id="obj">';
-        for (var i = 0; i < items.length; i++) {
-            temp += '<tr><td><img src="';
-            temp += items[i].images[0];
-            temp += '" id="' + items[i].id;
-            temp += '" onclick="ToProduct(this)"></td><td id="' + items[i].id;
-            temp += '" onclick="ToProduct(this)">';
-            temp += items[i].product_name;
-            temp += '</td></tr>';
-        }
-        temp += '</table>';
+        temp = addtemp("已完成",items);
     }
     document.getElementById("content").innerHTML = temp;
 }

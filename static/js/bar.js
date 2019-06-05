@@ -58,8 +58,7 @@ $.ajax({
   cache: false,
   async: false,
   success: function(response) {
-    if (response != "")
-      user_status = true;
+    user_status = response.status;
   }
 });
 
