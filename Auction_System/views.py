@@ -173,7 +173,6 @@ def memberCenter(request):
 
     user_id = _getUserId(request.session['idToken'])
     user_info = firestore_ops.getUserInfo(user_id)
-    print(user_info)
     user_info['tracking_items'] = _parseItems(user_info['tracking_items'])
     user_info['bidding_items'] = _parseItems(user_info['bidding_items'])
     user_info['dealing_items'] = _parseItems(user_info['dealing_items'])
@@ -196,6 +195,14 @@ def updateUserInfo(request):
     firestore_ops.updateUserInfo(user_id, user_data)
 
     return redirect(memberCenter)
+
+def product(request, product_id):
+    product = firestore_ops.getProduct(product_id)
+    product['create_time'] = _datetime2FrontendFormat(product['create_time'])
+    product['deadline'] = _datetime2FrontendFormat(product['deadline'])
+    seller = firestore_ops.getUserInfo(product['seller'])
+    product['seller'] = seller['user_name']
+    return render(request, 'Product.html', {'product': product})
 
 def toSell(request):
     if not _checkIdToken(request):
@@ -235,9 +242,9 @@ def postToSell(request):
         user['onsale_items'].append(product['id'])
         firestore_ops.updateUserInfo(user_id, user)
     except Exception as e:
-        print(e)
+        return HttpResponse('error')
 
-    return redirect(toSell)
+    return redirect(memberCenter)
 
 def signOut(request):
     request.session['idToken'] = ''
@@ -247,8 +254,12 @@ def signOut(request):
 @csrf_exempt
 def postProductId2Product(request):
     product_id = request.POST['id']
-    # TODO redirect to Product.html
-    return HttpResponse(product_id)
+    return HttpResponse('/product/' + product_id)
+
+@csrf_exempt
+def postProductId2Trade(reqeust):
+    product_id = request.POST['id']
+    return HttpResponse('/trade/' + product_id)
 
 @csrf_exempt
 def getIdToken(request):
@@ -282,3 +293,18 @@ def checkUserData(request):
         user_id = _getUserId(request.session['idToken'])
         isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
     return HttpResponse(isUserFillAll) # TODO return json
+
+@csrf_exempt
+def setTrackingProduct(request):
+    if _checkIdToken(request):
+        product_id = request.POST['id']
+        user_id = _getUserId(request.session['idToken'])
+        user_data = firestore_ops.getUserInfo(user_id)
+        if product_id not in user_data['tracking_items']:
+            user_data['tracking_items'].append(product_id)
+        try:
+            firestore_ops.updateUserInfo(user_id, user_data)
+        except:
+            return JsonResponse({'status': False})
+        return JsonResponse({'status': True})
+    return JsonResponse({'status': False})

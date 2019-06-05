@@ -29,14 +29,17 @@ urlpatterns = [
     path('trade/<str:product_id>/', views.trade, name = 'trade'),
     path('membercenter/', views.memberCenter, name = 'member-center'),
     path('updateuserinfo/', views.updateUserInfo, name = 'update-user-info'),
+    path('product/<str:product_id>', views.product, name = 'product'),
     path('tosell/', views.toSell, name = 'to-sell'),
     path('posttosell/', views.postToSell, name = 'post-to-sell'),
     path('signout/', views.signOut, name = 'signout'),
     path('postproductid2product/', views.postProductId2Product, name ='post-product-id-2-product'),
+    path('postproductid2trade/', views.postProductId2Trade, name = 'post-product-id-2-trade'),
     path('getidtoken/', views.getIdToken, name = 'get-id-token'),
     path('getusername/', views.getUserName, name = 'get-user-name'),
     path('getcategory/', views.getCategory, name = 'get-category'),
     path('setsession/', views.setSession, name = 'set-session'),
     path('checkuserdata/', views.checkUserData, name = 'check-user-data'),
+    path('settrackingproduct/', views.setTrackingProduct, name = 'set-tracking-product')
     # path('', include('pwa.urls')),
 ]

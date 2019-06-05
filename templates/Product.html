@@ -7,17 +7,20 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+      var info = {{ product | safe }};
+    </script>
   </head>
   <body>
     <div id="product"> <!--顯示商品資訊-->
       <table>
         <tr>
           <td>圖片:</td>
-          <td><img id="image" src="../static/img/egoist.jpeg"></td>
+          <td><img id="image" src=""></td>
         </tr>
         <tr>
           <td>名稱:</td>
-          <td id="product_name">測試用</td>
+          <td id="product_name"></td>
         </tr>
         <tr>
           <td>分類:</td>
@@ -29,19 +32,19 @@
         </tr>
         <tr>
           <td>狀態</td>
-          <td id="status">不知道</td>
+          <td id="status"></td>
         </tr>
         <tr>
           <td>直購/拍賣</td>
-          <td id="trading_type">直購</td>
+          <td id="trading_type"></td>
         </tr>
         <tr>
           <td>直購價:</td>
-          <td id="price">2000元</td>
+          <td id="price"></td>
         </tr>
         <tr>
           <td>目前價格:</td>
-          <td id="current_price">1000元</td>
+          <td id="current_price"></td>
         </tr>
         <tr>
           <td>目前最高價者</td>
@@ -49,19 +52,19 @@
         </tr>
         <tr>
           <td>每標底價</td>
-          <td id="price_per_mark">100元</td>
+          <td id="price_per_mark"></td>
         </tr>
         <tr>
           <td>敘述:</td>
-          <td id="description">沒有敘述</td>
+          <td id="description"></td>
         </tr>
         <tr>
           <td>希望交易方式</td>
-          <td id="trading_method">隨便</td>
+          <td id="trading_method"></td>
         </tr>
         <tr>
           <td>結標時間</td>
-          <td><input type="datetime-local" id="deadline" value="2018-05-05T06:50"></td>
+          <td><input type="datetime-local" id="deadline" value="" readonly></td>
         </tr>
         <tr>
           <td>
@@ -82,7 +85,7 @@
       </table>
   </div>
   <!--問與答-->
-  <div id="qa" align="center">
+  <div align="center">
     <p>問與答</p>
     <table id="qa">
     </table>

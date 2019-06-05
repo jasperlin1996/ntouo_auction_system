@@ -12,6 +12,11 @@ input[type=submit]{
 	padding:0px 10px;
 }
 
+#image {
+    width: 500px;
+    height: 400px;
+}
+
 #qa {
     position: relative;
     top: 100px;
