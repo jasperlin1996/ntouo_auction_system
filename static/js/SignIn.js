@@ -92,6 +92,16 @@ function googleSignIn() {
   });
 }
 
+function facebookSignIn()
+{
+
+}
+
+function githubSignIn()
+{
+  
+}
+
 function doLogIn() {
   var email = document.getElementById('accBox').value;
   var password = document.getElementById('passBox').value;
