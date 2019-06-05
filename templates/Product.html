@@ -12,12 +12,11 @@
     </script>
   </head>
   <body>
+      <div id="Img">
+        <img id="image" src="">
+      </div>
     <div id="product"> <!--顯示商品資訊-->
       <table>
-        <tr>
-          <td>圖片:</td>
-          <td><img id="image" src=""></td>
-        </tr>
         <tr>
           <td>名稱:</td>
           <td id="product_name"></td>
@@ -68,10 +67,10 @@
         </tr>
         <tr>
           <td>
-            <input type="button" onclick="tracking()" value="追蹤此商品" style="position:relative;top:-20px;left:-190px;font-size:15px;">
+            <input type="button" onclick="tracking()" value="追蹤此商品" style="position:relative;top:-20px;font-size:15px;">
           </td>
           <td>
-            <form method="POST" action="/postproduct/" onsubmit="return checkForm()">
+            <form method="POST" action="/bidproduct/" onsubmit="return checkForm()">
               <input type="number" name="current_price" id="inputprice" style="width:100px;float:left">元
               <input type="text" name="id" style="display: none">
               <input type="submit" value="出價">
@@ -85,7 +84,7 @@
       </table>
   </div>
   <!--問與答-->
-  <div align="center">
+  <div id="qas" align="center">
     <p>問與答</p>
     <table id="qa">
     </table>
