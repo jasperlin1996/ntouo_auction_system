@@ -198,7 +198,12 @@ def updateUserInfo(request):
     return redirect(memberCenter)
 
 def product(request, product_id):
-    return render(request, 'Product.html')
+    product = firestore_ops.getProduct(product_id)
+    product['create_time'] = _datetime2FrontendFormat(product['create_time'])
+    product['deadline'] = _datetime2FrontendFormat(product['deadline'])
+    seller = firestore_ops.getUserInfo(product['seller'])
+    product['seller'] = seller['user_name']
+    return render(request, 'Product.html', {'product': product})
 
 def toSell(request):
     if not _checkIdToken(request):
@@ -289,3 +294,18 @@ def checkUserData(request):
         user_id = _getUserId(request.session['idToken'])
         isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
     return HttpResponse(isUserFillAll) # TODO return json
+
+@csrf_exempt
+def setTrackingProduct(request):
+    if _checkIdToken(request):
+        product_id = request.POST['id']
+        user_id = _getUserId(request.session['idToken'])
+        user_data = firestore_ops.getUserInfo(user_id)
+        if product_id not in user_data['tracking_items']:
+            user_data['tracking_items'].append(product_id)
+        try:
+            firestore_ops.updateUserInfo(user_id, user_data)
+        except:
+            return JsonResponse({'status': False})
+        return JsonResponse({'status': True})
+    return JsonResponse({'status': False})

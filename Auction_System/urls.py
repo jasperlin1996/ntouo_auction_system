@@ -40,5 +40,6 @@ urlpatterns = [
     path('getcategory/', views.getCategory, name = 'get-category'),
     path('setsession/', views.setSession, name = 'set-session'),
     path('checkuserdata/', views.checkUserData, name = 'check-user-data'),
+    path('settrackingproduct/', views.setTrackingProduct, name = 'set-tracking-product')
     # path('', include('pwa.urls')),
 ]

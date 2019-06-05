@@ -94,8 +94,8 @@ function selling() {
             temp += '<tr><td><img src="';
             temp += items[i].images[0];
             temp += '" id="' + items[i].id;
-            temp += '" onclick="ToTrade(this)"></td><td id="' + items[i].id;
-            temp += '" onclick="ToTrade(this)">';
+            temp += '" onclick="ToProduct(this)"></td><td id="' + items[i].id;
+            temp += '" onclick="ToProduct(this)">';
             temp += items[i].product_name;
             temp += '</td></tr>';
         }
@@ -135,6 +135,9 @@ function ToProduct(obj) {
         async: false,
         cache: false,
         data:{"id":obj.id},
+        success: function(response) {
+            location.href = response;
+        },
         error: function(){
             window.alert("找不到商品！");
         }
@@ -149,6 +152,9 @@ function ToTrade(obj){
         async: false,
         cache: false,
         data:{"id":obj.id},
+        success: function(response) {
+            location.href = response;
+        },
         error: function(){
             window.alert("找不到商品！");
         }
