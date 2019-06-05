@@ -155,7 +155,6 @@ def trade(request, product_id):
         return redirect(signIn)
 
     user_id = _getUserId(request.session['idToken'])
-    user_info = firestore_ops.getUserInfo(user_id)
 
     product = firestore_ops.getProduct(product_id)
 
@@ -164,8 +163,9 @@ def trade(request, product_id):
         product['deadline'] = _datetime2FrontendFormat(product['deadline'])
 
         seller_info = firestore_ops.getUserInfo(product['seller'])
-        
-        return render(request,'Trade.html', {'user': user_info, 'seller': seller_info, 'product': product})
+        buyer_info = firestore_ops.getUserInfo(product['highest_buyer_id'])
+
+        return render(request,'Trade.html', {'buyer': buyer_info, 'seller': seller_info, 'product': product})
     return redirect(memberCenter)
 
 def memberCenter(request):
