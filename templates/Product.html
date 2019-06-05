@@ -3,11 +3,8 @@
 {% endif %}
 
 <html>
-{% load staticfiles %}
+  {% load staticfiles %}
   <link rel="SHORTCUT ICON" href="{% static 'img/background.jpg' %}"/>
-  <script>
-    var info = {{ get-product-info | safe }};
-  </script>
   <script src="{% static 'js/jquery.js' %}"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/bar.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'css/Product.css' %}">
@@ -15,13 +12,89 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
-    <body>
-        <div id="content">
-        </div>
-    </body>
-    <script src="{% static 'js/bar.js' %}"></script>
-    <script src="{% static 'js/Product.js' %}"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <body>
+    <div id="product"> <!--顯示商品資訊-->
+      <table>
+        <tr>
+          <td>圖片:</td>
+          <td><img id="image" src="../static/img/egoist.jpeg"></td>
+        </tr>
+        <tr>
+          <td>名稱:</td>
+          <td id="product_name">測試用</td>
+        </tr>
+        <tr>
+          <td>分類:</td>
+          <td id="category"></td>
+        </tr>
+        <tr>
+          <td>賣家:</td>
+          <td id="seller"></td>
+        </tr>
+        <tr>
+          <td>狀態</td>
+          <td id="status">不知道</td>
+        </tr>
+        <tr>
+          <td>直購/拍賣</td>
+          <td id="trading_type">直購</td>
+        </tr>
+        <tr>
+          <td>直購價:</td>
+          <td id="price">2000元</td>
+        </tr>
+        <tr>
+          <td>目前價格:</td>
+          <td id="current_price">1000元</td>
+        </tr>
+        <tr>
+          <td>目前最高價者</td>
+          <td id="highest_buyer_id"></td>
+        </tr>
+        <tr>
+          <td>每標底價</td>
+          <td id="price_per_mark">100元</td>
+        </tr>
+        <tr>
+          <td>敘述:</td>
+          <td id="description">沒有敘述</td>
+        </tr>
+        <tr>
+          <td>希望交易方式</td>
+          <td id="trading_method">隨便</td>
+        </tr>
+        <tr>
+          <td>結標時間</td>
+          <td><input type="datetime-local" id="deadline" value="2018-05-05T06:50"></td>
+        </tr>
+        <tr>
+          <td>
+            <input type="button" onclick="tracking()" value="追蹤此商品" style="position:relative;top:-20px;left:-190px;font-size:15px;">
+          </td>
+          <td>
+            <form method="POST" action="/postproduct/" onsubmit="return checkForm()">
+              <input type="number" name="current_price" id="inputprice" style="width:100px;float:left">元
+              <input type="text" name="id" style="display: none">
+              <input type="submit" value="出價">
+            </form>
+            <form method="POST" action="/purchaseproduct/">
+              <input type="text" name="id" style="display: none">
+              <input type="button" style="position:relative;top:-45px;font-size:15px" value="直接購買">
+            </form>
+          </td>
+        </tr>
+      </table>
+  </div>
+  <!--問與答-->
+  <div id="qa" align="center">
+    <p>問與答</p>
+    <table id="qa">
+    </table>
+  </div>
+  </body>
+  <script src="{% static 'js/bar.js' %}"></script>
+  <script src="{% static 'js/Product.js' %}"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </html>

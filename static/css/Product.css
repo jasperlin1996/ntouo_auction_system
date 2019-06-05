@@ -1,17 +1,43 @@
-#content {
-    position: absolute;
-    margin-top: 8%;
-    margin-left: 40%;
-    font-size: 25px;
+#product {
+    position: relative;
+    top: 100px;
 }
 
-input {
-    height: 25px;
+input[type=submit]{
+    background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background-color:#ffffff;
+	border-radius:10px;
+	font-size:15px;
+	font-weight:bold;
+	padding:0px 10px;
 }
 
-@media screen and (max-width: 800px) {
-    #content {
-        margin-left: 15%;
-        font-size: 15px;
+#qa {
+    position: relative;
+    top: 100px;
+    font-size: 20px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+input[type=number]{
+    -moz-appearance: textfield;
+}
+
+@media screen and (min-width: 900px) {
+    #product {
+        left: 30%;
+        width: 50%;
+    }
+
+    table {
+        font-size: 20px;
+        width: 100%;
+    }
+
+    td {
+        width: 50%;
     }
 }
