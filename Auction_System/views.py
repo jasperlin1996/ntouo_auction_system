@@ -205,6 +205,12 @@ def product(request, product_id):
     product['seller'] = seller['user_name']
     return render(request, 'Product.html', {'product': product})
 
+def bidProduct(request):
+    return redirect(request, product)
+
+def purchaseProduct(request):
+    return redirect(request, product)
+
 def toSell(request):
     if not _checkIdToken(request):
         return redirect(signIn)
@@ -289,11 +295,11 @@ def setSession(request):
 
 @csrf_exempt
 def checkUserData(request):
-    isUserFillAll = False
+    status = False
     if _checkIdToken(request):
         user_id = _getUserId(request.session['idToken'])
-        isUserFillAll = firestore_ops.checkUserInfoCompleteness(user_id)
-    return HttpResponse(isUserFillAll) # TODO return json
+        status = firestore_ops.checkUserInfoCompleteness(user_id)
+    return JsonResponse({'status': status})
 
 @csrf_exempt
 def setTrackingProduct(request):
