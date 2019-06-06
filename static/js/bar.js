@@ -53,7 +53,7 @@ $.ajax({
 
 //拿到idtoken
 $.ajax({
-  url: "/getidtoken/",
+  url: "/checkuserstatus/",
   type: 'POST',
   cache: false,
   async: false,

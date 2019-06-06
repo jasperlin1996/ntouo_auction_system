@@ -42,6 +42,14 @@ def _checkIdToken(request):
         request.session['idToken'] = ''
     return False
 
+def _checkUserInfoCompleteness(idToken):
+    try:
+        user_id = _getUserId(idToken)
+        return firestore_ops.checkUserInfoCompleteness(user_id)
+    except Exception as e:
+        print(e)
+    return False
+
 def _imageSaveAndUpload(filename, image, idToken):
     path = '../.tmp/'
     with open(os.path.join(path, filename), 'wb+') as file:
@@ -114,23 +122,27 @@ def index(request):
     return render(request, 'index.html', {'products': products})
 
 def signIn(request):
-    if _checkIdToken(request):
+    if _checkIdToken(request) and _checkUserInfoCompleteness(request.session['idToken']):
         return redirect(index)
     return render(request, 'SignIn.html')
 
 def preSignUp(request):
-    if _checkIdToken(request):
+    if _checkIdToken(request) and _checkUserInfoCompleteness(request.session['idToken']):
         return redirect(index)
     return render(request, 'pre-SignUp.html')
 
 def signUp(request):
     if not _checkIdToken(request):
         return redirect(signIn)
+    if _checkUserInfoCompleteness(request.session['idToken']):
+        return redirect(index)
     return render(request, 'SignUp.html')
 
 def postSignUp(request):
     if not _checkIdToken(request):
         return redirect(signIn)
+    if _checkUserInfoCompleteness(request.session['idToken']):
+        return redirect(index)
 
     idToken  = request.session['idToken']
     user_id = _getUserId(idToken)
@@ -151,7 +163,7 @@ def postSignUp(request):
     return HttpResponse('create new user success')
 
 def trade(request, product_id):
-    if not _checkIdToken(request):
+    if (not _checkIdToken(request)) or (not _checkUserInfoCompleteness(request.session['idToken'])):
         return redirect(signIn)
 
     user_id = _getUserId(request.session['idToken'])
@@ -169,7 +181,7 @@ def trade(request, product_id):
     return redirect(memberCenter)
 
 def memberCenter(request):
-    if not _checkIdToken(request):
+    if (not _checkIdToken(request)) or (not _checkUserInfoCompleteness(request.session['idToken'])):
         return redirect(signIn)
 
     user_id = _getUserId(request.session['idToken'])
@@ -182,7 +194,7 @@ def memberCenter(request):
     return render(request, 'MemberCenter.html', {'user': user_info})
 
 def updateUserInfo(request):
-    if not _checkIdToken(request):
+    if (not _checkIdToken(request)) or (not _checkUserInfoCompleteness(request.session['idToken'])):
         return redirect(signIn)
 
     user_id = _getUserId(request.session['idToken'])
@@ -202,23 +214,47 @@ def product(request, product_id):
     product['create_time'] = _datetime2FrontendFormat(product['create_time'])
     product['deadline'] = _datetime2FrontendFormat(product['deadline'])
     seller = firestore_ops.getUserInfo(product['seller'])
+    highest_buyer = firestore_ops.getUserInfo(product['highest_buyer_id'])
     product['seller'] = seller['user_name']
+    product['highest_buyer_id'] = highest_buyer['user_name']
     return render(request, 'Product.html', {'product': product})
 
 def bidProduct(request):
+    user_id = _getUserId(request)
+
+    product_id = request.POST['id']
+    current_price = request.POST['current_price']
+    product = firestore_ops.getProduct(product_id)
+
+    product['highest_buyer_id'] = user_id
+    product['current_price'] = current_price
+
+    # TODO updateProduct
+    # TODO linkProductToUser (bidding_items)
+
     return redirect(request, product)
 
 def purchaseProduct(request):
+    user_id = _getUserId(request)
+
+    product_id = request.POST['id']
+    product = firestore_ops.getProduct(product_id)
+
+    product['highest_buyer_id'] = user_id
+    product['current_price'] = product['price']
+
+    # TODO updateProduct
+    # TODO linkProductToUser (dealing_items) (product status)
+
     return redirect(request, product)
 
 def toSell(request):
-    if not _checkIdToken(request):
+    if (not _checkIdToken(request)) or (not _checkUserInfoCompleteness(request.session['idToken'])):
         return redirect(signIn)
-
     return render(request, 'ToSell.html')
 
 def postToSell(request):
-    if not _checkIdToken(request):
+    if (not _checkIdToken(request)) or (not _checkUserInfoCompleteness(request.session['idToken'])):
         return redirect(signIn)
 
     product = firestore_ops.createProductDict()
@@ -269,15 +305,19 @@ def postProductId2Trade(reqeust):
     return HttpResponse('/trade/' + product_id)
 
 @csrf_exempt
-def getIdToken(request):
-    return JsonResponse({'status': _checkIdToken(request)})
+def checkUserStatus(request):
+    status = _checkIdToken(request) and _checkUserInfoCompleteness(request.session['idToken'])
+    return JsonResponse({'status': status})
 
 @csrf_exempt
 def getUserName(request):
     user_name = ''
     if _checkIdToken(request):
         user_id = _getUserId(request.session['idToken'])
-        user_name = firestore_ops.getUserInfo(user_id)['user_name']
+        try:
+            user_name = firestore_ops.getUserInfo(user_id)['user_name']
+        except Exception as e:
+            print(e)
     return HttpResponse(user_name)
 
 @csrf_exempt
@@ -299,8 +339,7 @@ def setSession(request):
 def checkUserData(request):
     status = False
     if _checkIdToken(request):
-        user_id = _getUserId(request.session['idToken'])
-        status = firestore_ops.checkUserInfoCompleteness(user_id)
+        status = _checkUserInfoCompleteness(request.session['idToken'])
     return JsonResponse({'status': status})
 
 @csrf_exempt

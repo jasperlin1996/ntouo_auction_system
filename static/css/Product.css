@@ -1,4 +1,4 @@
-div {
+#Img, #product {
     font-family: DFKai-SB, STKaiti;
     position: absolute;
     top: 100px;
@@ -34,7 +34,8 @@ input[type=submit]{
 }
 
 input[type=datetime-local] {
-    width: 230px;
+    font-size: 15px;
+    width: 210px;
 }
 
 input::-webkit-outer-spin-button,
@@ -72,10 +73,6 @@ input[type=number]{
         font-size: 20px;
         width: 100%;
     }
-
-    td {
-        width: 50%;
-    }
 }
 
 @media screen and (max-width: 800px) and (min-width: 530px) {
@@ -104,10 +101,6 @@ input[type=number]{
     table {
         font-size: 20px;
         width: 100%;
-    }
-
-    td {
-        width: 50%;
     }
 }
 

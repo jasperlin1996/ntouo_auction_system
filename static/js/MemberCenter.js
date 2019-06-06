@@ -14,13 +14,12 @@ function person() {
 
 function addtemp(string,items)
 {
-  console.log(items);
-  var myfunction="";
-  if(string === "交易中"){
-    myfunction = "ToTrade()";
+  var myfunction = "";
+  if (string === "交易中") {
+    myfunction = "ToTrade(this)";
   }
   else {
-    myfuncction = "ToProduct()";
+    myfunction = "ToProduct(this)";
   }
 
   temp = '<div class="container-fluid"><div class="row">';
@@ -28,15 +27,15 @@ function addtemp(string,items)
       temp += '<div class="col-md-2"><img src="';
       temp += items[i].images[0];
       temp += '" id="' + items[i].id;
-      temp += '" onclick="'+myfunction+'"><p id="' + items[i].id;
-      temp += '" onclick="'+myfunction+'">';
+      temp += '" onclick="' + myfunction + '"><p id="' + items[i].id;
+      temp += '" onclick="' + myfunction + '">';
       temp += items[i].product_name;
       temp += '</p></div>';
   }
   temp += '</div></div>';
+  console.log(temp);
   return temp;
 }
-
 
 // 顯示追蹤中清單頁面
 function likes() {
@@ -97,7 +96,7 @@ function finish() {
     var items = info.done_items;
     var temp = "";
     if (items.length == 0) {
-        temp = "<p>已完成商品</p>";
+        temp = "<p>無已完成商品</p>";
     }
     else {
         temp = addtemp("已完成",items);
@@ -112,7 +111,7 @@ function ToProduct(obj) {
         type: "POST",
         async: false,
         cache: false,
-        data:{"id":obj.id},
+        data:{"id": obj.id},
         success: function(response) {
             location.href = response;
         },
@@ -129,7 +128,7 @@ function ToTrade(obj){
         type: "POST",
         async: false,
         cache: false,
-        data:{"id":obj.id},
+        data:{"id": obj.id},
         success: function(response) {
             location.href = response;
         },
