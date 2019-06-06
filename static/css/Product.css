@@ -1,6 +1,18 @@
-#product {
+div {
+    font-family: DFKai-SB, STKaiti;
     position: absolute;
     top: 100px;
+}
+
+#qas{
+    position: absolute;
+    top: 500px;
+}
+
+form {
+    position: relative;
+    width: 100%;
+    height: 20px;
 }
 
 input[type=button]{
@@ -21,6 +33,10 @@ input[type=submit]{
     padding:0px 10px;
 }
 
+input[type=datetime-local] {
+    width: 230px;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -29,61 +45,25 @@ input[type=number]{
     -moz-appearance: textfield;
 }
 
-@media screen and (min-width: 1350px) {
-    #product {
-        left: 40%;
-        width: 40%;
-    }
-
-    #Img {
-        position: relative;
-        top: 100px;
-        left: 10%;
-    }
-
-    #image{
-        width: 400px;
-        height: 300px;
-    }
-
-    #qas {
-        position: relative;
-        top: 350px;
-        width: 80%;
-        font-size: 20px;
-    }
-
-    table {
-        font-size: 20px;
-        width: 100%;
-    }
-
-    td {
-        width: 50%;
-    }
-}
-
-@media screen and (max-width: 1350px) and (min-width: 660px) {
+@media screen and (min-width: 800px) {
     #product {
         left: 50%;
         width: 50%;
     }
 
     #Img {
-        position: relative;
-        top: 100px;
-        left: 10px;
-        width: 400Px;
+        left: 15%;
+        width: 30%;
+        height: 40%;
     }
 
-    #image {
-        width: 320px;
-        height: 240px;
+    #image{
+        width: 100%;
+        height: 100%;
     }
 
     #qas {
-        position: relative;
-        top: 350px;
+        left: 10%;  
         width: 80%;
         font-size: 20px;
     }
@@ -93,36 +73,31 @@ input[type=number]{
         width: 100%;
     }
 
-    tr {
-        width: 100%;
-    }
-
     td {
-        width: 60%;
+        width: 50%;
     }
 }
 
-@media screen and (max-width: 660px) {
+@media screen and (max-width: 800px) and (min-width: 530px) {
     #product {
-        position: relative;
-        width: 100%;
-        top: 100px;
+        left: 30%;
+        width: 70%;
     }
 
     #Img {
-        position: relative;
-        top: 50px;
-        left: 20%;
+        left: 1%;
+        width: 29%;
+        height: 30%;
     }
-    
-    #image {
-        width: 300px;
-        height: 200x;
+
+    #image{
+        width: 100%;
+        height: 100%;
     }
 
     #qas {
-        position: relative;
-        top: 200px;
+        left: 10%;  
+        width: 80%;
         font-size: 20px;
     }
 
@@ -132,6 +107,46 @@ input[type=number]{
     }
 
     td {
-        width: 200px;
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    div {
+        position: relative;
+    }
+
+    #product {
+        left: 10%;
+        width: 80%;
+    }
+
+    #Img {
+        top: 50px;
+        left: 10%;
+        width: 80%;
+        height: 30%;
+    }
+
+    #image{
+        width: 100%;
+        height: 100%;
+    }
+
+    #qas {
+        position: relative;
+        width: 80%;
+        top: 100px;
+        font-size: 20px;
+    }
+
+    table {
+        font-size: 20px;
+        width: 100%;
+    }
+
+    td {
+        width: 100%;
+        float: left;
     }
 }
