@@ -135,6 +135,7 @@ input[type=number]{
 
     #qas {
         position: relative;
+        left: 10%;
         width: 80%;
         top: 100px;
         font-size: 20px;
