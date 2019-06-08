@@ -205,7 +205,7 @@ def searchProducts(string, n):
             # insert to the position of its edit distance
             position = binary_search(dist, 0, len(result)-1)
             # result already have n elements, if position
-            if len(result) > n and position > _max_distance:
+            if len(result) > n and dist > _max_distance:
                 continue
             result.insert((position, data))
             _max_distance = data[0] if data[0] > _max_distance else _max_distance
