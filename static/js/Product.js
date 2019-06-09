@@ -24,7 +24,7 @@ function load() {
         document.getElementById("status").innerHTML = "已下架";
     }
 
-    if (info.type == 0) { // 拍賣顯示價格模式
+    if (info.trading_type == 0) { // 拍賣顯示價格模式
         document.getElementById("trading_type").innerHTML = "拍賣";
         document.getElementById("price").innerHTML = info.price + "元";
         document.getElementById("current_price").innerHTML = info.current_price + "元";

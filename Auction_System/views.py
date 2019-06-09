@@ -214,39 +214,42 @@ def product(request, product_id):
     product['create_time'] = _datetime2FrontendFormat(product['create_time'])
     product['deadline'] = _datetime2FrontendFormat(product['deadline'])
     seller = firestore_ops.getUserInfo(product['seller'])
-    highest_buyer = firestore_ops.getUserInfo(product['highest_buyer_id'])
     product['seller'] = seller['user_name']
-    product['highest_buyer_id'] = highest_buyer['user_name']
+    if product['highest_buyer_id'] != '':
+        highest_buyer = firestore_ops.getUserInfo(product['highest_buyer_id'])
+        product['highest_buyer_id'] = highest_buyer['user_name']
+
     return render(request, 'Product.html', {'product': product})
 
 def bidProduct(request):
-    user_id = _getUserId(request)
+    user_id = _getUserId(request.session['idToken'])
 
     product_id = request.POST['id']
     current_price = request.POST['current_price']
-    product = firestore_ops.getProduct(product_id)
+    product_data = firestore_ops.getProduct(product_id)
 
-    product['highest_buyer_id'] = user_id
-    product['current_price'] = current_price
+    product_data['highest_buyer_id'] = user_id
+    product_data['current_price'] = current_price
 
-    # TODO updateProduct
-    # TODO linkProductToUser (bidding_items)
+    firestore_ops.updateProduct(product_id, product_data)
+    firestore_ops.linkProductToUser(user_id, product_id, list_name = 'bidding_items')
 
-    return redirect(request, product)
+    return redirect(product, product_id)
 
 def purchaseProduct(request):
-    user_id = _getUserId(request)
+    user_id = _getUserId(request.session['idToken'])
 
     product_id = request.POST['id']
-    product = firestore_ops.getProduct(product_id)
+    product_data = firestore_ops.getProduct(product_id)
 
-    product['highest_buyer_id'] = user_id
-    product['current_price'] = product['price']
+    product_data['highest_buyer_id'] = user_id
+    product_data['current_price'] = product_data['price']
 
-    # TODO updateProduct
-    # TODO linkProductToUser (dealing_items) (product status)
+    firestore_ops.updateProduct(product_id, product_data)
+    firestore_ops.linkProductToUser(user_id, product_id, list_name = 'dealing_items')
+    # TODO product status
 
-    return redirect(request, product)
+    return redirect(product, product_id)
 
 def toSell(request):
     if (not _checkIdToken(request)) or (not _checkUserInfoCompleteness(request.session['idToken'])):
@@ -281,11 +284,8 @@ def postToSell(request):
 
     try:
         firestore_ops.addProduct(user_id, product['id'], product)
-        user = firestore_ops.getUserInfo(user_id)
-        user['onsale_items'].append(product['id'])
-        firestore_ops.updateUserInfo(user_id, user)
     except Exception as e:
-        return HttpResponse('error')
+        print(e)
 
     return redirect(memberCenter)
 
@@ -345,13 +345,10 @@ def checkUserData(request):
 @csrf_exempt
 def setTrackingProduct(request):
     if _checkIdToken(request):
-        product_id = request.POST['id']
         user_id = _getUserId(request.session['idToken'])
-        user_data = firestore_ops.getUserInfo(user_id)
-        if product_id not in user_data['tracking_items']:
-            user_data['tracking_items'].append(product_id)
+        product_id = request.POST['id']
         try:
-            firestore_ops.updateUserInfo(user_id, user_data)
+            firestore_ops.linkProductToUser(user_id, product_id, list_name = 'tracking_items')
             return JsonResponse({'status': True})
         except Exception as e:
             print(e)
