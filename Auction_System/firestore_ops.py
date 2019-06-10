@@ -286,7 +286,7 @@ def deleteProduct(product_id):
     except Exception as e:
         raise e
 
-def transferProductStatus(user_id, product_id, status):
+def transferProductStatus(product_id, status):
     try:
         ref = product_ref.document(product_id)
         ref.update({'status': status})

@@ -117,6 +117,16 @@ def _parseItems(items):
         items[i] = firestore_ops.getProductBasicInfo(product)
     return items
 
+"""
+    product status (int):
+        {
+            0: onsale
+            1: bidding
+            2: dealing
+            3, 4, 5: done
+        }
+"""
+
 def index(request):
     products = firestore_ops.getAllProductBasicInfo()
     return render(request, 'index.html', {'products': products})
@@ -233,6 +243,7 @@ def bidProduct(request):
 
     firestore_ops.updateProduct(product_id, product_data)
     firestore_ops.linkProductToUser(user_id, product_id, list_name = 'bidding_items')
+    firestore_ops.transferProductStatus(product_id, 1)
 
     return redirect(product, product_id)
 
@@ -247,9 +258,9 @@ def purchaseProduct(request):
 
     firestore_ops.updateProduct(product_id, product_data)
     firestore_ops.linkProductToUser(user_id, product_id, list_name = 'dealing_items')
-    # TODO product status
+    firestore_ops.transferProductStatus(product_id, 2)
 
-    return redirect(product, product_id)
+    return redirect(trade, product_id)
 
 def toSell(request):
     if (not _checkIdToken(request)) or (not _checkUserInfoCompleteness(request.session['idToken'])):
