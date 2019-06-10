@@ -208,7 +208,7 @@ def searchProducts(string, n):
             if len(result) > n and dist > _max_distance:
                 continue
             result.insert((position, data))
-            _max_distance = data[0] if data[0] > _max_distance else _max_distance
+            _max_distance = dist if dist > _max_distance else _max_distance
 
     return [element[1] for element in result][:n]
 
@@ -256,7 +256,7 @@ def flattenDict(d, mode=ArrayOps.ADD):
     try:
         for key, value in d.items():
             if type(value) is not dict:
-                if type(value) is list:
+                if value and type(value) is list:
                     value = ArrayUnion(value) if mode == ArrayOps.ADD else ArrayRemove(value)
                 ret.update({key: value})
             else:
@@ -285,14 +285,12 @@ def deleteProduct(product_id):
         product_ref.document(str(product_id)).delete()
     except Exception as e:
         raise e
-# TODO 
+
 def transferProductStatus(user_id, product_id, status):
     try:
         ref = product_ref.document(product_id)
-        # ref.update({'status': status})
+        ref.update({'status': status})
     except Exception as e:
         raise e
 
-def changeProductStatus(user_id, product_id, status):
-    pass
 # --- Developing --- #
