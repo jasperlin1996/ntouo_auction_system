@@ -23,7 +23,7 @@ function load() {
         document.getElementById("status").innerHTML = "已下架";
     }
 
-    if (info.type == 0) { // 拍賣顯示價格模式
+    if (info.trading_type == 0) { // 拍賣顯示價格模式
         document.getElementById("trading_type").innerHTML = "拍賣";
         document.getElementById("price").innerHTML = info.price + "元";
         document.getElementById("current_price").innerHTML = info.current_price + "元";
@@ -45,12 +45,60 @@ function load() {
     for (let i = 0; i < id.length; i++) {
         id[i].setAttribute("value", info.id);
     }
+    // 取得user name
+    var user_name;
+    $.ajax({
+        url: "/getusername/",
+        type: 'POST',
+        cache: false,
+        async: false,
+        success: function(response) {
+            user_name = response;
+        }
+    });
     // 輸出問與答
     var qas = info.qas;
     var temp = "";
     for (let i = 0; i < qas.length; i++) {
-        temp += "<tr><td>" + qas[i].question + "</td>";
-        temp += "<td>" + qas[i].answer + "</td></tr>";
+        temp += "<tr class='tr";
+        if (i%2 == 0){
+            temp += "1";
+        }
+        else {
+            temp += "2";
+        }
+        temp += "'><td>" + qas[i].question + "</td>";
+        // 使用者為賣家
+        if(user_name == info.seller) {
+            // 尚未回答
+            if(qas[i].answer=="") {
+                temp += '<td><form method="POST" action="/setproductquestion/">';
+                // 為了上傳商品id 不顯示於網頁
+                temp += '<input type="text" name="id" style="display: none">';
+                // 為了上傳問題index 不顯示於網頁
+                temp += '<input type="text" name="question_index" value="' + i + '" style="display:none">';
+                temp += '<textarea name="text" cols="20" rows="5" required></textarea>';
+                temp += '<input type="submit" value="回答此問題">';
+                temp += '</form></td></tr>';
+            }
+            // 已回答
+            else {
+                temp += '<td>' + qas[i].answer + '</td></tr>';
+            }
+        }
+        // 使用者非賣家
+        else{
+            temp += "<td>" + qas[i].answer + "</td></tr>";
+        }
+    }
+    var temp = "";
+    if (user_name!=info.seller){
+        temp += '<tr class="tr3"><td><form method="POST" action="/setproductquestion/">';
+        // 為了上傳商品id 不顯示於網頁
+        temp += '<input type="text" name="id" style="display: none>';
+        temp += '<textarea name="text" cols="20" rows="5" required></textarea>';
+        temp += '<input type="submit" value="我要發問!">';
+        temp += '</form></td></tr>';
     }
     document.getElementById("qa").innerHTML = temp;
 }

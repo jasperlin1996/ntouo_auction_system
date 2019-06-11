@@ -14,6 +14,7 @@
   <body>
     <div id="Img">
       <img id="image" src="">
+      <input type="button" onclick="tracking()" value="追蹤此商品" style="position:relative;font-size:15px;left:-40%;">
     </div>
     <!--顯示商品資訊-->
     <div id="product">
@@ -68,7 +69,6 @@
         </tr>
         <tr>
           <td>
-            <input type="button" onclick="tracking()" value="追蹤此商品" style="position:relative;font-size:15px;">
           </td>
           <td>
             <form method="POST" action="/bidproduct/" onsubmit="return checkForm()">
@@ -76,7 +76,7 @@
               <input type="text" name="id" style="display: none">
               <input type="submit" value="出價">
             </form>
-            <form method="POST" action="/purchaseproduct/" onsubmit="return checkUser()">
+            <form method="POST" id="purchase" action="/purchaseproduct/" onsubmit="return checkUser()">
               <input type="text" name="id" style="display: none">
               <input type="submit" value="直接購買">
             </form>

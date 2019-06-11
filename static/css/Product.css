@@ -6,13 +6,32 @@
 
 #qas{
     position: absolute;
-    top: 500px;
+    top: 600px;
 }
 
 form {
     position: relative;
-    width: 100%;
+    width: 80%;
     height: 20px;
+}
+
+#purchase {
+    position: relative;
+    top: -36px;
+    right: -180px;
+    width: 40%;
+}
+
+.tr1 {
+    background-color: blueviolet;
+}
+
+.tr2 {
+    background-color: cadetblue;
+}
+
+.tr3 {
+    background-color: blue;
 }
 
 input[type=button]{
