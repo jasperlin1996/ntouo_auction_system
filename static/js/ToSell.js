@@ -2,8 +2,8 @@
 $("#imgIn").change(function(){
     readURL(this);
  });
-// 讀取上傳之url並丟入img顯示
 function readURL(input){
+    // 讀取上傳之url並丟入img顯示
     if(input.files && input.files[0]){
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -32,7 +32,7 @@ function load(){
     var month = now.getMonth() + 1;
     var date = now.getDate();
     var hour = now.getHours();
-    var minute = now.getMinutes();
+    var minute = 0;
     if (month < 10) {
         month = "0" + month;
     }
@@ -99,8 +99,8 @@ function switch_trading() {
     }
 }
 
-// 檢查輸入價格
 function checkForm(){
+    // 檢查輸入價格
     if (document.getElementById("sale").checked) { // 確認為拍賣模式
         var max = Number(document.getElementById("max").value); // 直購價
         var now = Number(document.getElementById("now").value); // 底價

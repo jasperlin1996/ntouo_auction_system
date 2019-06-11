@@ -76,9 +76,9 @@
               <input type="text" name="id" style="display: none">
               <input type="submit" value="出價">
             </form>
-            <form method="POST" action="/purchaseproduct/">
+            <form method="POST" action="/purchaseproduct/" onsubmit="return checkUser()">
               <input type="text" name="id" style="display: none">
-              <input type="button" style="position:relative;top:0px;font-size:15px" value="直接購買">
+              <input type="submit" value="直接購買">
             </form>
           </td>
         </tr>

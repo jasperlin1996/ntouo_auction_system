@@ -1,5 +1,4 @@
 window.onload = load;
-
 // read product's information and show
 function load() {
     // 分別寫入位置
@@ -58,31 +57,54 @@ function load() {
 
 // 送出追蹤請求
 function tracking() {
-    $.ajax({
-        url: "/settrackingproduct/",
-        type: "POST",
-        data: {'id': info.id},
-        cache: false,
-        async: false,
-        success: function(response){
-            if (response.status) {
-                window.alert("追蹤成功");
+    if(!checkUser()){
+        return;
+    }
+    else{
+        $.ajax({
+            url: "/settrackingproduct/",
+            type: "POST",
+            data: {'id': info.id},
+            cache: false,
+            async: false,
+            success: function(response){
+                if (response.status) {
+                    window.alert("追蹤成功");
+                }
+                else {
+                    window.alert("追蹤失敗");
+                }
             }
-            else {
-                window.alert("追蹤失敗");
-            }
-        }
-    });
+        });
+    }
 }
 
 // 檢查出價
 function checkForm(){
-    window.alert("check");
+    // 確認價格
     var input = Number(document.getElementById("inputprice").value);
     if ((input - info.current_price) % info.price_per_mark != 0) {
         window.alert("出價需為目前價格加上每標底價的整數倍");
         return false;
     }
-    window.alert("true");
+    return checkUser();
+}
+
+function checkUser(){
+    // 確認登入狀態
+    var user_status = false;
+    $.ajax({
+        url: "/checkuserstatus/",
+        type: 'POST',
+        cache: false,
+        async: false,
+        success: function(response) {
+        user_status = response.status;
+        }
+    });
+    if(!user_status) {
+        window.alert("請登入以繼續!");
+        return false;
+    }
     return true;
 }
