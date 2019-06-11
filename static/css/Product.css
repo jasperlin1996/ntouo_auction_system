@@ -23,7 +23,7 @@ form {
 }
 
 .tr1 {
-    background-color: blueviolet;
+    background-color: cornsilk;
 }
 
 .tr2 {
@@ -31,7 +31,11 @@ form {
 }
 
 .tr3 {
-    background-color: blue;
+    background-color: lightgray;
+}
+
+.tr1 td {
+    width: 50%;
 }
 
 input[type=button]{

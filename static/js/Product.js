@@ -72,12 +72,12 @@ function load() {
         if(user_name == info.seller) {
             // 尚未回答
             if(qas[i].answer=="") {
-                temp += '<td><form method="POST" action="/setproductquestion/">';
+                temp += '<td><form method="POST" action="/setproductanswer/">';
                 // 為了上傳商品id 不顯示於網頁
                 temp += '<input type="text" name="id" style="display: none">';
                 // 為了上傳問題index 不顯示於網頁
                 temp += '<input type="text" name="question_index" value="' + i + '" style="display:none">';
-                temp += '<textarea name="text" cols="20" rows="5" required></textarea>';
+                temp += '<textarea name="text" cols="20" rows="1" required></textarea>';
                 temp += '<input type="submit" value="回答此問題">';
                 temp += '</form></td></tr>';
             }
@@ -96,7 +96,7 @@ function load() {
         temp += '<tr class="tr3"><td><form method="POST" action="/setproductquestion/">';
         // 為了上傳商品id 不顯示於網頁
         temp += '<input type="text" name="id" style="display: none>';
-        temp += '<textarea name="text" cols="20" rows="5" required></textarea>';
+        temp += '<textarea name="text" cols="20" rows="1" required></textarea>';
         temp += '<input type="submit" value="我要發問!">';
         temp += '</form></td></tr>';
     }
