@@ -73,6 +73,7 @@ function load() {
             // 尚未回答
             if(qas[i].answer=="") {
                 temp += '<td><form method="POST" action="/setproductanswer/">';
+                temp += csrf_token;
                 // 為了上傳商品id 不顯示於網頁
                 temp += '<input type="text" name="id" style="display: none">';
                 // 為了上傳問題index 不顯示於網頁
@@ -94,6 +95,7 @@ function load() {
     var temp = "";
     if (user_name!=info.seller){
         temp += '<tr class="tr3"><td><form method="POST" action="/setproductquestion/">';
+        temp += csrf_token;
         // 為了上傳商品id 不顯示於網頁
         temp += '<input type="text" name="id" style="display: none>';
         temp += '<textarea name="text" cols="20" rows="1" required></textarea>';
