@@ -81,7 +81,7 @@
             <form method="POST" id="purchase" action="/purchaseproduct/" onsubmit="return checkUser()">
               {% csrf_token %}
               <input type="text" name="id" style="display: none">
-              <input type="submit" value="直接購買">
+              <input type="submit" style="position:relative;top:0px;font-size:15px" value="直接購買">
             </form>
           </td>
         </tr>

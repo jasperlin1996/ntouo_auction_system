@@ -72,7 +72,7 @@ function load() {
         if(user_name == info.seller) {
             // 尚未回答
             if(qas[i].answer=="") {
-                temp += '<td><form method="POST" action="/setproductanswer/">';
+                temp += '<td><form method="POST" action="/setproductanswer/" onsubmit="return checkUser()">';
                 temp += csrf_token;
                 // 為了上傳商品id 不顯示於網頁
                 temp += '<input type="text" name="id" style="display: none">';
@@ -93,8 +93,9 @@ function load() {
         }
     }
     var temp = "";
-    if (user_name!=info.seller){
-        temp += '<tr class="tr3"><td><form method="POST" action="/setproductquestion/">';
+    // 使用者非賣家
+    if (user_name != info.seller){
+        temp += '<tr class="tr3"><td><form method="POST" action="/setproductquestion/" onsubmit="return checkUser()">';
         temp += csrf_token;
         // 為了上傳商品id 不顯示於網頁
         temp += '<input type="text" name="id" style="display: none>';
@@ -140,6 +141,7 @@ function checkForm(){
     return checkUser();
 }
 
+// 確認是否登入
 function checkUser(){
     // 確認登入狀態
     var user_status = false;
