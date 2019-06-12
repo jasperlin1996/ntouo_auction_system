@@ -361,7 +361,7 @@ def postProductId2Product(request):
     return HttpResponse('/product/' + product_id)
 
 @csrf_exempt
-def postProductId2Trade(reqeust):
+def postProductId2Trade(request):
     product_id = request.POST['id']
     return HttpResponse('/trade/' + product_id)
 
