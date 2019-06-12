@@ -39,8 +39,8 @@ function load() {
     document.getElementById("highest_buyer_id").innerHTML = info.highest_buyer_id;
     document.getElementById("description").innerHTML = info.description;
     document.getElementById("trading_method").innerHTML = info.trading_method;
-    document.getElementById("deadline").setAttribute("value", info.deadline);
-    
+
+    setTimeout();
     // 取得user name
     var user_name;
     $.ajax({
@@ -104,6 +104,38 @@ function load() {
     for (let i = 0; i < id.length; i++) {
         id[i].setAttribute("value", info.id);
     }
+}
+
+// 倒數結標時間
+function showTime(){
+    console.log("show time");
+    var now = new Date();
+    var deadline = info.deadline;
+    var array = deadline.split('-');
+    var endY = array[0];
+    var endM = array[1];
+    var day = array[2].split('T');
+    var endD = day[0];
+    var da = day[1].split(':');
+    var endH = da[0];
+    var end = new Date(endY, endM - 1, endD, endH, 0, 0, 0);
+    var spantime = (end - now) / 1000;
+
+    console.log(spantime);
+    var d = Math.floor(spantime / (24 * 3600));
+    var h = Math.floor((spantime % (24 * 3600)) / 3600);
+    var m = Math.floor((spantime % 3600) / 60);
+    var s = Math.floor(spantime % 60);
+
+    if (spantime < 0) {
+        d = 0;
+        h = 0;
+        m = 0;
+        s = 0;
+    }
+    var temp = d + " 天 " + h + " 小時 " + m + " 分 " + s + " 秒 ";
+    $('#deadline').text(temp);
+    setTimeout("showTime()", 1000);
 }
 
 // 送出追蹤請求

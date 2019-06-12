@@ -38,6 +38,10 @@ form {
     width: 50%;
 }
 
+#product_name, #current_price, #deadline {
+    color: red;
+}
+
 input[type=button]{
     background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
 	background-color:#ffffff;
