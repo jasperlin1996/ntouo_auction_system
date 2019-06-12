@@ -236,7 +236,7 @@ def bidProduct(request):
 
     product_id = request.POST['id']
     current_price = request.POST['current_price']
-    product_data = firestore_ops.getProduct(product_id)
+    product_data = {}
 
     product_data['highest_buyer_id'] = user_id
     product_data['current_price'] = current_price
@@ -251,7 +251,7 @@ def purchaseProduct(request):
     user_id = _getUserId(request.session['idToken'])
 
     product_id = request.POST['id']
-    product_data = firestore_ops.getProduct(product_id)
+    product_data = {}
 
     product_data['highest_buyer_id'] = user_id
     product_data['current_price'] = product_data['price']
@@ -261,6 +261,35 @@ def purchaseProduct(request):
     firestore_ops.transferProductStatus(product_id, 2)
 
     return redirect(trade, product_id)
+
+def setProductQuestion(request):
+    product_id = request.POST['id']
+    question = request.POST['question']
+
+    product_data = {'qas': []}
+    product_data['qas'].append({'question': question, 'answer': ''})
+
+    firestore_ops.updateProduct(product_id, product_data)
+
+    return redirect(product, product_id)
+
+def setProductAnswer(request): # TODO
+    product_id = request.POST['id']
+    question_index = int(request.POST['question_index'])
+    answer = request.POST['answer']
+
+    origin_product = firestore_ops.getProduct(product_id)
+
+    product_data = {}
+    product_data['qas'] = []
+    product_data['qas'].append(origin_product['qas'][question_index])
+
+    firestore_ops.updateProduct(product_id, product_data, firestore_ops.ArrayOps.DELETE)
+
+    product_data['qas'][0]['answer'] = answer
+    firestore_ops.updateProduct(product_id, product_data)
+
+    return redirect(product, product_id)
 
 def toSell(request):
     if (not _checkIdToken(request)) or (not _checkUserInfoCompleteness(request.session['idToken'])):

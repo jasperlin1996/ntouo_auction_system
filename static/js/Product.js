@@ -40,11 +40,7 @@ function load() {
     document.getElementById("description").innerHTML = info.description;
     document.getElementById("trading_method").innerHTML = info.trading_method;
     document.getElementById("deadline").setAttribute("value", info.deadline);
-    // 輸入商品id以上傳
-    var id = document.getElementsByName("id");
-    for (let i = 0; i < id.length; i++) {
-        id[i].setAttribute("value", info.id);
-    }
+    
     // 取得user name
     var user_name;
     $.ajax({
@@ -78,7 +74,7 @@ function load() {
                 temp += '<input type="text" name="id" style="display: none">';
                 // 為了上傳問題index 不顯示於網頁
                 temp += '<input type="text" name="question_index" value="' + i + '" style="display:none">';
-                temp += '<textarea name="text" cols="20" rows="1" required></textarea>';
+                temp += '<textarea name="answer" cols="20" rows="1" required></textarea>';
                 temp += '<input type="submit" value="回答此問題">';
                 temp += '</form></td></tr>';
             }
@@ -92,18 +88,22 @@ function load() {
             temp += "<td>" + qas[i].answer + "</td></tr>";
         }
     }
-    var temp = "";
     // 使用者非賣家
     if (user_name != info.seller){
         temp += '<tr class="tr3"><td><form method="POST" action="/setproductquestion/" onsubmit="return checkUser()">';
         temp += csrf_token;
         // 為了上傳商品id 不顯示於網頁
-        temp += '<input type="text" name="id" style="display: none>';
-        temp += '<textarea name="text" cols="20" rows="1" required></textarea>';
+        temp += '<input type="text" name="id" style="display: none">';
+        temp += '<textarea name="question" cols="20" rows="1" required></textarea>';
         temp += '<input type="submit" value="我要發問!">';
         temp += '</form></td></tr>';
     }
     document.getElementById("qa").innerHTML = temp;
+    // 輸入商品id以上傳
+    var id = document.getElementsByName("id");
+    for (let i = 0; i < id.length; i++) {
+        id[i].setAttribute("value", info.id);
+    }
 }
 
 // 送出追蹤請求
