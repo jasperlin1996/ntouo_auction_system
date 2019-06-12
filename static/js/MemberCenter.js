@@ -18,6 +18,9 @@ function addtemp(string,items)
   if (string === "交易中") {
     myfunction = "ToTrade(this)";
   }
+  else if (string === "已完成") {
+    myfunction = "";
+  }
   else {
     myfunction = "ToProduct(this)";
   }
@@ -33,7 +36,6 @@ function addtemp(string,items)
       temp += '</p></div>';
   }
   temp += '</div></div>';
-  console.log(temp);
   return temp;
 }
 
@@ -113,12 +115,12 @@ function ToProduct(obj) {
         cache: false,
         data:{"id": obj.id},
         success: function(response) {
-            location.href = response;
+            // location.href = response;
         },
         error: function(){
             window.alert("找不到商品！");
         }
-    })
+    });
 }
 
 // 前往交易頁面

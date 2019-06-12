@@ -1,5 +1,6 @@
 import os
 import sys
+import enum
 import django
 import datetime
 import pyrebase
@@ -21,6 +22,14 @@ config = {
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 storage = firebase.storage()
+
+class ProductStatus(enum.IntEnum):
+    Onsale = 0
+    Bidding = 1
+    Dealing = 2
+    Seller_Done = 3
+    Buyer_Done = 4
+    Done = 5
 
 def _getUserId(idToken):
     user = auth.get_account_info(idToken)
@@ -117,15 +126,19 @@ def _parseItems(items):
         items[i] = firestore_ops.getProductBasicInfo(product)
     return items
 
-"""
-    product status (int):
-        {
-            0: onsale
-            1: bidding
-            2: dealing
-            3, 4, 5: done
-        }
-"""
+def _updateUserRate(user, score):
+    user_rate = (user['rate'] * user['count'] + score) / (user['count'] + 1)
+    user_count = user['count'] + 1
+    return {'rate': user_rate, 'count': user_count}
+
+def _changeUserItems(user_id, product_id, unlink_items, link_items):
+    firestore_ops.unlinkProductFromUser(user_id, product_id, list_name = unlink_items)
+    firestore_ops.linkProductToUser(user_id, product_id, list_name = link_items)
+
+def _product2DoneStatus(product_id, seller, buyer):
+    firestore_ops.transferProductStatus(product_id, ProductStatus.Done.value)
+    _changeUserItems(seller, product_id, 'dealing_items', 'done_items')
+    _changeUserItems(buyer, product_id, 'dealing_items', 'done_items')
 
 def index(request):
     products = firestore_ops.getAllProductBasicInfo()
@@ -179,15 +192,23 @@ def trade(request, product_id):
     user_id = _getUserId(request.session['idToken'])
 
     product = firestore_ops.getProduct(product_id)
+    status = product['status']
 
-    if product['status'] == 2 and (user_id == product['highest_buyer_id'] or user_id == product['seller']):
-        product['create_time'] = _datetime2FrontendFormat(product['create_time'])
-        product['deadline'] = _datetime2FrontendFormat(product['deadline'])
+    if status == ProductStatus.Dealing or status == ProductStatus.Seller_Done or status == ProductStatus.Buyer_Done:
+        if user_id == product['seller'] or user_id == product['highest_buyer_id']:
+            now_user = {'user': ''}
+            if user_id == product['seller']:
+                now_user['user'] = 'seller'
+            if user_id == product['highest_buyer_id']:
+                now_user['user'] = 'buyer'
 
-        seller_info = firestore_ops.getUserInfo(product['seller'])
-        buyer_info = firestore_ops.getUserInfo(product['highest_buyer_id'])
+            product['create_time'] = _datetime2FrontendFormat(product['create_time'])
+            product['deadline'] = _datetime2FrontendFormat(product['deadline'])
 
-        return render(request,'Trade.html', {'buyer': buyer_info, 'seller': seller_info, 'product': product})
+            seller_info = firestore_ops.getUserInfo(product['seller'])
+            buyer_info = firestore_ops.getUserInfo(product['highest_buyer_id'])
+
+            return render(request,'Trade.html', {'buyer': buyer_info, 'seller': seller_info, 'now_user': now_user, 'product': product})
     return redirect(memberCenter)
 
 def memberCenter(request):
@@ -243,7 +264,7 @@ def bidProduct(request):
 
     firestore_ops.updateProduct(product_id, product_data)
     firestore_ops.linkProductToUser(user_id, product_id, list_name = 'bidding_items')
-    firestore_ops.transferProductStatus(product_id, 1)
+    firestore_ops.transferProductStatus(product_id, ProductStatus.Bidding.value)
 
     return redirect(product, product_id)
 
@@ -258,7 +279,7 @@ def purchaseProduct(request):
 
     firestore_ops.updateProduct(product_id, product_data)
     firestore_ops.linkProductToUser(user_id, product_id, list_name = 'dealing_items')
-    firestore_ops.transferProductStatus(product_id, 2)
+    firestore_ops.transferProductStatus(product_id, ProductStatus.Dealing.value)
 
     return redirect(trade, product_id)
 
@@ -393,3 +414,39 @@ def setTrackingProduct(request):
         except Exception as e:
             print(e)
     return JsonResponse({'status': False})
+
+@csrf_exempt
+def completeTrade(request):
+    product_id = request.POST['id']
+    score = int(request.POST['score'])
+
+    user_id = _getUserId(request.session['idToken'])
+
+    product = firestore_ops.getProduct(product_id)
+
+    update_user_id = ''
+    user_data = {}
+
+    if user_id == product['seller']:
+        update_user_id = product['highest_buyer_id']
+        user = firestore_ops.getUserInfo(update_user_id)
+        user_data['buyer_rate'] = _updateUserRate(user['buyer_rate'], score)
+
+        if product['status'] == ProductStatus.Buyer_Done:
+            _product2DoneStatus(product_id, product['seller'], product['highest_buyer_id'])
+        else:
+            firestore_ops.transferProductStatus(product_id, ProductStatus.Seller_Done.value)
+
+    if user_id == product['highest_buyer_id']:
+        update_user_id = product['seller']
+        user = firestore_ops.getUserInfo(update_user_id)
+        user_data['seller_rate'] = _updateUserRate(user['seller_rate'], score)
+
+        if product['status'] == ProductStatus.Seller_Done:
+            _product2DoneStatus(product_id, product['seller'], product['highest_buyer_id'])
+        else:
+            firestore_ops.transferProductStatus(product_id, ProductStatus.Buyer_Done.value)
+
+    firestore_ops.updateUserInfo(update_user_id, user_data)
+
+    return HttpResponse('/index/')

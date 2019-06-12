@@ -18,16 +18,17 @@
     </div>
   </div>
   <script>
-    var info = {{ buyer | safe }};
+    var buyer = {{ buyer | safe }};
     var seller = {{ seller | safe }};
     var product = {{ product | safe }};
+    var now_user = {{ now_user | safe}};
   </script>
   <body onload="start()">
 
      <div class="container-fluid data">
          <div class="row">
            <div class="col-md-12"><button id="evaluate" onclick="evaluateProduct()" >評價</button></div>
-           <div class="col-md-12"><button id="complete" disabled>交易完成</button></div>
+           <div class="col-md-12"><button id="complete" onclick="completeTrade()" disabled>交易完成</button></div>
            <div class="col-md-1"></div>
              <div class="col-md-4">
                  <div class="well">

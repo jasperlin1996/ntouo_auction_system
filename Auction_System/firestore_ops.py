@@ -115,8 +115,14 @@ def createUserDict():
         'done_items': [],
         'onsale_items': [],
         'dealing_items': [],
-        'buyer_rate': 0,
-        'seller_rate': 0,
+        'buyer_rate': {
+            'count': 0,
+            'rate': 0,
+        },
+        'seller_rate': {
+            'count': 0,
+            'rate': 0,
+        },
     }
     return user
 

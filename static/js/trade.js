@@ -1,9 +1,9 @@
-console.log(info);
-$('#buyer').html(info.user_name + "(買家)");
-$('#buyer-address').html("<i class='glyphicon glyphicon-map-marker'></i>" + info.address);
-$('#buyer-email').html("<i class='glyphicon glyphicon-envelope'></i>" + info.email);
-$('#buyer-phone').html("<i class='glyphicon glyphicon-phone'></i>" + info.phone);
-$('#buyer-contact').html("<i class='glyphicon glyphicon-list-alt'></i>" + info.contact);
+
+$('#buyer').html(buyer.user_name + "(買家)");
+$('#buyer-address').html("<i class='glyphicon glyphicon-map-marker'></i>" + buyer.address);
+$('#buyer-email').html("<i class='glyphicon glyphicon-envelope'></i>" + buyer.email);
+$('#buyer-phone').html("<i class='glyphicon glyphicon-phone'></i>" + buyer.phone);
+$('#buyer-contact').html("<i class='glyphicon glyphicon-list-alt'></i>" + buyer.contact);
 
 $('#product-name').html(product.product_name + "(商品)");
 $('#product-url').attr("src", product.images[0]);
@@ -42,11 +42,12 @@ function evaluateProduct()
 
 function completeTrade()
 {
+  $("#complete").prop('disabled',true);
   $.ajax(
   {
     url:"/completetrade/",
     type:'POST',
-    data:{"score":score},
+    data:{"score":score, 'id': product.id},
     cache:false,
     async:false,
     success:function(response)
@@ -54,4 +55,19 @@ function completeTrade()
       location.href = response;
     }
   });
+}
+
+load();
+
+function load()
+{
+  if(product.status == 3 &&　now_user.user == "seller") {
+    $("#complete").prop('disabled',true);
+    $("#evaluate").prop('disabled',true);
+  }
+
+  if(product.status == 4 &&　now_user.user == "buyer") {
+    $("#complete").prop('disabled',true);
+    $("#evaluate").prop('disabled',true);
+  }
 }
