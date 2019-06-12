@@ -23,3 +23,35 @@ $('#seller-address').html("<i class='glyphicon glyphicon-map-marker'></i>" + sel
 $('#seller-email').html("<i class='glyphicon glyphicon-envelope'></i>" + seller.email);
 $('#seller-phone').html("<i class='glyphicon glyphicon-phone'></i>" + seller.phone);
 $('#seller-contact').html("<i class='glyphicon glyphicon-list-alt'></i>" + seller.contact);
+
+
+var score;
+function evaluateProduct()
+{
+  score = window.prompt("請輸入對於這次交易的評分","3");
+  var test = /^[0-5]/;
+  if(!test.test(score))
+    window.alert("評分未完成，請重新輸入");
+  else
+  {
+    $("#complete").prop('disabled',false);
+    $("#evaluate").prop('disabled',true);
+  }
+}
+
+
+function completeTrade()
+{
+  $.ajax(
+  {
+    url:"/completetrade/",
+    type:'POST',
+    data:{"score":score},
+    cache:false,
+    async:false,
+    success:function(response)
+    {
+      location.href = response;
+    }
+  });
+}
