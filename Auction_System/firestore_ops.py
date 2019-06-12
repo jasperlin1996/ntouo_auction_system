@@ -55,6 +55,14 @@ def getProductBasicInfo(product):
 
 # TODO getNProductBasicInfo(n)
 
+def getNProductsBasicInfo(n):
+    try:
+        ret = [ data for data in product_ref.order_by(
+            'create_time', direction='DESCENDING').limit(n).stream()]
+        return ret
+    except Exception as e:
+        raise e
+
 def getAllProductBasicInfo():
     """
     Return:
