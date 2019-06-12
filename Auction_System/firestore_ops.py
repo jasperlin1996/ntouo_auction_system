@@ -186,29 +186,9 @@ def searchProducts(string, n):
     _max_distance = -1
     basicInfos = getAllProductBasicInfo()
 
-    # This PROBABLY WORKS...
-    # l => lowerbound, r => upperbound, range always => [l, r]
-    def binary_search(dist, l, r):
-        nonlocal result
-        if l > r:
-            return l
-        if dist > result[(l+r)//2][0]:
-            return binary_search(dist, (l+r)//2 + 1, r)
-        elif dist < result[(l+r)//2][0]:
-            return binary_search(dist, l, (l+r)//2 - 1)
-        else:
-            return (l+r)//2
-
     for data in basicInfos:
-        if string in data['product_name']:
-            dist = distance(data['product_name'], string)
-            # insert to the position of its edit distance
-            position = binary_search(dist, 0, len(result)-1)
-            # result already have n elements, if position
-            if len(result) > n and dist > _max_distance:
-                continue
-            result.insert((position, data))
-            _max_distance = dist if dist > _max_distance else _max_distance
+        result.append((distance(data['product_name'], string), data))
+        result = sorted(result, key=lambda a:a[0])
 
     return [element[1] for element in result][:n]
 
