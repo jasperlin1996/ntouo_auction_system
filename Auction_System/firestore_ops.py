@@ -1,8 +1,10 @@
 import firebase_admin
+import datetime
+from enum import Enum
 from firebase_admin import credentials
 from firebase_admin import firestore
-from google.cloud.firestore_v1 import ArrayUnion
-import datetime
+from Levenshtein import distance
+from google.cloud.firestore_v1 import ArrayUnion, ArrayRemove
 
 cred = credentials.Certificate('firestore_key.json')
 
@@ -11,6 +13,8 @@ firebase_admin.initialize_app(cred)
 
 # init firestore
 db = firestore.client()
+user_ref = db.collection("users")
+product_ref = db.collection("products")
 
 def addProduct(user_id, product_id, product):
     """
@@ -20,35 +24,11 @@ def addProduct(user_id, product_id, product):
         product (dict): A dictionary which includes all data for the
             on-selling product.
     """
-    print(product)
-    print(product_id)
     try:
         # add a product
         ref = db.collection("products").document(str(product_id))
         ref.set(product)
-    except Exception as e:
-        raise e
-
-def linkProductToUser(user_id, product_id, list_name="onsale_items"):
-    """
-    Args:
-        list_name (str): Decide which list @ firestore collection
-            ``users`` should ``product_id`` store at, including these
-            options:
-                {
-                    "onsale_items",
-                    "tracking_items",
-                    "bidding_items",
-                    "done_items",
-                }
-        user_id (str): The id link to the user's firestore document.
-        product_id (str): The id link to the product's firestore document.
-    """
-
-    # link the product to user(seller)
-    try:
-        ref = db.collection("users").document(user_id)
-        ref.update({list_name: ArrayUnion([product_id])})
+        linkProductToUser(user_id, product_id, list_name="onsale_items")
     except Exception as e:
         raise e
 
@@ -91,20 +71,6 @@ def getAllProductBasicInfo():
             products_basic_info.append(basic_info)
 
     return products_basic_info
-
-def flattenDict(d):
-    ret = {}
-    try:
-        for key, value in d.items():
-            if type(value) is not dict:
-                ret.update({key: value})
-            else:
-                for key_, value_ in flattenDict(value).items():
-                    ret.update({str(key)+'.'+str(key_): value_})
-    except Exception as e:
-        pass
-    return ret
-# --- Developing --- #
 
 
 def createProductDict():
@@ -166,10 +132,6 @@ def getProduct(product_id):
     product = ref.get().to_dict()
     return product
 
-
-def changeProductStatus(user_id, product_id, status):
-    pass
-
 def createNewUser(user_id, user_data):
     try:
         ref = db.collection('users').document(user_id)
@@ -208,5 +170,107 @@ def checkUserInfoCompleteness(user_id):
     except Exception as e:
         return False
 
+
+# --- Developing --- #
+# --- 2019/06/08 --- #
+# Haven't Tested Yet #
+def searchProducts(string, n):
+    """
+    Args: 
+        string(str): Search string.
+        n(int): Expect number of results.
+    Return:
+        result(list): Including **FULL** data from firestore. Ranked ascending.
+    """
+    result = []
+    _max_distance = -1
+    basicInfos = getAllProductBasicInfo()
+
+    for data in basicInfos:
+        result.append((distance(data['product_name'], string), data))
+        result = sorted(result, key=lambda a:a[0])
+
+    return [element[1] for element in result][:n]
+
+
+def linkProductToUser(user_id, product_id, list_name="onsale_items"):
+    """
+    Args:
+        list_name (str): Decide which list @ firestore collection
+            ``users`` should ``product_id`` store at, including these
+            options:
+                {
+                    "onsale_items",
+                    "tracking_items",
+                    "bidding_items",
+                    "dealing_items",
+                    "done_items",
+                }
+        user_id (str): The id link to the user's firestore document.
+        product_id (str): The id link to the product's firestore document.
+    """
+
+    # link the product to user(seller)
+    try:
+        ref = db.collection("users").document(user_id)
+        ref.update({list_name: ArrayUnion([product_id])})
+    except Exception as e:
+        raise e
+
+
+def unlinkProductFromUser(user_id, product_id, list_name="onsale_items"):
+    try:
+        ref = user_ref.document(str(user_id))
+        ref.update({list_name: ArrayRemove([product_id])})
+    except Exception as e:
+        raise e
+
+
+class ArrayOps(Enum):
+    ADD = 1
+    DELETE = 2
+
+
+def flattenDict(d, mode=ArrayOps.ADD):
+    ret = {}
+    try:
+        for key, value in d.items():
+            if type(value) is not dict:
+                if value and type(value) is list:
+                    value = ArrayUnion(value) if mode == ArrayOps.ADD else ArrayRemove(value)
+                ret.update({key: value})
+            else:
+                for key_, value_ in flattenDict(value).items():
+                    ret.update({str(key)+'.'+str(key_): value_})
+    except Exception as e:
+        pass
+    return ret
+
+def updateProduct(product_id, product, mode=ArrayOps.ADD):
+    """
+    Args:
+        product_id (str): The id link to the product's firestore ducument.
+        product (dict): A dictionary which includes all data for the
+            on-selling product.
+    """
+    try:
+        ref = db.collection("products").document(str(product_id))
+        ref.update(flattenDict(product, mode))
+    except Exception as e:
+        raise e
+
+# TODO
+def deleteProduct(product_id):
+    try:
+        product_ref.document(str(product_id)).delete()
+    except Exception as e:
+        raise e
+
+def transferProductStatus(product_id, status):
+    try:
+        ref = product_ref.document(product_id)
+        ref.update({'status': status})
+    except Exception as e:
+        raise e
 
 # --- Developing --- #
