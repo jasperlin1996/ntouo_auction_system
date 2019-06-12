@@ -72,13 +72,15 @@
           </td>
           <td>
             <form method="POST" action="/bidproduct/" onsubmit="return checkForm()">
+              {% csrf_token %}
               <input type="number" name="current_price" id="inputprice" style="width:100px;float:left">元
               <input type="text" name="id" style="display: none">
               <input type="submit" value="出價">
             </form>
-            <form method="POST" id="purchase" action="/purchaseproduct/" onsubmit="return checkUser()">
+            <form method="POST" action="/purchaseproduct/">
+              {% csrf_token %}
               <input type="text" name="id" style="display: none">
-              <input type="submit" value="直接購買">
+              <input type="submit" style="position:relative;top:0px;font-size:15px" value="直接購買">
             </form>
           </td>
         </tr>
