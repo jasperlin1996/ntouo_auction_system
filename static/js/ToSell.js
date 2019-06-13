@@ -48,6 +48,7 @@ function load(){
     var str= year + "-" + month + "-" + date + "T";
     str += hour + ":" + minute;
     document.getElementById("deadline").setAttribute("value", str);
+    document.getElementById("deadline").setAttribute("min", str);
 
     // 顯示分類選單
     var categorys;
