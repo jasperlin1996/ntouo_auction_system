@@ -43,13 +43,18 @@ def getProductBasicInfo(product):
             {
                 'id',
                 'product_name',
-                'images'
+                'images',
+                'status'
             }
     """
 
     if ('product_name' in product) and ('images' in product):
         product_basic_info = {
-            'id': product['id'], 'product_name': product['product_name'], 'images': product['images']}
+            'id': product['id'],
+            'product_name': product['product_name'],
+            'images': product['images'],
+            'status': product['status'],
+        }
         return product_basic_info
     return None
 
@@ -57,8 +62,9 @@ def getProductBasicInfo(product):
 
 def getNProductsBasicInfo(n):
     try:
-        ret = [ data for data in product_ref.order_by(
+        ret = [ data.to_dict() for data in product_ref.order_by(
             'create_time', direction='DESCENDING').limit(n).stream()]
+        ret = [ getProductBasicInfo(basic) for basic in ret]
         return ret
     except Exception as e:
         raise e

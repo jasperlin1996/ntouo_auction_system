@@ -142,7 +142,17 @@ def _product2DoneStatus(product_id, seller, buyer):
     _changeUserItems(buyer, product_id, 'dealing_items', 'done_items')
 
 def index(request):
-    products = firestore_ops.getNProductsBasicInfo(50)
+    products = []
+    try:
+        origin_products = firestore_ops.getNProductsBasicInfo(100)
+        print(origin_products)
+        for product in origin_products:
+            status = product['status']
+            if status == ProductStatus.Onsale or status == ProductStatus.Bidding:
+                products.append(product)
+    except Exception as e:
+        print(e)
+    print(products)
     return render(request, 'index.html', {'products': products})
 
 def signIn(request):
@@ -365,6 +375,7 @@ def postToSell(request):
 
     try:
         firestore_ops.addProduct(user_id, product['id'], product)
+        firestore_ops.linkProductToUser(user_id, product_id, list_name = 'onsale_items')
     except Exception as e:
         print(e)
 
