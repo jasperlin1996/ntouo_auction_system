@@ -24,6 +24,7 @@ auth = firebase.auth()
 storage = firebase.storage()
 
 class ProductStatus(enum.IntEnum):
+    Removed = -1
     Onsale = 0
     Bidding = 1
     Dealing = 2
@@ -141,7 +142,7 @@ def _product2DoneStatus(product_id, seller, buyer):
     _changeUserItems(buyer, product_id, 'dealing_items', 'done_items')
 
 def index(request):
-    products = firestore_ops.getAllProductBasicInfo()
+    products = firestore_ops.getNProductsBasicInfo(50)
     return render(request, 'index.html', {'products': products})
 
 def signIn(request):
@@ -242,17 +243,23 @@ def updateUserInfo(request):
 
 def product(request, product_id):
     product = firestore_ops.getProduct(product_id)
-    product['create_time'] = _datetime2FrontendFormat(product['create_time'])
-    product['deadline'] = _datetime2FrontendFormat(product['deadline'])
-    seller = firestore_ops.getUserInfo(product['seller'])
-    product['seller'] = seller['user_name']
-    if product['highest_buyer_id'] != '':
-        highest_buyer = firestore_ops.getUserInfo(product['highest_buyer_id'])
-        product['highest_buyer_id'] = highest_buyer['user_name']
+    status = product['status']
+    if status == ProductStatus.Onsale or status == ProductStatus.Bidding:
+        product['create_time'] = _datetime2FrontendFormat(product['create_time'])
+        product['deadline'] = _datetime2FrontendFormat(product['deadline'])
+        seller = firestore_ops.getUserInfo(product['seller'])
+        product['seller'] = seller['user_name']
+        if product['highest_buyer_id'] != '':
+            highest_buyer = firestore_ops.getUserInfo(product['highest_buyer_id'])
+            product['highest_buyer_id'] = highest_buyer['user_name']
 
-    return render(request, 'Product.html', {'product': product})
+        return render(request, 'Product.html', {'product': product})
+    return redirect(index)
 
 def bidProduct(request):
+    if (not _checkIdToken(request)) or (not _checkUserInfoCompleteness(request.session['idToken'])):
+        return redirect(signin)
+
     user_id = _getUserId(request.session['idToken'])
 
     product_id = request.POST['id']
@@ -266,9 +273,19 @@ def bidProduct(request):
     firestore_ops.linkProductToUser(user_id, product_id, list_name = 'bidding_items')
     firestore_ops.transferProductStatus(product_id, ProductStatus.Bidding.value)
 
+    origin_product = firestore_ops.getProduct(product)
+
+    if current_price == origin_product['price']:
+        seller = origin_product['seller']
+        _changeUserItems(seller, prodcut_id, 'onsale_items', 'dealing_items')
+        return redirect(trade, product_id)
+
     return redirect(product, product_id)
 
 def purchaseProduct(request):
+    if (not _checkIdToken(request)) or (not _checkUserInfoCompleteness(request.session['idToken'])):
+        return redirect(signin)
+
     user_id = _getUserId(request.session['idToken'])
 
     product_id = request.POST['id']
@@ -278,8 +295,11 @@ def purchaseProduct(request):
     product_data['current_price'] = product_data['price']
 
     firestore_ops.updateProduct(product_id, product_data)
-    firestore_ops.linkProductToUser(user_id, product_id, list_name = 'dealing_items')
     firestore_ops.transferProductStatus(product_id, ProductStatus.Dealing.value)
+    firestore_ops.linkProductToUser(user_id, product_id, list_name = 'dealing_items')
+
+    seller = firestore_ops.getProduct(product_id)['seller']
+    _changeUserItems(seller, product_id, 'onsale_items', 'dealing_items')
 
     return redirect(trade, product_id)
 
@@ -294,7 +314,7 @@ def setProductQuestion(request):
 
     return redirect(product, product_id)
 
-def setProductAnswer(request): # TODO
+def setProductAnswer(request):
     product_id = request.POST['id']
     question_index = int(request.POST['question_index'])
     answer = request.POST['answer']
@@ -303,8 +323,8 @@ def setProductAnswer(request): # TODO
 
     product_data = {}
     product_data['qas'] = []
-    product_data['qas'].append(origin_product['qas'][question_index])
 
+    product_data['qas'].append(origin_product['qas'][question_index])
     firestore_ops.updateProduct(product_id, product_data, firestore_ops.ArrayOps.DELETE)
 
     product_data['qas'][0]['answer'] = answer
@@ -417,11 +437,13 @@ def setTrackingProduct(request):
 
 @csrf_exempt
 def completeTrade(request):
+    if (not _checkIdToken(request)) or (not _checkUserInfoCompleteness(request.session['idToken'])):
+        return HttpResponse('/signin/')
+
     product_id = request.POST['id']
     score = int(request.POST['score'])
 
     user_id = _getUserId(request.session['idToken'])
-
     product = firestore_ops.getProduct(product_id)
 
     update_user_id = ''
