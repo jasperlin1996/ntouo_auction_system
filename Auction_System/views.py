@@ -261,7 +261,7 @@ def product(request, product_id):
             highest_buyer = firestore_ops.getUserInfo(product['highest_buyer_id'])
             product['highest_buyer_id'] = highest_buyer['user_name']
 
-        return render(request, 'Product.html', {'product': product})
+        return render(request, 'Product.html', {'product': product, 'seller': seller})
     return redirect(index)
 
 def bidProduct(request):

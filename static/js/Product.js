@@ -7,14 +7,14 @@ function load() {
     document.getElementById("category").innerHTML = info.category;
     document.getElementById("seller").innerHTML = info.seller;
 
-    var seller_rate = info.seller_rate;
+    var seller_rate = seller.seller_rate;
     if(seller_rate.count == 0) { // 無評價
-        document.getElementById("seller_rate").innerHTML("尚無評價");
+        document.getElementById("seller_rate").innerHTML = "尚無評價";
     }
     else { // 已有評價
         var seller_rate_text = "";
         seller_rate_text += seller_rate.rate + "/5 共有" + seller_rate.count + "人評價";
-        document.getElementById("seller_rate").innerHTML(seller_rate_text);
+        document.getElementById("seller_rate").innerHTML = seller_rate_text;
     }
 
     if (info.status == 0) {
@@ -50,7 +50,7 @@ function load() {
     document.getElementById("description").innerHTML = info.description;
     document.getElementById("trading_method").innerHTML = info.trading_method;
 
-    setTimeout();
+    showTime();
     // 取得user name
     var user_name;
     $.ajax({
