@@ -75,7 +75,7 @@ function load() {
         }
         temp += "'><td>" + qas[i].question + "</td>";
         // 使用者為賣家
-        if(user_name == info.seller) {
+        if(isSeller) {
             // 尚未回答
             if(qas[i].answer=="") {
                 temp += '<td><form method="POST" action="/setproductanswer/" onsubmit="return checkUser()">';
@@ -98,8 +98,12 @@ function load() {
             temp += "<td>" + qas[i].answer + "</td></tr>";
         }
     }
-    // 使用者非賣家
-    if (user_name != info.seller){
+    // 使用者賣家
+    if (isSeller){
+        // 清除出價功能
+        document.getElementById("pay").innerHTML = "";
+    }
+    else {
         temp += '<tr class="tr3"><td><form method="POST" action="/setproductquestion/" onsubmit="return checkUser()">';
         temp += csrf_token;
         // 為了上傳商品id 不顯示於網頁
@@ -118,7 +122,7 @@ function load() {
 
 // 倒數結標時間
 function showTime(){
-    console.log("show time");
+    // console.log("show time");
     var now = new Date();
     var deadline = info.deadline;
     var array = deadline.split('-');
@@ -131,7 +135,7 @@ function showTime(){
     var end = new Date(endY, endM - 1, endD, endH, 0, 0, 0);
     var spantime = (end - now) / 1000;
 
-    console.log(spantime);
+    // console.log(spantime);
     var d = Math.floor(spantime / (24 * 3600));
     var h = Math.floor((spantime % (24 * 3600)) / 3600);
     var m = Math.floor((spantime % 3600) / 60);

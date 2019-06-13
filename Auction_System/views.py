@@ -141,6 +141,11 @@ def _product2DoneStatus(product_id, seller, buyer):
     _changeUserItems(seller, product_id, 'dealing_items', 'done_items')
     _changeUserItems(buyer, product_id, 'dealing_items', 'done_items')
 
+def _userWithoutIdToken(user_id):
+    user = firestore_ops.getUserInfo(user_id)
+    del user['idToken']
+    return user
+
 def index(request):
     products = []
     try:
@@ -214,8 +219,8 @@ def trade(request, product_id):
             product['create_time'] = _datetime2FrontendFormat(product['create_time'])
             product['deadline'] = _datetime2FrontendFormat(product['deadline'])
 
-            seller_info = firestore_ops.getUserInfo(product['seller'])
-            buyer_info = firestore_ops.getUserInfo(product['highest_buyer_id'])
+            seller_info = _userWithoutIdToken(product['seller'])
+            buyer_info = _userWithoutIdToken(product['highest_buyer_id'])
 
             return render(request,'Trade.html', {'buyer': buyer_info, 'seller': seller_info, 'now_user': now_user, 'product': product})
     return redirect(memberCenter)
@@ -225,7 +230,7 @@ def memberCenter(request):
         return redirect(signIn)
 
     user_id = _getUserId(request.session['idToken'])
-    user_info = firestore_ops.getUserInfo(user_id)
+    user_info = _userWithoutIdToken(user_id)
     user_info['tracking_items'] = _parseItems(user_info['tracking_items'])
     user_info['bidding_items'] = _parseItems(user_info['bidding_items'])
     user_info['dealing_items'] = _parseItems(user_info['dealing_items'])
@@ -253,15 +258,22 @@ def product(request, product_id):
     product = firestore_ops.getProduct(product_id)
     status = product['status']
     if status == ProductStatus.Onsale or status == ProductStatus.Bidding:
+        user_id = ''
+        if _checkIdToken(request):
+            user_id = _getUserId(request.session['idToken'])
+
+        isSeller = (user_id == product['seller'])
+
         product['create_time'] = _datetime2FrontendFormat(product['create_time'])
         product['deadline'] = _datetime2FrontendFormat(product['deadline'])
-        seller = firestore_ops.getUserInfo(product['seller'])
+        seller = _userWithoutIdToken(product['seller'])
         product['seller'] = seller['user_name']
+
         if product['highest_buyer_id'] != '':
             highest_buyer = firestore_ops.getUserInfo(product['highest_buyer_id'])
             product['highest_buyer_id'] = highest_buyer['user_name']
 
-        return render(request, 'Product.html', {'product': product, 'seller': seller})
+        return render(request, 'Product.html', {'product': product, 'seller': seller, 'isSeller': isSeller})
     return redirect(index)
 
 def bidProduct(request):
@@ -272,23 +284,29 @@ def bidProduct(request):
 
     product_id = request.POST['id']
     current_price = request.POST['current_price']
-    product_data = {}
 
-    product_data['highest_buyer_id'] = user_id
-    product_data['current_price'] = current_price
+    origin_product = firestore_ops.getProduct(product_id)
+    status = origin_product['status']
 
-    firestore_ops.updateProduct(product_id, product_data)
-    firestore_ops.linkProductToUser(user_id, product_id, list_name = 'bidding_items')
-    firestore_ops.transferProductStatus(product_id, ProductStatus.Bidding.value)
+    if status == ProductStatus.Onsale or status == ProductStatus.Bidding:
+        product_data = {}
 
-    origin_product = firestore_ops.getProduct(product)
+        product_data['highest_buyer_id'] = user_id
+        product_data['current_price'] = current_price
 
-    if current_price == origin_product['price']:
-        seller = origin_product['seller']
-        _changeUserItems(seller, prodcut_id, 'onsale_items', 'dealing_items')
-        return redirect(trade, product_id)
+        firestore_ops.updateProduct(product_id, product_data)
+        firestore_ops.linkProductToUser(user_id, product_id, list_name = 'bidding_items')
+        firestore_ops.transferProductStatus(product_id, ProductStatus.Bidding.value)
 
-    return redirect(product, product_id)
+        origin_product = firestore_ops.getProduct(product)
+
+        if current_price == origin_product['price']:
+            seller = origin_product['seller']
+            _changeUserItems(seller, prodcut_id, 'onsale_items', 'dealing_items')
+            return redirect(trade, product_id)
+
+        return redirect(product, product_id)
+    return redirect(index)
 
 def purchaseProduct(request):
     if (not _checkIdToken(request)) or (not _checkUserInfoCompleteness(request.session['idToken'])):
@@ -297,19 +315,25 @@ def purchaseProduct(request):
     user_id = _getUserId(request.session['idToken'])
 
     product_id = request.POST['id']
-    product_data = {}
 
-    product_data['highest_buyer_id'] = user_id
-    product_data['current_price'] = product_data['price']
+    origin_product = firestore_ops.getProduct(product_id)
+    status = origin_product['status']
 
-    firestore_ops.updateProduct(product_id, product_data)
-    firestore_ops.transferProductStatus(product_id, ProductStatus.Dealing.value)
-    firestore_ops.linkProductToUser(user_id, product_id, list_name = 'dealing_items')
+    if status == ProductStatus.Onsale:
+        product_data = {}
 
-    seller = firestore_ops.getProduct(product_id)['seller']
-    _changeUserItems(seller, product_id, 'onsale_items', 'dealing_items')
+        product_data['highest_buyer_id'] = user_id
+        product_data['current_price'] = origin_product['price']
 
-    return redirect(trade, product_id)
+        firestore_ops.updateProduct(product_id, product_data)
+        firestore_ops.transferProductStatus(product_id, ProductStatus.Dealing.value)
+        firestore_ops.linkProductToUser(user_id, product_id, list_name = 'dealing_items')
+
+        seller = firestore_ops.getProduct(product_id)['seller']
+        _changeUserItems(seller, product_id, 'onsale_items', 'dealing_items')
+
+        return redirect(trade, product_id)
+    return redirect(index)
 
 def setProductQuestion(request):
     product_id = request.POST['id']
