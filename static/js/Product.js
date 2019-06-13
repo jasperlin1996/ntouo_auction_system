@@ -7,6 +7,16 @@ function load() {
     document.getElementById("category").innerHTML = info.category;
     document.getElementById("seller").innerHTML = info.seller;
 
+    var seller_rate = info.seller_rate;
+    if(seller_rate.count == 0) { // 無評價
+        document.getElementById("seller_rate").innerHTML("尚無評價");
+    }
+    else { // 已有評價
+        var seller_rate_text = "";
+        seller_rate_text += seller_rate.rate + "/5 共有" + seller_rate.count + "人評價";
+        document.getElementById("seller_rate").innerHTML(seller_rate_text);
+    }
+
     if (info.status == 0) {
         document.getElementById("status").innerHTML = "待出售";
     }
