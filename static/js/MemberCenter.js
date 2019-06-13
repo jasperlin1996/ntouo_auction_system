@@ -115,7 +115,7 @@ function ToProduct(obj) {
         cache: false,
         data:{"id": obj.id},
         success: function(response) {
-            // location.href = response;
+            location.href = response;
         },
         error: function(){
             window.alert("找不到商品！");
