@@ -115,7 +115,9 @@ function googleSignIn() {
 
 function facebookSignIn()
 {
-  // TODO facebook signin
+  console.log('hi');
+  var provider = new firebase.auth.FacebookAuthProvider();
+  thirdPartySignIn(provider);
 }
 
 function githubSignIn()

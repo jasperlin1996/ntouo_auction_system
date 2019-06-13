@@ -145,14 +145,12 @@ def index(request):
     products = []
     try:
         origin_products = firestore_ops.getNProductsBasicInfo(100)
-        print(origin_products)
         for product in origin_products:
             status = product['status']
             if status == ProductStatus.Onsale or status == ProductStatus.Bidding:
                 products.append(product)
     except Exception as e:
         print(e)
-    print(products)
     return render(request, 'index.html', {'products': products})
 
 def signIn(request):
