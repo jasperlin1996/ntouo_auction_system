@@ -1,12 +1,19 @@
-#Img, #product {
+#Img {
     font-family: DFKai-SB, STKaiti;
-    position: absolute;
+    position: relative;
     top: 100px;
 }
 
-#qas{
-    position: absolute;
-    top: 600px;
+#product {
+    font-family: DFKai-SB, STKaiti;
+    position: relative;
+    top: -30%;
+}
+
+#qas {
+    font-family: DFKai-SB, STKaiti;
+    position: relative;
+    top: -30%;
 }
 
 form {
@@ -32,10 +39,6 @@ form {
 
 .tr3 {
     background-color: lightgray;
-}
-
-.tr1 td {
-    width: 50%;
 }
 
 #product_name, #current_price, #deadline {
@@ -73,7 +76,7 @@ input[type=number]{
     -moz-appearance: textfield;
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 630px) {
     #product {
         left: 50%;
         width: 50%;
@@ -87,7 +90,6 @@ input[type=number]{
 
     #image{
         width: 100%;
-        height: 100%;
     }
 
     #qas {
@@ -100,49 +102,21 @@ input[type=number]{
         font-size: 20px;
         width: 100%;
     }
-}
 
-@media screen and (max-width: 800px) and (min-width: 530px) {
-    #product {
-        left: 30%;
-        width: 70%;
-    }
-
-    #Img {
-        left: 1%;
-        width: 29%;
-        height: 30%;
-    }
-
-    #image{
-        width: 100%;
-        height: 100%;
-    }
-
-    #qas {
-        left: 10%;  
-        width: 80%;
-        font-size: 20px;
-    }
-
-    table {
-        font-size: 20px;
-        width: 100%;
+    td {
+        word-break: break-all;
+        width: 50%;
     }
 }
 
-@media screen and (max-width: 530px) {
-    div {
-        position: relative;
-    }
-
+@media screen and (max-width: 630px) {
     #product {
+        top: 10%;
         left: 10%;
         width: 80%;
     }
 
     #Img {
-        top: 50px;
         left: 10%;
         width: 80%;
         height: 30%;
@@ -150,7 +124,6 @@ input[type=number]{
 
     #image{
         width: 100%;
-        height: 100%;
     }
 
     #qas {
@@ -169,5 +142,6 @@ input[type=number]{
     td {
         width: 100%;
         float: left;
+        word-break: break-all;
     }
 }
