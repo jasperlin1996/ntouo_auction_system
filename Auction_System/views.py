@@ -409,6 +409,15 @@ def signOut(request):
     return render(request, 'SignOut.html')
 
 @csrf_exempt
+def searchProduct(request):
+    keyword = request.POST['keyword']
+    try:
+        products = firestore_ops.searchProducts(keyword, 100)
+    except Exception as e:
+        print(e)
+    return JsonRespone({'products': products})
+
+@csrf_exempt
 def postProductId2Product(request):
     product_id = request.POST['id']
     return HttpResponse('/product/' + product_id)

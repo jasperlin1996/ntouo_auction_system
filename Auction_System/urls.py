@@ -37,6 +37,7 @@ urlpatterns = [
     path('tosell/', views.toSell, name = 'to-sell'),
     path('posttosell/', views.postToSell, name = 'post-to-sell'),
     path('signout/', views.signOut, name = 'signout'),
+    path('searchproduct/', views.searchProduct, name = 'search-product'),
     path('postproductid2product/', views.postProductId2Product, name ='post-product-id-2-product'),
     path('postproductid2trade/', views.postProductId2Trade, name = 'post-product-id-2-trade'),
     path('checkuserstatus/', views.checkUserStatus, name = 'check-user-status'),
