@@ -22,7 +22,7 @@ urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index, name = 'index'),
     path('index/', views.index, name = 'index'),
-    path('search/<str:keyword>',views.search,name='search'),
+    path('search/<str:keyword>/', views.search, name = 'search'),
     path('signin/', views.signIn, name = 'signin'),
     path('presignup/', views.preSignUp, name = 'pre-signup'),
     path('signup/', views.signUp, name = 'signup'),
