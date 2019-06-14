@@ -408,6 +408,18 @@ def signOut(request):
     django.contrib.auth.logout(request)
     return render(request, 'SignOut.html')
 
+def search(request,keyword):
+    try:
+        products = firestore_ops.searchProducts(keyword,100)
+    except Exception as e :
+        print(e)
+    return render(request,'Search.html',{'products':products})
+
+@csrf_exempt
+def searchProduct(request):
+    keyword = request.POST['keyword']
+    return HttpResponse('/search/'+keyword)
+
 @csrf_exempt
 def postProductId2Product(request):
     product_id = request.POST['id']
