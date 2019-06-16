@@ -6,6 +6,8 @@
   border-bottom: dotted 1px;
 }
 
+
+
 #bar a:hover , #sign:hover
 {
   color:rgba(200,200,200,0.8);
@@ -130,6 +132,7 @@ th
 
 .pos-f-t
 {
+  z-index: 2;
   position: fixed;
   width: 100%;
   top:10%;

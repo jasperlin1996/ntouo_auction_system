@@ -9,18 +9,17 @@
 	<head>
 		<meta charset = "utf-8">
 		<title>LogIn Pattern</title>
-		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="{% static 'css/signin.css' %}" />
 		<link rel="shortcut icon" href="{% static 'img/ntoulogo.png' %}"/>
 		<link rel="stylesheet" href="{% static 'css/scrollbar.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/bar.css' %}" />
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<noscript><link rel="stylesheet" href="{% static 'css/noscript.css' %}" /></noscript>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		 <script src="{% static 'js/jquery.js' %}"></script>
 		<script src="https://www.gstatic.com/firebasejs/5.11.0/firebase.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-app.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/5.11.0/firebase-auth.js"></script>
+		<link rel="stylesheet" href="{% static 'css/bar.css' %}" />
 
 	</head>
 	<body id="is-preload" onload="start()">
@@ -67,4 +66,7 @@
 	</body>
 	<script src="{% static 'js/bar.js' %}"></script>
 	<script src="{% static 'js/SignIn.js' %}"> </script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </html>

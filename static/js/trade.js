@@ -26,9 +26,11 @@ $('#seller-contact').html("<i class='glyphicon glyphicon-list-alt'></i>" + selle
 
 
 var score;
-function evaluateProduct()
+load();
+
+function evaluateProduct()  //給予評價分數
 {
-  score = window.prompt("請輸入對於這次交易的評分","3");
+  score = window.prompt("請輸入對於這次交易的評分(請填入0~5分)","3");
   var test = /^[0-5]/;
   if(!test.test(score))
     window.alert("評分未完成，請重新輸入");
@@ -40,26 +42,36 @@ function evaluateProduct()
 }
 
 
-function completeTrade()
+function completeTrade() //完成評價
 {
+  $('#dialog').dialog({
+      modal: false,
+      resizable: false,
+      draggable: false,
+      closeOnEscape:true,
+      width: 500,
+      height:300,
+    });
   $("#complete").prop('disabled',true);
-  $.ajax(
-  {
-    url:"/completetrade/",
-    type:'POST',
-    data:{"score":score, 'id': product.id},
-    cache:false,
-    async:false,
-    success:function(response)
+  setTimeout(function(){
+    console.log("start");
+    $.ajax(
     {
-      location.href = response;
-    }
-  });
+      url:"/completetrade/",
+      type:'POST',
+      data:{"score":score, 'id': product.id},
+      cache:false,
+      async:false,
+      success:function(response)
+      {
+        location.href = response;
+      }
+    });
+  },1000);
+
 }
 
-load();
-
-function load()
+function load()   //判斷是否評價過
 {
   if(product.status == 3 &&　now_user.user == "seller") {
     $("#complete").prop('disabled',true);

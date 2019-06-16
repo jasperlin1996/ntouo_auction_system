@@ -3,7 +3,7 @@
     position: relative;
     top:15%;
     /*text-align: center;*/
-    z-index: -1;
+    /* z-index: -1; */
     font-size: 18px;
 }
 .col-md-12
@@ -99,6 +99,9 @@ img
 
 @media screen and (max-width:768px)
 {
+  .row{
+    z-index: -1;
+  }
   img{
     height:50px;
     width:50px;

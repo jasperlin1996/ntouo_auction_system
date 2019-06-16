@@ -1,3 +1,13 @@
+$("#accBox , #passBox").keyup(function(e)
+{
+  if(e.keyCode === 13)
+  {
+    doLogIn();
+  }
+});
+
+
+
 window.onload = function() {
   document.body.classList.remove('is-preload');
 }
@@ -19,6 +29,7 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
 
 function checkUserData()
 {
