@@ -165,6 +165,9 @@ def search(request, keyword):
         print(e)
     return render(request, 'Search.html', {'products': products})
 
+def category(request, category): # TODO search by category
+    pass
+
 def signIn(request):
     if _checkIdToken(request) and _checkUserInfoCompleteness(request.session['idToken']):
         return redirect(index)
@@ -419,6 +422,10 @@ def signOut(request):
 def searchProduct(request):
     keyword = request.POST['keyword']
     return HttpResponse('/search/' + keyword)
+
+def searchCategory(request):
+    category = request.POST['category']
+    return HttpResponse('/category/' + category)
 
 @csrf_exempt
 def postProductId2Product(request):

@@ -122,7 +122,7 @@ STATICFILES_DIRS = (
 
 # crontab
 # CRONJOBS = [
-#     ('0 */1 * * *', 'Auction_System.cron.productDeadline')
+#     ('0 */1 * * *', 'Auction_System.firestore_ops.checkProductDeadline')
 # ]
 
 # PWA_APP_NAME = 'My App'

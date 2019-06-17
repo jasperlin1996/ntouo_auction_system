@@ -279,13 +279,6 @@ def updateProduct(product_id, product, mode=ArrayOps.ADD):
     except Exception as e:
         raise e
 
-# TODO
-def deleteProduct(product_id):
-    try:
-        product_ref.document(str(product_id)).delete()
-    except Exception as e:
-        raise e
-
 def transferProductStatus(product_id, status):
     try:
         ref = product_ref.document(product_id)
@@ -293,4 +286,31 @@ def transferProductStatus(product_id, status):
     except Exception as e:
         raise e
 
+# TODO doesn't use
+def deleteProduct(product_id):
+    try:
+        product_ref.document(str(product_id)).delete()
+    except Exception as e:
+        raise e
+
 # --- Developing --- #
+
+def checkProductDeadline():
+    try:
+        for doc in product_ref.get():
+            update_product = {}
+            product = getProduct(doc.id)
+            status = prodcut['status']
+            if datetime.datetime.now() >= product['deadline'] and (status == 0 or status == 1):
+                if product['highest_buyer_id'] == '':
+                    update_product['status'] = -1
+                    unlinkProductFromUser(product['seller'], product['id'], list_name = 'onsale_items')
+                else:
+                    update_product['status'] = 2
+                    unlinkProductFromUser(product['seller'], product['id'], list_name = 'onsale_items')
+                    linkProductToUser(product['seller'], product['id'], list_name = 'dealing_items')
+                    unlinkProductFromUser(product['highest_buyer_id'], product['id'], list_name = 'bidding_items')
+                    linkProductToUser(product['highest_buyer_id'], product['id'], list_name = 'dealing_items')
+                updateProduct(product['id'], update_product)
+    except Exception as e:
+        raise e
