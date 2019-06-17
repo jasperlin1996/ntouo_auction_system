@@ -75,7 +75,7 @@ $.ajax({
 });
 
 setBody();
-
+//加入分類表 BAR
 function setBody() {
   for (i = 0; i < category.length; i++) {
     var plzwork = String(category[i]);
@@ -115,6 +115,7 @@ function setBody() {
   });
 }
 
+//分類搜尋
 function searchCategory(number)
 {
   $.ajax(
@@ -132,6 +133,7 @@ function searchCategory(number)
   );
 }
 
+//一般搜尋
 function searchProduct()
 {
   var keyword = document.getElementById('keyword').value;
@@ -169,6 +171,7 @@ function openCommand() {
   window.open(' https://forms.gle/TwwdvBqdyqwR4TXf8 ', '', config = 'height=700,width=500');
 }
 
+//重設視窗大小
 $(function() {
   $(window).resize(function() {
     wid = $(window).width();

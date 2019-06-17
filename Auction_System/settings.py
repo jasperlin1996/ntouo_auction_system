@@ -122,13 +122,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
+
 STATICFILES_DIRS = (
             ("js", os.path.join(STATIC_ROOT, 'js')),
             ("css", os.path.join(STATIC_ROOT, 'css')),
             ("img", os.path.join(STATIC_ROOT, 'img')),
         )
-# 
+#
 #
 # PWA_APP_NAME = 'My App'
 # PWA_APP_DESCRIPTION = "My app description"

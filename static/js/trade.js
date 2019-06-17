@@ -1,22 +1,24 @@
-
+//填入買家資訊
 $('#buyer').html(buyer.user_name + "(買家)");
 $('#buyer-address').html("<i class='glyphicon glyphicon-map-marker'></i>" + buyer.address);
 $('#buyer-email').html("<i class='glyphicon glyphicon-envelope'></i>" + buyer.email);
 $('#buyer-phone').html("<i class='glyphicon glyphicon-phone'></i>" + buyer.phone);
 $('#buyer-contact').html("<i class='glyphicon glyphicon-list-alt'></i>" + buyer.contact);
 
+
+//填入商品資訊
 $('#product-name').html(product.product_name + "(商品)");
 $('#product-url').attr("src", product.images[0]);
 $('#product-price').html("<i class='glyphicon glyphicon-usd'></i>" + product.price);
 $('#product-method').html("<i class='glyphicon glyphicon-thumbs-up'></i>" + product.trading_method);
 $('#product-category').html("<i class='glyphicon glyphicon-inbox'></i>" + product.category);
-if(product.status == 0)
+if(product.status == 0)    //確認商品狀態
   $('#product-status').html("<i class='glyphicon glyphicon-tag'></i>待出售");
 if(product.trading_type == 0)
   $('#product-type').html("<i class='glyphicon glyphicon-tag'></i>直購");
 $('#product-description').html("<i class='glyphicon glyphicon-comment'></i>" + product.description);
 
-
+//填入賣家資訊
 
 $('#seller').html(seller.user_name + "(賣家)");
 $('#seller-address').html("<i class='glyphicon glyphicon-map-marker'></i>" + seller.address);

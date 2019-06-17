@@ -47,10 +47,13 @@ function GetProducts(index) {
   currentPage = index;
 
   //填寫資料
+  //判斷商品數量
   if ((products.length - (index - 1) * 20) >= 20)
     numOfProduct = 20;
   else
     numOfProduct = products.length - (index - 1) * 20;
+
+  //逐一填入商品
   $("#row").html("<div id='blank1' class='col-md-12'></div><div class='col-md-1'></div>");
   for (var i = ((index - 1) * 20); i < ((index - 1) * 20 + numOfProduct); i++) {
     if (product_count == 5) {
@@ -64,7 +67,10 @@ function GetProducts(index) {
       $("#row").append("<div class='col-md-2'><img id='"+ products[i].id +"' src='" + products[i].images[0] + "' %}' class='img-thumbnail img' alt=" + products[i].product_name + "><p>" + products[i].product_name + "</p></div>");
   }
   $("#row").append("<div id='blank2' class='col-md-12'></div>");
+  //重設blank
   changeblankCSS();
+
+  //按下商品post
   $('.col-md-2').on('mousedown',function()
   {
     var myproductid = $(this).children()[0].id;
