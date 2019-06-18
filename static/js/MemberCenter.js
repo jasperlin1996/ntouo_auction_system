@@ -25,7 +25,13 @@ function addtemp(string,items)
     myfunction = "ToProduct(this)";
   }
 
-  temp = '<div class="container-fluid"><div class="row">';
+  temp = '<div class="container-fluid">';
+  if (item[i].status == -1) {
+      temp += '<div class="row remove">'
+  }
+  else {
+      temp += '<div class="row">'
+  }
   for (var i = 0; i < items.length; i++) {
       temp += '<div class="col-md-2"><img src="';
       temp += items[i].images[0];

@@ -22,6 +22,10 @@ a{
     text-decoration: none;
 }
 
+.remove {
+    background-color: lightgray;
+}
+
 p /*andy*/
 {
   text-align: center;
