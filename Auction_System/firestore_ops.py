@@ -16,6 +16,55 @@ db = firestore.client()
 user_ref = db.collection("users")
 product_ref = db.collection("products")
 
+# --- Developing --- #
+# --- 2019/06/19 --- #
+# Haven't Tested Yet #
+
+import threading # TODO not use yet
+
+product_search_ref = db.collection('products_search') # TODO check collection name
+
+def substring(product_id, product_name):
+    """
+        Args:
+            product_id (str): The id of the product.
+            product_name (str): The name of the product.
+        Returns:
+            res (dict): The result of all substrings generate by
+                product_name and correspond to product_id.
+                {
+                    substring_1: [product_id],
+                    substring_2: [product_id],
+                    ...
+                }
+    """
+    substrings = set()
+
+    length = len(product_name)
+    for i in range(length):
+        for j in range(1, length - i + 1):
+            substrings.add(product_name[i: i + j])
+
+    # make a id list for correspond to substrings
+    # list_id looks like: [[id], [id], [id], ...]
+    list_id = [[product_id]] * len(substrings)
+
+    res = dict(zip(substrings, list_id))
+    return res
+
+def addProductToSearch(product_id, product): # TODO check function name
+    res = substring(product_id, product['product_name'])
+    try:
+        # TODO update res to firestore
+    except Exception as e:
+        raise e
+
+# TODO add product to category for search category
+def addProductToCategory(product_id, product): # TODO check function name
+    pass
+
+# --- Developing --- #
+
 def addProduct(user_id, product_id, product):
     """
     Args:
@@ -213,7 +262,7 @@ def searchProducts(string, n):
     return [element[1] for element in result][:n]
 
 
-def linkProductToUser(user_id, product_id, list_name="onsale_items"):
+def linkProductToUser(user_id, product_id, list_name="onsale_items"): # Tested
     """
     Args:
         list_name (str): Decide which list @ firestore collection
@@ -238,7 +287,7 @@ def linkProductToUser(user_id, product_id, list_name="onsale_items"):
         raise e
 
 
-def unlinkProductFromUser(user_id, product_id, list_name="onsale_items"):
+def unlinkProductFromUser(user_id, product_id, list_name="onsale_items"): # Tested
     try:
         ref = user_ref.document(str(user_id))
         ref.update({list_name: ArrayRemove([product_id])})
@@ -266,7 +315,7 @@ def flattenDict(d, mode=ArrayOps.ADD):
         pass
     return ret
 
-def updateProduct(product_id, product, mode=ArrayOps.ADD):
+def updateProduct(product_id, product, mode=ArrayOps.ADD): # Tested
     """
     Args:
         product_id (str): The id link to the product's firestore ducument.
@@ -279,14 +328,14 @@ def updateProduct(product_id, product, mode=ArrayOps.ADD):
     except Exception as e:
         raise e
 
-def transferProductStatus(product_id, status):
+def transferProductStatus(product_id, status): # Tested
     try:
         ref = product_ref.document(product_id)
         ref.update({'status': status})
     except Exception as e:
         raise e
 
-# TODO doesn't use
+# TODO not use yet
 def deleteProduct(product_id):
     try:
         product_ref.document(str(product_id)).delete()
@@ -294,6 +343,10 @@ def deleteProduct(product_id):
         raise e
 
 # --- Developing --- #
+
+# --- Developing --- #
+# --- 2019/06/18 --- #
+# Haven't Tested Yet #
 
 def checkProductDeadline():
     try:
@@ -314,3 +367,5 @@ def checkProductDeadline():
                 updateProduct(product['id'], update_product)
     except Exception as e:
         raise e
+
+# --- Developing --- #
