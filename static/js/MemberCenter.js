@@ -15,14 +15,16 @@ function person() {
 function addtemp(string,items)
 {
   var myfunction = "";
-  if (string === "交易中") {
-    myfunction = "ToTrade(this)";
-  }
-  else if (string === "已完成") {
+  if(items[i].status == -1 || string === "已完成") {
     myfunction = "";
   }
   else {
-    myfunction = "ToProduct(this)";
+    if (string === "交易中") {
+        myfunction = "ToTrade(this)";
+      }
+      else {
+        myfunction = "ToProduct(this)";
+      }
   }
 
   temp = '<div class="container-fluid">';
