@@ -15,11 +15,11 @@ function person() {
 function addtemp(string,items)
 {
   var myfunction = "";
-  if (string === "交易中") {
-    myfunction = "ToTrade(this)";
-  }
-  else if (string === "已完成") {
+  if (string === "已完成") {
     myfunction = "";
+  }
+  else if (string === "交易中") {
+    myfunction = "ToTrade(this)";
   }
   else {
     myfunction = "ToProduct(this)";
@@ -27,11 +27,20 @@ function addtemp(string,items)
 
   temp = '<div class="container-fluid"><div class="row">';
   for (var i = 0; i < items.length; i++) {
-      temp += '<div class="col-md-2"><img src="';
+      if (items[i].status == -1) {
+        temp += '<div class="col-md-2 remove"><img src="';
+      }
+      else {
+        temp += '<div class="col-md-2"><img src="';
+      }
       temp += items[i].images[0];
       temp += '" id="' + items[i].id;
-      temp += '" onclick="' + myfunction + '"><p id="' + items[i].id;
-      temp += '" onclick="' + myfunction + '">';
+      temp += '" onclick="';
+      if (items[i].status != -1) temp += myfunction;
+      temp += '"><p id="' + items[i].id;
+      temp += '" onclick="';
+      if (items[i].status != -1) temp += myfunction; 
+      temp += '">';
       temp += items[i].product_name;
       temp += '</p></div>';
   }

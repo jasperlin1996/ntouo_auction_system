@@ -18,8 +18,13 @@ ul {
     background-color: lavender;
 }
 
-a{
+a {
     text-decoration: none;
+}
+
+.remove {
+    background-color: gray;
+    opacity: 0.3;
 }
 
 p /*andy*/
@@ -112,8 +117,6 @@ input {
 }
 
 @media screen and (max-width: 600px) {
-
-
     .col-md-2{       /* andy */
       text-align: center;
     }
@@ -127,6 +130,7 @@ input {
         position: relative;
         left: 0;
         width: 100%;
+        top: 110px;
     }
 
     table {
