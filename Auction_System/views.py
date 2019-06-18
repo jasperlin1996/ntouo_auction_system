@@ -423,6 +423,7 @@ def searchProduct(request):
     keyword = request.POST['keyword']
     return HttpResponse('/search/' + keyword)
 
+@csrf_exempt
 def searchCategory(request):
     category = request.POST['category']
     return HttpResponse('/category/' + category)
