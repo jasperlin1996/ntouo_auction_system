@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'django_crontab',
     # 'pwa',
 ]
 
@@ -71,7 +71,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Auction_System.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
@@ -81,7 +80,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -101,20 +99,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
@@ -128,8 +120,12 @@ STATICFILES_DIRS = (
             ("css", os.path.join(STATIC_ROOT, 'css')),
             ("img", os.path.join(STATIC_ROOT, 'img')),
         )
-#
-#
+
+# crontab
+# CRONJOBS = [
+#     ('0 */1 * * *', 'Auction_System.firestore_ops.checkProductDeadline')
+# ]
+
 # PWA_APP_NAME = 'My App'
 # PWA_APP_DESCRIPTION = "My app description"
 # PWA_APP_THEME_COLOR = '#0A0302'
