@@ -11,7 +11,5 @@ install:
   - pip install google-cloud-firestore==1.1.0
   - pip install pyrebase==3.0.27
   - pip install django-pwa==1.0.5
-  - pip install python-Levenshtein==0.12.0
-  - pip install django-crontab==0.4.1
 script: true
   - python manage.py test
