@@ -1,13 +1,13 @@
 #Img {
     font-family: DFKai-SB, STKaiti;
     position: relative;
-    top: 100px;
+    top: 120px;
 }
 
 #product {
     font-family: DFKai-SB, STKaiti;
     position: relative;
-    top: -30%;
+    top: -25%;
 }
 
 #qas {
@@ -27,6 +27,12 @@ form {
     top: -36px;
     right: -180px;
     width: 40%;
+}
+
+#track {
+    position:relative;
+    font-size:15px;
+    right: -40%;
 }
 
 .tr1 {
@@ -108,11 +114,15 @@ input[type=number]{
         word-break: break-all;
         width: 50%;
     }
+
+    .td1 {
+        background-color: white;
+    }
 }
 
 @media screen and (max-width: 630px) {
     #product {
-        top: 10%;
+        top: 20%;
         left: 10%;
         width: 80%;
     }
@@ -132,7 +142,7 @@ input[type=number]{
         position: relative;
         left: 10%;
         width: 80%;
-        top: 100px;
+        top: 200px;
         font-size: 20px;
     }
 
@@ -145,5 +155,9 @@ input[type=number]{
         width: 100%;
         float: left;
         word-break: break-all;
+    }
+
+    .td1 {
+        background-color: lightgray;
     }
 }

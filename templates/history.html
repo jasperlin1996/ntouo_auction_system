@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+    <head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bar.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/ntoulogo.png' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">  
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>瀏覽歷史</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    
+    <body onload="displayHistory();">
+        <nav class="nav navbar-default">
+             <div class="container-fluid">
+                 <div>
+                     <ul id="myNavbar" class="nav navbar-nav">
+                      <span>商品分類</span>
+                     </ul>
+                 </div>
+             </div>
+         </nav>
+        <div class="container-fluid data">
+            <div id="row" class="row">
+                <div id="blank1" class="col-md-12"></div>
+                <div class="col-md-1">
+                    
+                </div>
+            </div>
+        </div>
+        <nav id="page" class="page">
+            <ul class="pagination">
+            </ul> 
+        </nav>
+    </body>
+
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/bar.js' %}"></script>
+    <script src="{% static 'js/history.js' %}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</html>

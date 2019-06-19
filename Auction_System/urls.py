@@ -24,6 +24,7 @@ urlpatterns = [
     path('index/', views.index, name = 'index'),
     path('search/<str:keyword>/', views.search, name = 'search'),
     path('category/<str:category>', views.category, name = 'category'),
+    path('history/', views.history, name = 'history'),
     path('signin/', views.signIn, name = 'signin'),
     path('presignup/', views.preSignUp, name = 'pre-signup'),
     path('signup/', views.signUp, name = 'signup'),
@@ -41,6 +42,7 @@ urlpatterns = [
     path('signout/', views.signOut, name = 'signout'),
     path('searchproduct/', views.searchProduct, name = 'search-product'),
     path('searchcategory/', views.searchCategory, name = 'search-category'),
+    path('product2history/', views.product2History, name = 'product-2-history'),
     path('postproductid2product/', views.postProductId2Product, name ='post-product-id-2-product'),
     path('postproductid2trade/', views.postProductId2Trade, name = 'post-product-id-2-trade'),
     path('checkuserstatus/', views.checkUserStatus, name = 'check-user-status'),
@@ -49,6 +51,6 @@ urlpatterns = [
     path('setsession/', views.setSession, name = 'set-session'),
     path('checkuserdata/', views.checkUserData, name = 'check-user-data'),
     path('settrackingproduct/', views.setTrackingProduct, name = 'set-tracking-product'),
-    path('completetrade/', views.completeTrade, name = 'complete-trade')
+    path('completetrade/', views.completeTrade, name = 'complete-trade'),
     # path('', include('pwa.urls')),
 ]

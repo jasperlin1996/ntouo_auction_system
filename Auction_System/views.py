@@ -172,6 +172,9 @@ def category(request, category):
         print(e)
     return render(request, 'Category.html', {'products': products})
 
+def history(request):
+    return render(request, 'history.html')
+
 def signIn(request):
     if _checkIdToken(request) and _checkUserInfoCompleteness(request.session['idToken']):
         return redirect(index)
@@ -431,6 +434,17 @@ def searchProduct(request):
 def searchCategory(request):
     category = request.POST['category']
     return HttpResponse('/category/' + category)
+
+@csrf_exempt
+def product2History(request):
+    products = []
+    products_id = request.POST.getlist('products_id[]')
+    try:
+        for product_id in products_id:
+            products.append(firestore_ops.getProductBasicInfo(firestore_ops.getProduct(product_id)))
+    except Exception as e:
+        print(e)
+    return JsonResponse({'products': products})
 
 @csrf_exempt
 def postProductId2Product(request):
