@@ -315,7 +315,7 @@ def bidProduct(request):
         firestore_ops.linkProductToUser(user_id, product_id, list_name = 'bidding_items')
         firestore_ops.transferProductStatus(product_id, ProductStatus.Bidding.value)
 
-        origin_product = firestore_ops.getProduct(product)
+        origin_product = firestore_ops.getProduct(product_id)
 
         if current_price == origin_product['price']:
             seller = origin_product['seller']
