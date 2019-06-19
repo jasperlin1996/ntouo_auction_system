@@ -11,5 +11,5 @@ install:
   - pip install google-cloud-firestore==1.1.0
   - pip install pyrebase==3.0.27
   - pip install django-pwa==1.0.5
-script: true
+script:
   - python manage.py test
