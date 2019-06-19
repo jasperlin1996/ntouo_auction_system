@@ -59,6 +59,7 @@ function checkEmailVerified() {
       // Email sent.
     }).catch(function (error) {
       // An error happened.
+      console.log(error);
     });
   } else {
     // check info
@@ -126,7 +127,6 @@ function googleSignIn() {
 
 function facebookSignIn()
 {
-  console.log('hi');
   var provider = new firebase.auth.FacebookAuthProvider();
   thirdPartySignIn(provider);
 }
