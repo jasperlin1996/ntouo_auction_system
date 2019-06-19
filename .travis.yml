@@ -1,0 +1,16 @@
+language: python
+python:
+  - 3.5.2
+services: 
+env:
+  global:
+    secure: RcOxW8mqOUtsaQockUt8qcrOBZU9AJfKIJlwpUIdwSv9ecskdCCXKdgUbk3ZQN3CMN7C20mlQv8CZM7vUKEZ55dziZO/AIiAKp2DvnOcyLiH1v8csxxxdgFtj+rFX51WgUJcDg+RkINI/PvhhxHFg5/Qt5gcajzIeendCr9WQROWf7AXLSbDEcF1rS1XWjsKQYT2IikZju73J7QZhZHMY3w1GbRabsbyQi3YPBe3bOIHASUUvuw0XkisderspNHGg4S5KY0D66F87vwNBPBooNrLmvVKlo30jGWBz0EEsGa+yI0mvHaNT9QmImCGZGve/Y5fctaUNxd0K6aDL+OEwcytLPNnQmyvH+eIMcAYKYHUxZIy3YOON84xR1rZd9bQMtCzadbfdeJq0aoOY5P1lm+s7RCE2E7QIn4gMYo4FkzGm2aduKFHfNpD8QuRHcTIGF2Bo2mf3U1kwleirg2iEN36QIfe0x2hE9jGeBreIvBxjyRp+kQELsIik1w0xgzf0eJ0n5XDEF95UtBWwgV/wcYHePuCxZwQbVHGmMkLOHYBSrK71InA2Y1NmxzGb2EV+oV+aoj3YPLmiaOYTvUCewmVHB/TVSK7lz8tnjliyhIMNftAnYzIIzP98Z2lcgrkiX3o6hueWRq7fHSyz5IPe4PJst5jVeI5QnpaWQkghu4=
+install:
+  - pip install django==2.0.0
+  - pip install firebase-admin==2.16.0
+  - pip install google-cloud-firestore==1.1.0
+  - pip install pyrebase==3.0.27
+  - pip install django-pwa==1.0.5
+  - pip install python-Levenshtein
+  - pip install django-crontab==0.4.1
+script: true
