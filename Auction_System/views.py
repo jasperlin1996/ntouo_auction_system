@@ -166,7 +166,11 @@ def search(request, keyword):
     return render(request, 'Search.html', {'products': products})
 
 def category(request, category): # TODO search by category
-    pass
+    try:
+        products = firestore_ops.searchCategory(category)
+    except Exception as e:
+        print(e)
+    return render(request, 'Category.html', {'products': products})
 
 def signIn(request):
     if _checkIdToken(request) and _checkUserInfoCompleteness(request.session['idToken']):
