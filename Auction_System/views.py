@@ -146,28 +146,37 @@ def _userWithoutIdToken(user_id):
     del user['idToken']
     return user
 
+def _getAvailableProduct(products):
+    result = []
+    for product in products:
+        status = product['status']
+        if status == ProductStatus.Onsale or status == ProductStatus.Bidding:
+            result.append(product)
+    return result
+
 def index(request):
     products = []
     try:
         origin_products = firestore_ops.getNProductsBasicInfo(100)
-        for product in origin_products:
-            status = product['status']
-            if status == ProductStatus.Onsale or status == ProductStatus.Bidding:
-                products.append(product)
+        products = _getAvailableProduct(origin_products)
     except Exception as e:
         print(e)
     return render(request, 'index.html', {'products': products})
 
 def search(request, keyword):
+    products = []
     try:
-        products = firestore_ops.searchProducts(keyword, 100)
+        origin_products = firestore_ops.searchProducts(keyword, 100)
+        products = _getAvailableProduct(origin_products)
     except Exception as e:
         print(e)
     return render(request, 'Search.html', {'products': products})
 
 def category(request, category):
+    products = []
     try:
-        products = firestore_ops.searchCategory(category)
+        origin_products = firestore_ops.searchCategory(category)
+        products = _getAvailableProduct(origin_products)
     except Exception as e:
         print(e)
     return render(request, 'Category.html', {'products': products})
@@ -315,7 +324,7 @@ def bidProduct(request):
         firestore_ops.linkProductToUser(user_id, product_id, list_name = 'bidding_items')
         firestore_ops.transferProductStatus(product_id, ProductStatus.Bidding.value)
 
-        origin_product = firestore_ops.getProduct(product)
+        origin_product = firestore_ops.getProduct(product_id)
 
         if current_price == origin_product['price']:
             seller = origin_product['seller']
