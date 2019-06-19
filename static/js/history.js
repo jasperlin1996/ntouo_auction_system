@@ -64,21 +64,38 @@ function displayHistory()
         return;
     }
     
+    var products;
     var history = getHistory();
-
-    $("#row").html("<div id='blank1' class='col-md-12'></div><div class='col-md-1'></div>");
-    for (var i = 0; i < historyAmount; i++) {
-        if (product_count == 5) {
-            $("#row").append("<div class='col-md-1'></div><div class='col-md-1'></div>");
-            product_count = 0;
+    console.log('history');
+    console.log(history);
+    $.ajax({
+        url: '/product2history/',
+        type: 'POST',
+        data: {'products_id': history},
+        cache: false,
+        async: false,
+        success: function(response) {
+            console.log('here');
+            console.log(response);
+            products = response.products;
         }
-        product_count++;
-        if (i == historyAmount - 1)
-            $("#row").append("<div class='col-md-2'><img onload='start()' id='" + history[2][i] + "' src='" + history[1][i] + "' %}' class='img-thumbnail img' alt=" + history[0][i] + "><p>" + history[0][i] + "</p></div>");
-        else
-            $("#row").append("<div class='col-md-2'><img id='" + history[2][i] + "' src='" + history[1][i] + "' %}' class='img-thumbnail img' alt=" + history[0][i] + "><p>" + history[0][i] + "</p></div>");
-    }
-    $("#row").append("<div id='blank2' class='col-md-12'></div>");
+    });
+
+    console.log(products);
+
+    // $("#row").html("<div id='blank1' class='col-md-12'></div><div class='col-md-1'></div>");
+    // for (var i = 0; i < historyAmount; i++) {
+    //     if (product_count == 5) {
+    //         $("#row").append("<div class='col-md-1'></div><div class='col-md-1'></div>");
+    //         product_count = 0;
+    //     }
+    //     product_count++;
+    //     if (i == historyAmount - 1)
+    //         $("#row").append("<div class='col-md-2'><img onload='start()' id='" + history[2][i] + "' src='" + history[1][i] + "' %}' class='img-thumbnail img' alt=" + history[0][i] + "><p>" + history[0][i] + "</p></div>");
+    //     else
+    //         $("#row").append("<div class='col-md-2'><img id='" + history[2][i] + "' src='" + history[1][i] + "' %}' class='img-thumbnail img' alt=" + history[0][i] + "><p>" + history[0][i] + "</p></div>");
+    // }
+    // $("#row").append("<div id='blank2' class='col-md-12'></div>");
     changeblankCSS();
 }
 
