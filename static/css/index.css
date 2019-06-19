@@ -5,7 +5,7 @@
   margin: auto;
 }
 
-.row div[class=col-md-2]
+.row div[class=col-md-2],.row div[id=history_square]
 {
   background-color: rgba(0,0,0,0.1);
   width: 100%;
@@ -14,7 +14,7 @@
   border-radius: 20px;
 }
 
-.row div[class=col-md-2]:hover
+.row div[class=col-md-2]:hover,.row div[id=history_square]:hover
 {
   background-color: rgba(0,0,0,0.5);
   cursor:pointer;
@@ -77,6 +77,20 @@ ul span
   z-index: -1;
 }
 
+.fa-trash,.fa-dumpster
+{
+  color: red;
+}
+.fa-trash:hover,.fa-dumpster:hover
+{
+  color: blue;
+}
+.fa-trash
+{
+  margin-top:80px;
+  float: right;
+  font-size: 25px;
+}
 @media screen and (max-width:1040px)
 {
   #myNavbar

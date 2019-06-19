@@ -2,6 +2,7 @@
 <html>
 {% load staticfiles %}
     <head>
+    <script src="https://kit.fontawesome.com/fc86aaf79d.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bar.css' %}">
     <link rel="shortcut icon" href="{% static 'img/ntoulogo.png' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">  
@@ -10,6 +11,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
+    <div id="loadspace">
+        <div id="loader" class="loader">
+            <svg viewBox="0 0 32 32" width="32" height="32">
+                <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
+            </svg>
+        </div>
+    </div>
     
     <body onload="displayHistory();">
         <nav class="nav navbar-default">
@@ -25,7 +33,6 @@
             <div id="row" class="row">
                 <div id="blank1" class="col-md-12"></div>
                 <div class="col-md-1">
-                    
                 </div>
             </div>
         </div>
