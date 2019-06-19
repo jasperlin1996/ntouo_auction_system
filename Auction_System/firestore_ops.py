@@ -3,7 +3,6 @@ import datetime
 from enum import Enum
 from firebase_admin import credentials
 from firebase_admin import firestore
-from Levenshtein import distance
 from google.cloud.firestore_v1 import ArrayUnion, ArrayRemove
 
 cred = credentials.Certificate('firestore_key.json')
