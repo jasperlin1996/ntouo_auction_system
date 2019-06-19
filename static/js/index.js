@@ -68,6 +68,8 @@ function GetProducts(index) {
   $('.col-md-2').on('mousedown',function()
   {
     var myproductid = $(this).children()[0].id;
+    //window.alert("title:" + mytitle);
+    addHistory(myproductid);
     $.ajax(
     {
       url:"/postproductid2product/",
@@ -100,7 +102,7 @@ function previousPage() {
 //換新頁面blank 的 css
 function changeblankCSS() {
   if ($(window).width() > 768) {
-    $("#blank1").css('height', hei * 0.001 + "px");
+    $("#blank1").css('height', hei * 0.1 + "px");
     $("#blank2").css('height', hei * 0.1 + "px");
   } else {
     $("#blank1").css('height', hei * 0.15 + "px");

@@ -415,6 +415,9 @@ def signOut(request):
     django.contrib.auth.logout(request)
     return render(request, 'SignOut.html')
 
+def history(request):
+    return render(request, 'history.html')
+
 @csrf_exempt
 def searchProduct(request):
     keyword = request.POST['keyword']

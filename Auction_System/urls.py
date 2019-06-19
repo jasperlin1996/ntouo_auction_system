@@ -47,6 +47,7 @@ urlpatterns = [
     path('setsession/', views.setSession, name = 'set-session'),
     path('checkuserdata/', views.checkUserData, name = 'check-user-data'),
     path('settrackingproduct/', views.setTrackingProduct, name = 'set-tracking-product'),
-    path('completetrade/', views.completeTrade, name = 'complete-trade')
+    path('completetrade/', views.completeTrade, name = 'complete-trade'),
+    path('history/', views.history, name = 'history'),
     # path('', include('pwa.urls')),
 ]
