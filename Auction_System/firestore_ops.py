@@ -269,7 +269,7 @@ def checkUserInfoCompleteness(user_id):
 # Haven't Tested Yet #
 def searchProducts(string, n):
     """
-    Args: 
+    Args:
         string(str): Search string.
         n(int): Expect number of results.
     Return:
