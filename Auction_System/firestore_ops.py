@@ -284,7 +284,7 @@ def searchProducts(string, n):
         data = data['array']
     for product_id in data:
         result.append(getProductBasicInfo(getProduct(product_id)))
-    return [element[1] for element in result][:n]
+    return [element for element in result][:n]
 
 
 def linkProductToUser(user_id, product_id, list_name="onsale_items"): # Tested

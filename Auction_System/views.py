@@ -165,7 +165,7 @@ def search(request, keyword):
         print(e)
     return render(request, 'Search.html', {'products': products})
 
-def category(request, category): # TODO search by category
+def category(request, category):
     try:
         products = firestore_ops.searchCategory(category)
     except Exception as e:
