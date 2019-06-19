@@ -169,3 +169,15 @@ $(".toggle-password").click(function() {
     input.attr("type", "password");
   }
 });
+
+
+//重設視窗大小  andy
+$(function() {
+  $(window).resize(function() {
+    var barHeight = $(".header1").height();
+    if ($(window).width() < 1040)
+    {
+        $("#main").css('top',barHeight+ 50 +"px");
+    }
+  }).resize()
+});
