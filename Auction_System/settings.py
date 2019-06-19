@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django_crontab',
+    'django_crontab',
     # 'pwa',
 ]
 
@@ -122,9 +122,9 @@ STATICFILES_DIRS = (
         )
 
 # crontab
-# CRONJOBS = [
-#     ('0 */1 * * *', 'Auction_System.firestore_ops.checkProductDeadline')
-# ]
+CRONJOBS = [
+    ('0 */1 * * *', 'Auction_System.cron.checkProductDeadline')
+]
 
 # PWA_APP_NAME = 'My App'
 # PWA_APP_DESCRIPTION = "My app description"
