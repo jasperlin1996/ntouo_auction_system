@@ -10,22 +10,29 @@ var product_count = 0;
 var products_length = products.length;
 var currentPage = 1;
 
+
+//小bar分類表
+$("#afterBut").prop("disabled",false);
+
 //產生頁碼
-while ((products_length / 20) > 0) {
-  $(".page ul").append("  <li id='page" + pagecount + "' class='page-item'><a class='page-link' onclick='GetProducts(" + pagecount + ")'>" + pagecount + "</a></li>");
-  products_length -= 20;
-  if (products_length < 1 && pagecount < 5) {
-    $(".page ul").append("  <li class='page-item'><a onclick='nextPage()' class='page-link' >>></a></li>");
-    pageWidth = 90 + (35 * pagecount);
+  while ((products_length / 20) > 0)
+  {
+      $(".page ul").append("  <li id='page" + pagecount + "' class='page-item'><a class='page-link' onclick='GetProducts(" + pagecount + ")'>" + pagecount + "</a></li>");
+      products_length -= 20;
+      if (products_length < 1 && pagecount < 5)
+       {
+          $(".page ul").append("  <li class='page-item'><a onclick='nextPage()' class='page-link' >>></a></li>");
+          pageWidth = 90 + (35 * pagecount);
+       }
+      if (pagecount >= 5)
+      {
+          $(".page ul").append("  <li class='page-item'><a class='page-link' href='#'>...</a></li>");
+          $(".page ul").append("  <li class='page-item'><a class='page-link' href='#'>>></a></li>");
+          pageWidth = 90 + (35 * (pagecount + 1)); //  90 >> <<   35 數字
+          break;
+      }
+      pagecount++;
   }
-  if (pagecount >= 5) {
-    $(".page ul").append("  <li class='page-item'><a class='page-link' href='#'>...</a></li>");
-    $(".page ul").append("  <li class='page-item'><a class='page-link' href='#'>>></a></li>");
-    pageWidth = 90 + (35 * (pagecount + 1)); //  90 >> <<   35 數字
-    break;
-  }
-  pagecount++;
-}
 pagecount--; //最後多加的扣掉
 
 GetProducts(1);
