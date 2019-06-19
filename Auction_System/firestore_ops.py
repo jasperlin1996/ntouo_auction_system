@@ -20,10 +20,6 @@ product_ref = db.collection("products")
 # --- 2019/06/19 --- #
 # Haven't Tested Yet #
 
-import threading # TODO not use yet
-
-product_search_ref = db.collection('products_search') # TODO check collection name
-
 def substring(product_id, product_name):
     """
         Args:
@@ -67,7 +63,27 @@ def addProductToSearch(product_id, product): # TODO check function name
 
 # TODO add product to category for search category
 def addProductToCategory(product_id, product): # TODO check function name
-    pass
+    try:
+        ref = db.collection('category').document(product['category'])
+        ref.set({product['category']: ArrayUnion([product_id])}, merge=True)
+    except Exception as e:
+        raise e
+
+def searchCategory(category):
+    try:
+        res = []
+        ref = db.collection('category').document(category)
+        data = ref.get().to_dict()
+        if data == None:
+            data = []
+        else:
+            data = data[category]
+        for product_id in data:
+            res.append(getProductBasicInfo(product_id))
+        return res
+
+    except Exception as e:
+        raise e
 
 # --- Developing --- #
 
@@ -83,6 +99,8 @@ def addProduct(user_id, product_id, product):
         # add a product
         ref = db.collection("products").document(str(product_id))
         ref.set(product)
+        addProductToSearch(product_id, product)
+        addProductToCategory(product_id, product)
         linkProductToUser(user_id, product_id, list_name="onsale_items")
     except Exception as e:
         raise e
@@ -257,12 +275,15 @@ def searchProducts(string, n):
     Return:
         result(list): Including **FULL** data from firestore. Ranked ascending.
     """
-    ref = db.collection('product_search').document('string')
-    result = ref.get().to_dict()
-    if result == None:
-        result = []
+    ref = db.collection('product_search').document(string)
+    result = []
+    data = ref.get().to_dict()
+    if data == None:
+        data = []
     else:
-        result = result['array']
+        data = data['array']
+    for product_id in data:
+        result.append(getProductBasicInfo(product_id))
     return [element[1] for element in result][:n]
 
 
