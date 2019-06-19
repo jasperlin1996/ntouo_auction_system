@@ -5,8 +5,8 @@ function person() {
     temp += '<tr><td>電話:</td><td>' + info.phone + '</td></tr>';
     temp += '<tr><td>地址:</td><td>' + info.address + '</td></tr>';
     temp += '<tr><td>其他聯絡方式:</td><td><textarea rows="5" cols="50" readonly>' + info.contact + '</textarea></td></tr>';
-    temp += '<tr><td>購買評價:</td><td>' + info.buyer_rate + '</td></tr>';
-    temp += '<tr><td>販賣評價:</td><td>' + info.seller_rate + '</td></tr>';
+    temp += '<tr><td>購買評價:</td><td>' + info.buyer_rate.rate + '/5 共有' + info.buyer_rate.count + '人評價</td></tr>';
+    temp += '<tr><td>販賣評價:</td><td>' + info.seller_rate.rate + '/5 共有' + info.buyer_rate.count + '人評價</td></tr>';
     temp += '<tr><td>第三方資訊</td><td>' + info.tp_info.provider + '</td></tr>';
     temp += '<tr><td></td><td><input type="button" onclick="change()" value="修改"></td></tr></table>';
     document.getElementById("content").innerHTML = temp;
