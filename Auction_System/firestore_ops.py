@@ -79,7 +79,7 @@ def searchCategory(category):
         else:
             data = data[category]
         for product_id in data:
-            res.append(getProductBasicInfo(product_id))
+            res.append(getProductBasicInfo(getProduct(product_id)))
         return res
 
     except Exception as e:
@@ -283,7 +283,7 @@ def searchProducts(string, n):
     else:
         data = data['array']
     for product_id in data:
-        result.append(getProductBasicInfo(product_id))
+        result.append(getProductBasicInfo(getProduct(product_id)))
     return [element[1] for element in result][:n]
 
 
