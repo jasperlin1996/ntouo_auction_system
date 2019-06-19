@@ -165,6 +165,13 @@ def search(request, keyword):
         print(e)
     return render(request, 'Search.html', {'products': products})
 
+def category(request, category):
+    try:
+        products = firestore_ops.searchCategory(category)
+    except Exception as e:
+        print(e)
+    return render(request, 'Category.html', {'products': products})
+
 def signIn(request):
     if _checkIdToken(request) and _checkUserInfoCompleteness(request.session['idToken']):
         return redirect(index)
@@ -422,6 +429,11 @@ def history(request):
 def searchProduct(request):
     keyword = request.POST['keyword']
     return HttpResponse('/search/' + keyword)
+
+@csrf_exempt
+def searchCategory(request):
+    category = request.POST['category']
+    return HttpResponse('/category/' + category)
 
 @csrf_exempt
 def postProductId2Product(request):

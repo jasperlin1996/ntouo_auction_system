@@ -1,10 +1,11 @@
 <html>
   {% load staticfiles %}
-  <link rel="SHORTCUT ICON" href="{% static 'img/ntoulogo.jpg' %}"/>
+  <link rel="shortcut icon" href="{% static 'img/ntoulogo.png' %}"/>
   <script src="{% static 'js/jquery.js' %}"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/bar.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'css/Product.css' %}">
   <head>
+    <title>海大拍賣</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
@@ -17,61 +18,61 @@
   <body>
     <div id="Img">
       <img id="image" src="">
-      <input type="button" onclick="tracking()" value="追蹤此商品" style="position:relative;font-size:15px;">
+      <input type="button" id="track" onclick="tracking()" value="追蹤此商品">
     </div>
     <!--顯示商品資訊-->
     <div id="product">
       <table>
         <tr>
-          <td>名稱</td>
+          <td class="td1">名稱</td>
           <td id="product_name"></td>
         </tr>
         <tr>
-          <td>分類</td>
+          <td class="td1">分類</td>
           <td id="category"></td>
         </tr>
         <tr>
-          <td>賣家</td>
+          <td class="td1">賣家</td>
           <td id="seller"></td>
         </tr>
         <tr>
-          <td>賣家評價</td>
+          <td class="td1">賣家評價</td>
           <td id="seller_rate"></td>
         </tr>
         <tr>
-          <td>狀態</td>
+          <td class="td1">狀態</td>
           <td id="status"></td>
         </tr>
         <tr>
-          <td>直購/拍賣</td>
+          <td class="td1">直購/拍賣</td>
           <td id="trading_type"></td>
         </tr>
         <tr>
-          <td>直購價</td>
+          <td class="td1">直購價</td>
           <td id="price"></td>
         </tr>
         <tr>
-          <td>目前價格</td>
+          <td class="td1">目前價格</td>
           <td id="current_price"></td>
         </tr>
         <tr>
-          <td>目前最高價者</td>
+          <td class="td1">目前最高價者</td>
           <td id="highest_buyer_id"></td>
         </tr>
         <tr>
-          <td>每標底價</td>
+          <td class="td1">每標底價</td>
           <td id="price_per_mark"></td>
         </tr>
         <tr>
-          <td>敘述</td>
+          <td class="td1">敘述</td>
           <td id="description"></td>
         </tr>
         <tr>
-          <td>希望交易方式</td>
+          <td class="td1">希望交易方式</td>
           <td id="trading_method"></td>
         </tr>
         <tr>
-          <td>剩餘時間</td>
+          <td class="td1">剩餘時間</td>
           <td id="deadline"></td>
         </tr>
         <tr>
@@ -79,14 +80,14 @@
           <td id="pay">
             <form method="POST" action="/bidproduct/" onsubmit="return checkForm()">
               {% csrf_token %}
-              <input type="number" name="current_price" id="inputprice" style="width:100px;float:left">元
+              <input type="number" name="current_price" id="inputprice" style="width:70px;float:left">元
               <input type="text" name="id" style="display: none">
               <input type="submit" value="出價">
             </form>
             <form method="POST" id="purchase" action="/purchaseproduct/" onsubmit="return checkUser()">
               {% csrf_token %}
               <input type="text" name="id" style="display: none">
-              <input type="submit" style="position:relative;top:0px;font-size:15px" value="直接購買">
+              <input type="submit" style="position:relative;top:0px;font-size:15px;right:30px" value="直接購買">
             </form>
           </td>
         </tr>

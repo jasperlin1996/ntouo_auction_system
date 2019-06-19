@@ -1,7 +1,7 @@
 .data
 {
     position: relative;
-    top:15%;
+    top:10%;
     /*text-align: center;*/
     /* z-index: -1; */
     font-size: 18px;
@@ -99,6 +99,13 @@ img
 
 @media screen and (max-width:768px)
 {
+  .data{
+    top:20%;
+  }
+  .col-md-12{
+      margin-top: 10px;
+      margin-bottom: 10px;
+  }
   .row{
     z-index: -1;
   }

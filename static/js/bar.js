@@ -35,13 +35,13 @@ var searchProduct;
 var category;
 
 //增加縮小視窗後的bar
-$("body").prepend("<div class='pos-f-t'><nav  class='navbar navbar-dark bg-dark'>" +
-  "<button id='afterBut' class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarToggleExternalContent' aria-controls='navbarToggleExternalContent' aria-expanded='false' aria-label='Toggle navigation'>" +
+$("body").prepend("<div id='pos-f-t' class='pos-f-t'><nav  class='navbar navbar-dark bg-dark'>" +
+  "<button id='afterBut' class='navbar-toggler' disabled type='button' data-toggle='collapse' data-target='#navbarToggleExternalContent' aria-controls='navbarToggleExternalContent' aria-expanded='false' aria-label='Toggle navigation'>" +
   "<span class='navbar-toggler-icon'></span>" +
   "</button>" +
-  "</nav>" +
+  "</nav>"+
   "<div class='collapse' id='navbarToggleExternalContent'>" +
-  "<div class='bg-dark'>" +
+  "<div class='bg-dark'>"+
   "<ul id='mySmallNavbar'></ul><br></div></div></div>");
 
 //拿到username
@@ -78,13 +78,14 @@ $.ajax({
 });
 
 setBody();
-
+//加入分類表 BAR
 function setBody() {
   for (i = 0; i < category.length; i++) {
     var plzwork = String(category[i]);
     //分類表
     $("#myNavbar").append("<li><a data-toggle='tab' onclick='searchCategory("+i+")' href='#'><img class='categorie categorie-" + i + "'>" + category[i] + "</a></li>");
     $("#mySmallNavbar").append("<li><a data-toggle='tab' onclick='searchCategory("+i+")' href='#'><img class='categorie categorie-" + i + "'>" + category[i] + "</a></li>");
+
   }
   var body = document.getElementsByTagName("body");
   //上方bar
@@ -118,13 +119,14 @@ function setBody() {
   });
 }
 
+//分類搜尋
 function searchCategory(number)
 {
   $.ajax(
     {
       url:"/searchcategory/",
       type:'POST',
-      data:{'catergory':category[number]},
+      data:{'category':category[number]},
       cache:false,
       async:false,
       success:function(response)
@@ -135,6 +137,7 @@ function searchCategory(number)
   );
 }
 
+//一般搜尋
 function searchProduct()
 {
   var keyword = document.getElementById('keyword').value;
@@ -172,6 +175,7 @@ function openCommand() {
   window.open(' https://forms.gle/TwwdvBqdyqwR4TXf8 ', '', config = 'height=700,width=500');
 }
 
+//重設視窗大小
 $(function() {
   $(window).resize(function() {
     wid = $(window).width();

@@ -3,7 +3,6 @@ import datetime
 from enum import Enum
 from firebase_admin import credentials
 from firebase_admin import firestore
-from Levenshtein import distance
 from google.cloud.firestore_v1 import ArrayUnion, ArrayRemove
 
 cred = credentials.Certificate('firestore_key.json')
@@ -15,6 +14,77 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 user_ref = db.collection("users")
 product_ref = db.collection("products")
+
+# --- Developing --- #
+# --- 2019/06/19 --- #
+# Haven't Tested Yet #
+
+def substring(product_id, product_name):
+    """
+        Args:
+            product_id (str): The id of the product.
+            product_name (str): The name of the product.
+        Returns:
+            res (dict): The result of all substrings generate by
+                product_name and correspond to product_id.
+                {
+                    substring_1: [product_id],
+                    substring_2: [product_id],
+                    ...
+                }
+    """
+    substrings = set()
+
+    length = len(product_name)
+    for i in range(length):
+        for j in range(1, length - i + 1):
+            substrings.add(product_name[i: i + j])
+
+    # make a id list for correspond to substrings
+    # list_id looks like: [[id], [id], [id], ...]
+    list_id = [[product_id]] * len(substrings)
+
+    res = dict(zip(substrings, list_id))
+    return res
+
+def addProductToSearch(product_id, product): # TODO check function name
+    res = substring(product_id, product['product_name'])
+    try:
+        # TODO update res to firestore
+        # TODO verify
+        batch = db.batch()
+        for k, v in res.items():
+            ref = db.collection('product_search').document(k)
+            batch.set(ref, {'array': ArrayUnion(v)}, merge=True)
+        batch.commit()
+    except Exception as e:
+        raise e
+
+# TODO add product to category for search category
+def addProductToCategory(product_id, product): # TODO check function name
+    try:
+        ref = db.collection('category').document(product['category'])
+        ref.set({product['category']: ArrayUnion([product_id])}, merge=True)
+    except Exception as e:
+        raise e
+
+def searchCategory(category):
+    try:
+        res = []
+        ref = db.collection('category').document(category)
+        data = ref.get().to_dict()
+        if data == None:
+            data = []
+        else:
+            data = data[category]
+        for product_id in data:
+            res.append(getProductBasicInfo(getProduct(product_id)))
+        return res
+
+    except Exception as e:
+        raise e
+
+# --- Developing --- #
 
 def addProduct(user_id, product_id, product):
     """
@@ -28,6 +98,8 @@ def addProduct(user_id, product_id, product):
         # add a product
         ref = db.collection("products").document(str(product_id))
         ref.set(product)
+        addProductToSearch(product_id, product)
+        addProductToCategory(product_id, product)
         linkProductToUser(user_id, product_id, list_name="onsale_items")
     except Exception as e:
         raise e
@@ -196,24 +268,25 @@ def checkUserInfoCompleteness(user_id):
 # Haven't Tested Yet #
 def searchProducts(string, n):
     """
-    Args: 
+    Args:
         string(str): Search string.
         n(int): Expect number of results.
     Return:
         result(list): Including **FULL** data from firestore. Ranked ascending.
     """
+    ref = db.collection('product_search').document(string)
     result = []
-    _max_distance = -1
-    basicInfos = getAllProductBasicInfo()
+    data = ref.get().to_dict()
+    if data == None:
+        data = []
+    else:
+        data = data['array']
+    for product_id in data:
+        result.append(getProductBasicInfo(getProduct(product_id)))
+    return [element for element in result][:n]
 
-    for data in basicInfos:
-        result.append((distance(data['product_name'], string), data))
-        result = sorted(result, key=lambda a:a[0])
 
-    return [element[1] for element in result][:n]
-
-
-def linkProductToUser(user_id, product_id, list_name="onsale_items"):
+def linkProductToUser(user_id, product_id, list_name="onsale_items"): # Tested
     """
     Args:
         list_name (str): Decide which list @ firestore collection
@@ -238,7 +311,7 @@ def linkProductToUser(user_id, product_id, list_name="onsale_items"):
         raise e
 
 
-def unlinkProductFromUser(user_id, product_id, list_name="onsale_items"):
+def unlinkProductFromUser(user_id, product_id, list_name="onsale_items"): # Tested
     try:
         ref = user_ref.document(str(user_id))
         ref.update({list_name: ArrayRemove([product_id])})
@@ -266,7 +339,7 @@ def flattenDict(d, mode=ArrayOps.ADD):
         pass
     return ret
 
-def updateProduct(product_id, product, mode=ArrayOps.ADD):
+def updateProduct(product_id, product, mode=ArrayOps.ADD): # Tested
     """
     Args:
         product_id (str): The id link to the product's firestore ducument.
@@ -279,17 +352,43 @@ def updateProduct(product_id, product, mode=ArrayOps.ADD):
     except Exception as e:
         raise e
 
-# TODO
+def transferProductStatus(product_id, status): # Tested
+    try:
+        ref = product_ref.document(product_id)
+        ref.update({'status': status})
+    except Exception as e:
+        raise e
+
+# TODO not use yet
 def deleteProduct(product_id):
     try:
         product_ref.document(str(product_id)).delete()
     except Exception as e:
         raise e
 
-def transferProductStatus(product_id, status):
+# --- Developing --- #
+
+# --- Developing --- #
+# --- 2019/06/18 --- #
+# Haven't Tested Yet #
+
+def checkProductDeadline():
     try:
-        ref = product_ref.document(product_id)
-        ref.update({'status': status})
+        for doc in product_ref.get():
+            update_product = {}
+            product = getProduct(doc.id)
+            status = prodcut['status']
+            if datetime.datetime.now() >= product['deadline'] and (status == 0 or status == 1):
+                if product['highest_buyer_id'] == '':
+                    update_product['status'] = -1
+                    unlinkProductFromUser(product['seller'], product['id'], list_name = 'onsale_items')
+                else:
+                    update_product['status'] = 2
+                    unlinkProductFromUser(product['seller'], product['id'], list_name = 'onsale_items')
+                    linkProductToUser(product['seller'], product['id'], list_name = 'dealing_items')
+                    unlinkProductFromUser(product['highest_buyer_id'], product['id'], list_name = 'bidding_items')
+                    linkProductToUser(product['highest_buyer_id'], product['id'], list_name = 'dealing_items')
+                updateProduct(product['id'], update_product)
     except Exception as e:
         raise e
 
