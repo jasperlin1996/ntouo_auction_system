@@ -19,6 +19,7 @@ function addHistory(ID) {
     var historyAmount = parseInt(getCookieByName("history_amount"));
     window.alert("ID:" + ID);
     console.log(historyAmount);
+    
     if (historyAmount < 1 || historyAmount != historyAmount) {
         document.cookie = goodID + "=" + ID + ";";
         document.cookie = "history_amount=1;";
@@ -26,8 +27,19 @@ function addHistory(ID) {
 
     else {
         var IDs = getCookieByName(goodID);
+        var IDArray = IDs.split(",");
+        if (IDArray.includes(ID))
+        {
+            deleteHistory(IDArray.indexOf(ID));
+            historyAmount = parseInt(getCookieByName("history_amount"));
+        }
+        if(historyAmount>=20)
+        {
+            deleteHistory(historyAmount);
+            historyAmount = parseInt(getCookieByName("history_amount"));
+        }
         document.cookie = goodID + "=" + ID + "," + IDs + ";";
-        document.cookie = "history_amount=" + String(historyAmount+1) + ";";
+        document.cookie = "history_amount=" + String(historyAmount + 1) + ";";
     }
     return;
 }
@@ -86,8 +98,8 @@ function displayHistory()
 function deleteHistory(number)
 {
    
-    var goodAmount = parseInt(getCookieByName("history_amount"));
-    if(number>=goodAmount)
+    var historyAmount = parseInt(getCookieByName("history_amount"));
+    if (number >= historyAmount)
     {
         console.log("nothing to Delete");
         return;
@@ -96,8 +108,9 @@ function deleteHistory(number)
         history_goods = getHistory();
         history_goods.splice(number, 1);
         document.cookie = goodID + "=" + history_goods + ";";
+        document.cookie = "history_amount=" + String(historyAmount - 1) + ";";
     console.log("deleted");
-    displayHistory();
+    //displayHistory();
 }
 
 //
