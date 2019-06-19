@@ -56,6 +56,12 @@ def addProductToSearch(product_id, product): # TODO check function name
     res = substring(product_id, product['product_name'])
     try:
         # TODO update res to firestore
+        # TODO verify
+        batch = db.batch()
+        for k, v in res.items():
+            ref = db.collection('product_search').document(k)
+            batch.set(ref, {'array': ArrayUnion(v)}, merge=True)
+        batch.commit()
     except Exception as e:
         raise e
 
@@ -251,14 +257,12 @@ def searchProducts(string, n):
     Return:
         result(list): Including **FULL** data from firestore. Ranked ascending.
     """
-    result = []
-    _max_distance = -1
-    basicInfos = getAllProductBasicInfo()
-
-    for data in basicInfos:
-        result.append((distance(data['product_name'], string), data))
-        result = sorted(result, key=lambda a:a[0])
-
+    ref = db.collection('product_search').document('string')
+    result = ref.get().to_dict()
+    if result == None:
+        result = []
+    else:
+        result = result['array']
     return [element[1] for element in result][:n]
 
 
