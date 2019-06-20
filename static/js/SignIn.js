@@ -59,6 +59,7 @@ function checkEmailVerified() {
       // Email sent.
     }).catch(function (error) {
       // An error happened.
+      console.log(error);
     });
   } else {
     // check info
@@ -126,7 +127,6 @@ function googleSignIn() {
 
 function facebookSignIn()
 {
-  console.log('hi');
   var provider = new firebase.auth.FacebookAuthProvider();
   thirdPartySignIn(provider);
 }
@@ -168,4 +168,16 @@ $(".toggle-password").click(function() {
   } else {
     input.attr("type", "password");
   }
+});
+
+
+//重設視窗大小  andy
+$(function() {
+  $(window).resize(function() {
+    var barHeight = $(".header1").height();
+    if ($(window).width() < 1040)
+    {
+        $("#main").css('top',barHeight+ 50 +"px");
+    }
+  }).resize()
 });

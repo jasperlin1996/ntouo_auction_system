@@ -378,8 +378,9 @@ def checkProductDeadline():
         for doc in product_ref.get():
             update_product = {}
             product = getProduct(doc.id)
-            status = prodcut['status']
-            if datetime.datetime.now() >= product['deadline'] and (status == 0 or status == 1):
+            status = product['status']
+            deadline = datetime.datetime.strptime(product['deadline'].strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
+            if datetime.datetime.now() >= deadline and (status == 0 or status == 1):
                 if product['highest_buyer_id'] == '':
                     update_product['status'] = -1
                     unlinkProductFromUser(product['seller'], product['id'], list_name = 'onsale_items')

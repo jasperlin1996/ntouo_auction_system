@@ -99,3 +99,13 @@ function checkPassword2(pass, pass2) {
 function goSignIn() {
     location.href = "/signin/";
 }
+
+$(function() {
+  $(window).resize(function() {
+    var barHeight = $(".header1").height();
+    if ($(window).width() < 1040)
+    {
+        $("#main").css('top',barHeight+ 75 +"px");
+    }
+  }).resize()
+});
