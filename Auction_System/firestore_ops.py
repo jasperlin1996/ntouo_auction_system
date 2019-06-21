@@ -5,11 +5,10 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from google.cloud.firestore_v1 import ArrayUnion, ArrayRemove
 
-# cred = credentials.Certificate('firestore_key.json')
+cred = credentials.Certificate('firestore_key.json')
 
 # init firebase
-# firebase_admin.initialize_app(cred)
-firebase_admin.initialize_app()
+firebase_admin.initialize_app(cred)
 
 # init firestore
 db = firestore.client()
